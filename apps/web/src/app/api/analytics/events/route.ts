@@ -6,9 +6,10 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 import { z } from 'zod';
+
+export const dynamic = 'force-dynamic';
 
 // =============================================================================
 // SCHEMAS
@@ -77,9 +78,11 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create analytics event
-    const analyticsEvent = await prisma.analyticsEvent.create({
-      data: {
+    // Use Supabase to insert analytics event
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('analytics_events')
+      .insert({
         event_type: event.eventType,
         spread_type: event.spreadType,
         user_id: userId,
@@ -88,13 +91,23 @@ export async function POST(request: NextRequest) {
         session_id: event.sessionId,
         duration_ms: event.durationMs,
         step: event.step,
-        metadata: event.metadata ? JSON.parse(JSON.stringify(event.metadata)) : undefined,
-      },
-    });
+        metadata: event.metadata,
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      console.error('Analytics event logging error:', error);
+      // Don't fail the request - analytics are non-critical
+      return NextResponse.json({
+        success: false,
+        error: 'Failed to log event',
+      });
+    }
 
     return NextResponse.json({
       success: true,
-      eventId: analyticsEvent.id,
+      eventId: data?.id,
     });
   } catch (error) {
     console.error('Analytics event logging error:', error);
@@ -156,44 +169,44 @@ export async function GET(request: NextRequest) {
 
     const query = queryResult.data;
 
-    // Build where clause
-    const where: Record<string, unknown> = {};
-    
+    // Build query
+    let dbQuery = supabase
+      .from('analytics_events')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(query.offset, query.offset + query.limit - 1);
+
     if (query.eventType) {
-      where.event_type = query.eventType;
+      dbQuery = dbQuery.eq('event_type', query.eventType);
     }
     if (query.spreadType) {
-      where.spread_type = query.spreadType;
+      dbQuery = dbQuery.eq('spread_type', query.spreadType);
     }
-    if (query.startDate || query.endDate) {
-      where.created_at = {};
-      if (query.startDate) {
-        (where.created_at as Record<string, Date>).gte = new Date(query.startDate);
-      }
-      if (query.endDate) {
-        (where.created_at as Record<string, Date>).lte = new Date(query.endDate);
-      }
+    if (query.startDate) {
+      dbQuery = dbQuery.gte('created_at', query.startDate);
+    }
+    if (query.endDate) {
+      dbQuery = dbQuery.lte('created_at', query.endDate);
     }
 
-    // Query events
-    const [events, total] = await Promise.all([
-      prisma.analyticsEvent.findMany({
-        where,
-        orderBy: { created_at: 'desc' },
-        take: query.limit,
-        skip: query.offset,
-      }),
-      prisma.analyticsEvent.count({ where }),
-    ]);
+    const { data: events, count, error } = await dbQuery;
+
+    if (error) {
+      console.error('Analytics query error:', error);
+      return NextResponse.json(
+        { success: false, error: 'Failed to query events' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
       data: events,
       pagination: {
-        total,
+        total: count || 0,
         limit: query.limit,
         offset: query.offset,
-        hasMore: query.offset + events.length < total,
+        hasMore: query.offset + events.length < (count || 0),
       },
     });
   } catch (error) {
