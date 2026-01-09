@@ -223,7 +223,7 @@ export default function Home() {
                 <div className="text-center">
                   <div className="text-4xl mb-3 opacity-70">🔮</div>
                   <h3 className="text-lg font-semibold text-violet-300/80 mb-1">Yes/No</h3>
-                  <p className="text-slate-500 text-xs mb-2">1 ใบ • <30 วิ</p>
+                  <p className="text-slate-500 text-xs mb-2">1 ใบ • &lt;30 วิ</p>
                   <span className="inline-flex items-center gap-1 text-xs text-purple-400">
                     สมัครสมาชิก
                   </span>
