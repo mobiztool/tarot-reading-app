@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 420" width="240" height="420">
+  <defs>
+    <!-- Gradient backgrounds -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1033"/>
+      <stop offset="50%" style="stop-color:#2d1b4e"/>
+      <stop offset="100%" style="stop-color:#1a1033"/>
+    </linearGradient>
+    
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37"/>
+      <stop offset="50%" style="stop-color:#f5d678"/>
+      <stop offset="100%" style="stop-color:#d4af37"/>
+    </linearGradient>
+    
+    <linearGradient id="purpleGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0.1"/>
+    </linearGradient>
+
+    <!-- Star pattern -->
+    <pattern id="starPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1" fill="#d4af37" opacity="0.4"/>
+      <circle cx="5" cy="5" r="0.5" fill="#d4af37" opacity="0.3"/>
+      <circle cx="35" cy="35" r="0.5" fill="#d4af37" opacity="0.3"/>
+      <circle cx="5" cy="35" r="0.5" fill="#d4af37" opacity="0.2"/>
+      <circle cx="35" cy="5" r="0.5" fill="#d4af37" opacity="0.2"/>
+    </pattern>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="240" height="420" rx="12" ry="12" fill="url(#bgGradient)"/>
+  
+  <!-- Star pattern overlay -->
+  <rect x="0" y="0" width="240" height="420" rx="12" ry="12" fill="url(#starPattern)"/>
+  
+  <!-- Decorative border -->
+  <rect x="8" y="8" width="224" height="404" rx="8" ry="8" fill="none" stroke="url(#goldGradient)" stroke-width="2"/>
+  <rect x="16" y="16" width="208" height="388" rx="6" ry="6" fill="none" stroke="url(#goldGradient)" stroke-width="1" opacity="0.5"/>
+
+  <!-- Central mystical circle -->
+  <circle cx="120" cy="210" r="70" fill="url(#purpleGlow)" filter="url(#glow)"/>
+  <circle cx="120" cy="210" r="60" fill="none" stroke="url(#goldGradient)" stroke-width="2"/>
+  <circle cx="120" cy="210" r="50" fill="none" stroke="url(#goldGradient)" stroke-width="1" opacity="0.6"/>
+
+  <!-- Moon symbol at top -->
+  <g transform="translate(120, 60)" filter="url(#glow)">
+    <path d="M0,-25 C15,-25 25,-10 25,5 C25,20 15,30 0,30 C-5,20 -5,5 0,-5 C5,-15 5,-20 0,-25" 
+          fill="url(#goldGradient)" opacity="0.9"/>
+  </g>
+
+  <!-- Central eye/crystal ball -->
+  <g transform="translate(120, 210)">
+    <ellipse cx="0" cy="0" rx="30" ry="35" fill="none" stroke="url(#goldGradient)" stroke-width="2"/>
+    <circle cx="0" cy="0" r="15" fill="url(#purpleGlow)"/>
+    <circle cx="-5" cy="-8" r="5" fill="#f5d678" opacity="0.3"/>
+  </g>
+
+  <!-- Stars around center -->
+  <g fill="url(#goldGradient)" filter="url(#glow)">
+    <!-- Top star -->
+    <polygon points="120,120 123,130 133,130 125,136 128,146 120,140 112,146 115,136 107,130 117,130" opacity="0.8"/>
+    <!-- Bottom star -->
+    <polygon points="120,280 123,290 133,290 125,296 128,306 120,300 112,306 115,296 107,290 117,290" opacity="0.8"/>
+    <!-- Left star -->
+    <polygon points="50,210 53,220 63,220 55,226 58,236 50,230 42,236 45,226 37,220 47,220" opacity="0.7"/>
+    <!-- Right star -->
+    <polygon points="190,210 193,220 203,220 195,226 198,236 190,230 182,236 185,226 177,220 187,220" opacity="0.7"/>
+  </g>
+
+  <!-- Corner decorations -->
+  <g stroke="url(#goldGradient)" stroke-width="1.5" fill="none" opacity="0.8">
+    <!-- Top left corner -->
+    <path d="M25,45 L25,30 Q25,25 30,25 L45,25"/>
+    <circle cx="25" cy="25" r="3" fill="url(#goldGradient)"/>
+    
+    <!-- Top right corner -->
+    <path d="M215,45 L215,30 Q215,25 210,25 L195,25"/>
+    <circle cx="215" cy="25" r="3" fill="url(#goldGradient)"/>
+    
+    <!-- Bottom left corner -->
+    <path d="M25,375 L25,390 Q25,395 30,395 L45,395"/>
+    <circle cx="25" cy="395" r="3" fill="url(#goldGradient)"/>
+    
+    <!-- Bottom right corner -->
+    <path d="M215,375 L215,390 Q215,395 210,395 L195,395"/>
+    <circle cx="215" cy="395" r="3" fill="url(#goldGradient)"/>
+  </g>
+
+  <!-- Sun symbol at bottom -->
+  <g transform="translate(120, 360)" filter="url(#glow)">
+    <circle cx="0" cy="0" r="12" fill="url(#goldGradient)" opacity="0.9"/>
+    <g stroke="url(#goldGradient)" stroke-width="1.5" fill="none">
+      <line x1="0" y1="-18" x2="0" y2="-22"/>
+      <line x1="0" y1="18" x2="0" y2="22"/>
+      <line x1="-18" y1="0" x2="-22" y2="0"/>
+      <line x1="18" y1="0" x2="22" y2="0"/>
+      <line x1="-13" y1="-13" x2="-16" y2="-16"/>
+      <line x1="13" y1="-13" x2="16" y2="-16"/>
+      <line x1="-13" y1="13" x2="-16" y2="16"/>
+      <line x1="13" y1="13" x2="16" y2="16"/>
+    </g>
+  </g>
+
+  <!-- Subtle shimmer effect overlay -->
+  <rect x="0" y="0" width="240" height="420" rx="12" ry="12" fill="url(#purpleGlow)" opacity="0.1"/>
+</svg>
+
+

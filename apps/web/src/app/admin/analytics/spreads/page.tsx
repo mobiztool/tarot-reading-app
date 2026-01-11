@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks';
 import Link from 'next/link';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 // =============================================================================
 // TYPES
@@ -403,14 +404,7 @@ export default function SpreadAnalyticsDashboard() {
   }, [data, dateRange]);
 
   if (authLoading || loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin text-4xl mb-4">📊</div>
-          <p className="text-slate-400">Loading analytics...</p>
-        </div>
-      </div>
-    );
+    return <PageLoader message="กำลังโหลด Analytics..." />;
   }
 
   if (error) {
@@ -552,3 +546,4 @@ export default function SpreadAnalyticsDashboard() {
     </div>
   );
 }
+

@@ -4,11 +4,12 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCards } from '@/lib/hooks';
+import { MysticalLoader } from '@/components/ui/MysticalLoader';
 
 type Suit = 'all' | 'major' | 'wands' | 'cups' | 'swords' | 'pentacles';
 
 const SUIT_TABS: { value: Suit; label: string; emoji: string; color: string }[] = [
-  { value: 'all', label: 'ทั้งหมด', emoji: '🃏', color: 'from-purple-500 to-indigo-500' },
+  { value: 'all', label: 'ทั้งหมด', emoji: '🎴', color: 'from-purple-500 to-indigo-500' },
   { value: 'major', label: 'Major Arcana', emoji: '⭐', color: 'from-amber-500 to-orange-500' },
   { value: 'wands', label: 'ไม้เท้า', emoji: '🪄', color: 'from-red-500 to-orange-500' },
   { value: 'cups', label: 'ถ้วย', emoji: '🏆', color: 'from-blue-500 to-cyan-500' },
@@ -81,10 +82,7 @@ export function CardEncyclopedia() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="text-center">
-          <div className="animate-spin text-5xl mb-4">🔮</div>
-          <p className="text-slate-400">กำลังโหลดไพ่...</p>
-        </div>
+        <MysticalLoader message="กำลังโหลดไพ่..." size="lg" />
       </div>
     );
   }
@@ -215,4 +213,5 @@ export function CardEncyclopedia() {
     </div>
   );
 }
+
 

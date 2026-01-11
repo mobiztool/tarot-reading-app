@@ -55,3 +55,5 @@ export async function GET(request: NextRequest) {
   redirectTo.pathname = '/auth/error';
   return NextResponse.redirect(redirectTo);
 }
+
+

@@ -1,0 +1,35 @@
+# Quality Gate Decision
+# Story 5.8: Epic 5 Testing & QA
+
+gate:
+  story_id: "5.8"
+  story_name: "Epic 5 Testing & QA"
+  epic: "Epic 5: Login Tier Spreads (Phase 2)"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Phase 2 final QA"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+
+risk_level: HIGH
+priority: P0
+
+exit_criteria:
+  - "All 3 new spreads functional"
+  - "Access control verified"
+  - "Conversion flow tested"
+  - "Phase 1 regression passed"
+  - "No P0/P1 bugs"
+
+test_design:
+  document: "docs/qa/epic5-test-design.md"
+  scenarios: "TS-5.8.1 through TS-5.8.4"
+

@@ -357,3 +357,4 @@ export function generateYesNoSpreadReading(
     createdAt: new Date(),
   };
 }
+

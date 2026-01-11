@@ -191,3 +191,4 @@ export function checkNewBadges(stats: UserStats): Badge[] {
   return newBadges;
 }
 
+

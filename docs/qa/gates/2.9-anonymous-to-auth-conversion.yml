@@ -1,0 +1,45 @@
+# Quality Gate Decision
+# Story 2.9: Anonymous to Authenticated Conversion
+
+gate:
+  story_id: "2.9"
+  story_name: "Anonymous to Authenticated Conversion"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 8
+  passed: 0
+  failed: 0
+  pending: 8
+  details:
+    - ac: "AC1: Signup prompt after readings"
+      status: PENDING
+    - ac: "AC2: Prompt display"
+      status: PENDING
+    - ac: "AC3: Dismissal"
+      status: PENDING
+    - ac: "AC4: Frequency control"
+      status: PENDING
+    - ac: "AC5: CTA buttons"
+      status: PENDING
+    - ac: "AC6: Value proposition"
+      status: PENDING
+    - ac: "AC7: Reading claiming"
+      status: PENDING
+    - ac: "AC8: Analytics"
+      status: PENDING
+
+risk_level: MEDIUM
+priority: P1
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.9.1 through TS-2.9.8"
+

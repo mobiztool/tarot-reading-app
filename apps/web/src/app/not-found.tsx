@@ -1,6 +1,10 @@
+'use client';
+
 import Link from 'next/link';
+import Lottie from 'lottie-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import crystalBallAnimation from '../../public/animations/crystal-ball.json';
 
 /**
  * Custom 404 Not Found page
@@ -12,12 +16,15 @@ export default function NotFound() {
       <Header />
       <main className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          {/* Mystical 404 Icon */}
-          <div className="relative w-32 h-32 mx-auto mb-8">
+          {/* Mystical 404 Icon with Lottie Animation */}
+          <div className="relative w-40 h-40 mx-auto mb-8">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-amber-500/30 rounded-full blur-xl" />
-            <div className="relative w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 rounded-full flex items-center justify-center border border-purple-500/30">
-              <span className="text-6xl">🔮</span>
-            </div>
+            <Lottie
+              animationData={crystalBallAnimation}
+              loop={true}
+              autoplay={true}
+              style={{ width: 160, height: 160 }}
+            />
           </div>
 
           {/* Title */}
@@ -53,3 +60,5 @@ export default function NotFound() {
     </>
   );
 }
+
+

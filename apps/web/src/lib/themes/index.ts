@@ -9,18 +9,25 @@ export interface Theme {
   description: string;
   emoji: string;
   colors: {
+    // Background colors
     bgPrimary: string;
     bgSecondary: string;
     bgCard: string;
     bgGradientFrom: string;
     bgGradientVia: string;
     bgGradientTo: string;
+    
+    // Text colors
     textPrimary: string;
     textSecondary: string;
     textMuted: string;
+    
+    // Accent colors
     accentPrimary: string;
     accentSecondary: string;
     accentGold: string;
+    
+    // Border colors
     borderPrimary: string;
     borderSecondary: string;
   };
@@ -131,6 +138,7 @@ export function getAllThemes(): Theme[] {
   return Object.values(themes);
 }
 
+// Generate CSS variables from theme
 export function getThemeCSSVariables(theme: Theme): Record<string, string> {
   return {
     '--theme-bg-primary': theme.colors.bgPrimary,
@@ -149,3 +157,5 @@ export function getThemeCSSVariables(theme: Theme): Record<string, string> {
     '--theme-border-secondary': theme.colors.borderSecondary,
   };
 }
+
+

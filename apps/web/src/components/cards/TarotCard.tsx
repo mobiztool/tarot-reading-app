@@ -111,6 +111,7 @@ export function TarotCard({
             sizes={`${dimensions.width}px`}
             className="object-cover"
             priority
+            unoptimized={backImage.endsWith('.svg')}
           />
           {/* Hover glow effect */}
           <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-purple-500/30 to-transparent" />
@@ -133,6 +134,7 @@ export function TarotCard({
             sizes={`${dimensions.width}px`}
             className="object-cover"
             onError={handleError}
+            unoptimized={displayFrontImage.endsWith('.svg')}
           />
           {/* Reversed indicator */}
           {isReversed && (
@@ -147,3 +149,4 @@ export function TarotCard({
 }
 
 export default TarotCard;
+

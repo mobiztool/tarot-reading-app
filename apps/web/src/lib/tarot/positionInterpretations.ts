@@ -450,3 +450,4 @@ export function getPositionInterpretationPrefix(
 
   return `ในตำแหน่ง "${context.nameTh}"${reversedText}: `;
 }
+

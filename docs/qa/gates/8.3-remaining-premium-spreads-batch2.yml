@@ -1,0 +1,62 @@
+# Quality Gate Decision
+# Story 8.3: Remaining Premium Spreads Batch 2 (3 Spreads)
+
+gate:
+  story_id: "8.3"
+  story_name: "3 Bundled Premium Spreads"
+  epic: "Epic 8: Premium Spreads Batch 2 (Phase 4)"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Bundle story - 3 spreads for efficiency"
+
+acceptance_criteria:
+  total: 10
+  passed: 0
+  failed: 0
+  pending: 10
+
+risk_level: MEDIUM
+priority: P1
+tier: PRO_VIP
+
+spreads:
+  friendship:
+    cards: 4
+    route: "/reading/friendship"
+    positions:
+      - "The Bond"
+      - "Your Role"
+      - "Their Role"
+      - "Future of Friendship"
+  
+  career_path:
+    cards: 6
+    route: "/reading/career-path"
+    positions:
+      - "Current Position"
+      - "Obstacles"
+      - "Skills to Develop"
+      - "Hidden Opportunities"
+      - "Next Step"
+      - "Long-term Outcome"
+  
+  financial_abundance:
+    cards: 5
+    route: "/reading/financial"
+    positions:
+      - "Current Financial State"
+      - "Blocks to Abundance"
+      - "Strengths to Leverage"
+      - "Action to Take"
+      - "Potential Outcome"
+
+total_positions: 15
+
+test_design:
+  document: "docs/qa/epic8-test-design.md"
+  scenarios: "TS-8.3.1 through TS-8.3.4"
+

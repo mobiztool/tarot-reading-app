@@ -10,6 +10,7 @@ import { ReadingNotes, FavoriteButton, EditableQuestion } from '@/components/rea
 import { useAuth, useAnalytics } from '@/lib/hooks';
 import { format } from 'date-fns';
 import { th } from 'date-fns/locale';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 interface ReadingCard {
   position: number;
@@ -109,12 +110,7 @@ export default function ReadingDetailPage({ params }: { params: Promise<{ id: st
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin text-5xl mb-4">🔮</div>
-            <p className="text-slate-400">กำลังโหลด...</p>
-          </div>
-        </div>
+        <PageLoader message="กำลังโหลด..." />
       </>
     );
   }
@@ -342,3 +338,4 @@ export default function ReadingDetailPage({ params }: { params: Promise<{ id: st
     </>
   );
 }
+

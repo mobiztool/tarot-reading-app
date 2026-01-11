@@ -46,6 +46,14 @@ interface RetentionData {
 // HELPERS
 // =============================================================================
 
+// Admin email whitelist - add your email here to access analytics dashboard
+const ADMIN_EMAILS = [
+  'test@admin.tarotapp.com',
+  'sutthikit@hotmail.com',
+  'sutt@hotmail.com',
+  'nattsctu@gmail.com',
+];
+
 async function isAdmin(supabase: Awaited<ReturnType<typeof createClient>>): Promise<boolean> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
@@ -54,7 +62,8 @@ async function isAdmin(supabase: Awaited<ReturnType<typeof createClient>>): Prom
     
     const isAdminRole = user.user_metadata?.role === 'admin';
     const isAdminEmail = user.email?.endsWith('@admin.tarotapp.com') ?? false;
-    return isAdminRole || isAdminEmail;
+    const isWhitelistedEmail = ADMIN_EMAILS.includes(user.email || '');
+    return isAdminRole || isAdminEmail || isWhitelistedEmail;
   } catch {
     return false;
   }
@@ -189,6 +198,30 @@ export async function GET(request: NextRequest) {
           ? Math.round(durationData.reduce((sum, d) => sum + (d.duration_ms || 0), 0) / durationData.length)
           : 0;
 
+        // Calculate repeat rate: users who completed more than once
+        const { data: repeatData } = await supabase
+          .from('analytics_events')
+          .select('user_id')
+          .eq('event_type', 'spread_completed')
+          .eq('spread_type', spreadType)
+          .not('user_id', 'is', null)
+          .gte('created_at', startDate || '1970-01-01');
+        
+        let repeatRate = 0;
+        if (repeatData && repeatData.length > 0) {
+          const userCounts = new Map<string, number>();
+          repeatData.forEach(d => {
+            if (d.user_id) {
+              userCounts.set(d.user_id, (userCounts.get(d.user_id) || 0) + 1);
+            }
+          });
+          const totalUsersWithReadings = userCounts.size;
+          const repeatUsers = Array.from(userCounts.values()).filter(count => count > 1).length;
+          repeatRate = totalUsersWithReadings > 0 
+            ? Math.round((repeatUsers / totalUsersWithReadings) * 100) 
+            : 0;
+        }
+
         spreadMetrics.push({
           spreadType,
           totalReadings: totalReadings || 0,
@@ -197,7 +230,7 @@ export async function GET(request: NextRequest) {
             ? Math.round(((totalReadings || 0) / startedCount) * 100) 
             : 0,
           avgDurationMs,
-          repeatRate: 0, // Simplified for now
+          repeatRate,
         });
       }
 
@@ -268,28 +301,80 @@ export async function GET(request: NextRequest) {
       response.conversionFunnels = funnels;
     }
 
-    // Retention metrics (simplified)
+    // Retention metrics - calculated from actual user return data
     if (metricType === 'retention' || metricType === 'all') {
       const spreadTypes = ['daily', 'three_card', 'love_relationships', 'career_money', 'yes_no'];
       const retentionData: RetentionData[] = [];
 
       for (const spreadType of spreadTypes) {
-        const { data: usersData } = await supabase
+        // Get all completed events with user_id and timestamp
+        const { data: eventsData } = await supabase
           .from('analytics_events')
-          .select('user_id')
+          .select('user_id, created_at')
           .eq('event_type', 'spread_completed')
           .eq('spread_type', spreadType)
           .not('user_id', 'is', null)
-          .gte('created_at', startDate || '1970-01-01');
+          .gte('created_at', startDate || '1970-01-01')
+          .order('created_at', { ascending: true });
         
-        const cohortSize = new Set(usersData?.map(d => d.user_id)).size;
+        if (!eventsData || eventsData.length === 0) {
+          retentionData.push({
+            spreadType,
+            d1Retention: 0,
+            d7Retention: 0,
+            d30Retention: 0,
+            cohortSize: 0,
+          });
+          continue;
+        }
 
-        // Simplified retention: random values for demo
+        // Group events by user and find first activity date
+        const userFirstActivity = new Map<string, Date>();
+        const userAllActivities = new Map<string, Date[]>();
+        
+        eventsData.forEach(event => {
+          if (event.user_id) {
+            const eventDate = new Date(event.created_at);
+            
+            if (!userFirstActivity.has(event.user_id)) {
+              userFirstActivity.set(event.user_id, eventDate);
+            }
+            
+            if (!userAllActivities.has(event.user_id)) {
+              userAllActivities.set(event.user_id, []);
+            }
+            userAllActivities.get(event.user_id)!.push(eventDate);
+          }
+        });
+
+        const cohortSize = userFirstActivity.size;
+        
+        // Calculate retention: users who returned after D1, D7, D30
+        let d1Returned = 0;
+        let d7Returned = 0;
+        let d30Returned = 0;
+
+        userFirstActivity.forEach((firstDate, userId) => {
+          const activities = userAllActivities.get(userId) || [];
+          const d1Threshold = new Date(firstDate.getTime() + 1 * 24 * 60 * 60 * 1000);
+          const d7Threshold = new Date(firstDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+          const d30Threshold = new Date(firstDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+          // Check if user returned after each threshold
+          const returnedAfterD1 = activities.some(date => date >= d1Threshold);
+          const returnedAfterD7 = activities.some(date => date >= d7Threshold);
+          const returnedAfterD30 = activities.some(date => date >= d30Threshold);
+
+          if (returnedAfterD1) d1Returned++;
+          if (returnedAfterD7) d7Returned++;
+          if (returnedAfterD30) d30Returned++;
+        });
+
         retentionData.push({
           spreadType,
-          d1Retention: cohortSize > 0 ? Math.round(Math.random() * 40 + 30) : 0,
-          d7Retention: cohortSize > 0 ? Math.round(Math.random() * 20 + 15) : 0,
-          d30Retention: cohortSize > 0 ? Math.round(Math.random() * 10 + 5) : 0,
+          d1Retention: cohortSize > 0 ? Math.round((d1Returned / cohortSize) * 100) : 0,
+          d7Retention: cohortSize > 0 ? Math.round((d7Returned / cohortSize) * 100) : 0,
+          d30Retention: cohortSize > 0 ? Math.round((d30Returned / cohortSize) * 100) : 0,
           cohortSize,
         });
       }

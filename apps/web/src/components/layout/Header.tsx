@@ -64,7 +64,7 @@ export function Header() {
               ดูดวง
             </Link>
             <Link
-              href="/guide"
+              href="/cards"
               className="text-slate-300 hover:text-purple-light transition-colors font-medium"
             >
               คู่มือไพ่
@@ -195,7 +195,7 @@ export function Header() {
               ดูดวง
             </Link>
             <Link
-              href="/guide"
+              href="/cards"
               className="block px-4 py-3 text-slate-300 hover:text-purple-light hover:bg-slate-800 rounded-lg transition-colors min-h-[44px]"
               onClick={() => setIsMenuOpen(false)}
             >

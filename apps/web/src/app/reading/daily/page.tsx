@@ -6,6 +6,7 @@ import { TarotCard, CardFan } from '@/components/cards';
 import { useTarotReading, useCards, useSaveReading } from '@/lib/hooks';
 import { SUIT_NAMES } from '@/types/card';
 import { generateDetailedPrediction } from '@/lib/tarot/cardMeanings';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 export default function DailyReadingPage() {
   const [question, setQuestion] = useState('');
@@ -71,19 +72,7 @@ export default function DailyReadingPage() {
 
   // Loading cards from database
   if (isLoadingCards) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-pulse mb-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500/50 to-amber-500/50 rounded-full flex items-center justify-center">
-              <span className="text-5xl">🃏</span>
-            </div>
-          </div>
-          <h2 className="text-xl font-bold text-purple-300 mb-2">กำลังโหลดไพ่...</h2>
-          <p className="text-slate-400">รอสักครู่</p>
-        </div>
-      </div>
-    );
+    return <PageLoader message="กำลังโหลดไพ่..." />;
   }
 
   // Selection mode - Show CardFan
@@ -206,23 +195,7 @@ export default function DailyReadingPage() {
 
   // Shuffling/Drawing state
   if (readingState === 'shuffling' || readingState === 'drawing') {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-pulse mb-8">
-            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-purple-500 to-amber-500 rounded-full flex items-center justify-center shadow-2xl shadow-purple-500/50">
-              <span className="text-6xl animate-spin" style={{ animationDuration: '2s' }}>
-                🎴
-              </span>
-            </div>
-          </div>
-          <h2 className="text-2xl font-bold text-purple-300 mb-2">
-            {readingState === 'shuffling' ? 'กำลังสับไพ่...' : 'กำลังจั่วไพ่...'}
-          </h2>
-          <p className="text-slate-400">โปรดรอสักครู่</p>
-        </div>
-      </div>
-    );
+    return <PageLoader message={readingState === 'shuffling' ? 'กำลังสับไพ่...' : 'กำลังจั่วไพ่...'} />;
   }
 
   // Revealing state - Show card to flip

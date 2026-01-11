@@ -1,0 +1,62 @@
+# Quality Gate Decision
+# Story 6.12: Payment Testing & Security QA
+
+gate:
+  story_id: "6.12"
+  story_name: "Payment Testing & Security QA"
+  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Final QA - MUST PASS before launch"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+  details:
+    - ac: "AC1: Stripe test cards tested"
+      status: PENDING
+    - ac: "AC2: Webhooks tested"
+      status: PENDING
+    - ac: "AC3: Security audit passed"
+      status: PENDING
+    - ac: "AC4: Subscription lifecycle tested"
+      status: PENDING
+    - ac: "AC5: Edge cases handled"
+      status: PENDING
+    - ac: "AC6: Cross-browser tested"
+      status: PENDING
+    - ac: "AC7: Mobile payment UX"
+      status: PENDING
+    - ac: "AC8: Refund testing"
+      status: PENDING
+    - ac: "AC9: Tax calculation (if applicable)"
+      status: PENDING
+    - ac: "AC10: P0/P1 bugs fixed"
+      status: PENDING
+    - ac: "AC11: Legal review completed"
+      status: PENDING
+    - ac: "AC12: QA sign-off"
+      status: PENDING
+
+risk_level: HIGH
+priority: P0
+security_critical: true
+pci_compliance: required
+legal_review: required
+
+test_design:
+  document: "docs/qa/epic6-test-design.md"
+  scenarios: "TS-6.12.1 through TS-6.12.5"
+
+launch_blockers:
+  - "Security audit must pass"
+  - "PCI compliance verified"
+  - "Legal review completed"
+  - "No P0/P1 bugs"
+

@@ -1,0 +1,47 @@
+# Quality Gate Decision
+# Story 2.8: First-Time User Onboarding Flow
+
+gate:
+  story_id: "2.8"
+  story_name: "First-Time User Onboarding Flow"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 9
+  passed: 0
+  failed: 0
+  pending: 9
+  details:
+    - ac: "AC1: Post-signup welcome"
+      status: PENDING
+    - ac: "AC2: Benefit highlights"
+      status: PENDING
+    - ac: "AC3: Profile completion"
+      status: PENDING
+    - ac: "AC4: CTA"
+      status: PENDING
+    - ac: "AC5: One-time display"
+      status: PENDING
+    - ac: "AC6: Skip option"
+      status: PENDING
+    - ac: "AC7: Mobile friendly"
+      status: PENDING
+    - ac: "AC8: Analytics"
+      status: PENDING
+    - ac: "AC9: Dismissible"
+      status: PENDING
+
+risk_level: LOW
+priority: P2
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.8.1 through TS-2.8.9"
+

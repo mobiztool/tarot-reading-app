@@ -1,0 +1,55 @@
+# Quality Gate Decision
+# Story 2.4: User Profile Page & Settings
+
+gate:
+  story_id: "2.4"
+  story_name: "User Profile Page & Settings"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 13
+  passed: 0
+  failed: 0
+  pending: 13
+  details:
+    - ac: "AC1: Profile page display"
+      status: PENDING
+    - ac: "AC2: Edit form"
+      status: PENDING
+    - ac: "AC3: Profile picture upload"
+      status: PENDING
+    - ac: "AC4: Email change"
+      status: PENDING
+    - ac: "AC5: Password change"
+      status: PENDING
+    - ac: "AC6: Account deletion"
+      status: PENDING
+    - ac: "AC7: Settings placeholder"
+      status: PENDING
+    - ac: "AC8: Form validation"
+      status: PENDING
+    - ac: "AC9: Loading states"
+      status: PENDING
+    - ac: "AC10: Error handling"
+      status: PENDING
+    - ac: "AC11: Analytics"
+      status: PENDING
+    - ac: "AC12: Mobile responsive"
+      status: PENDING
+    - ac: "AC13: PDPA compliance"
+      status: PENDING
+
+risk_level: MEDIUM
+priority: P1
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.4.1 through TS-2.4.13"
+

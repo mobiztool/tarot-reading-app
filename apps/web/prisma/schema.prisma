@@ -73,13 +73,19 @@ model User {
   last_login_at       DateTime?    @db.Timestamptz
   email_verified      Boolean      @default(false)
   auth_provider       AuthProvider @default(email)
+  
+  // Stripe Integration (Story 6.1)
+  stripeCustomerId    String?      @unique @map("stripe_customer_id") @db.VarChar(255)
 
   readings         Reading[]
   analytics_events AnalyticsEvent[]
+  subscriptions    Subscription[]
+  invoices         Invoice[]
 
   @@map("users")
   @@index([email])
   @@index([created_at])
+  @@index([stripeCustomerId])
 }
 
 enum AuthProvider {
@@ -239,4 +245,105 @@ enum DeviceType {
   mobile
   tablet
   desktop
+}
+
+// ============================================================================
+// SUBSCRIPTIONS TABLE (Story 6.1 - Stripe Integration)
+// ============================================================================
+model Subscription {
+  id                   String             @id @default(uuid()) @db.Uuid
+  user_id              String             @db.Uuid
+  stripe_subscription_id String           @unique @db.VarChar(255)
+  stripe_customer_id   String             @db.VarChar(255)
+  stripe_price_id      String             @db.VarChar(255)
+  status               SubscriptionStatus
+  current_period_start DateTime           @db.Timestamptz
+  current_period_end   DateTime           @db.Timestamptz
+  cancel_at            DateTime?          @db.Timestamptz
+  canceled_at          DateTime?          @db.Timestamptz
+  ended_at             DateTime?          @db.Timestamptz
+  
+  // Cancellation Survey (Story 6.8)
+  cancellation_reason   String?           @db.VarChar(100)
+  cancellation_feedback String?           @db.Text
+  
+  created_at           DateTime           @default(now()) @db.Timestamptz
+  updated_at           DateTime           @updatedAt @db.Timestamptz
+
+  user     User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  invoices Invoice[]
+
+  @@map("subscriptions")
+  @@index([user_id])
+  @@index([stripe_subscription_id])
+  @@index([stripe_customer_id])
+  @@index([status])
+}
+
+enum SubscriptionStatus {
+  active
+  past_due
+  canceled
+  incomplete
+  incomplete_expired
+  trialing
+  unpaid
+  paused
+}
+
+enum SubscriptionTier {
+  free
+  basic
+  pro
+  vip
+}
+
+// ============================================================================
+// INVOICES TABLE (Story 6.7 - Invoice Generation & Email Receipts)
+// ============================================================================
+model Invoice {
+  id                  String    @id @default(uuid()) @db.Uuid
+  user_id             String    @db.Uuid
+  subscription_id     String?   @db.Uuid
+  
+  // Stripe Reference
+  stripe_invoice_id   String    @unique @db.VarChar(255)
+  stripe_invoice_number String? @db.VarChar(100)
+  
+  // Invoice Details
+  amount              Int       // in satang (cents)
+  currency            String    @default("thb") @db.VarChar(10)
+  status              InvoiceStatus
+  description         String?   @db.Text
+  
+  // Dates
+  paid_at             DateTime? @db.Timestamptz
+  period_start        DateTime? @db.Timestamptz
+  period_end          DateTime? @db.Timestamptz
+  
+  // PDF & URLs
+  invoice_pdf_url     String?   @db.Text
+  hosted_invoice_url  String?   @db.Text
+  
+  // Timestamps
+  created_at          DateTime  @default(now()) @db.Timestamptz
+  updated_at          DateTime  @updatedAt @db.Timestamptz
+
+  // Relations
+  user                User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  subscription        Subscription? @relation(fields: [subscription_id], references: [id], onDelete: SetNull)
+
+  @@map("invoices")
+  @@index([user_id])
+  @@index([user_id, paid_at(sort: Desc)])
+  @@index([subscription_id])
+  @@index([stripe_invoice_id])
+}
+
+enum InvoiceStatus {
+  draft
+  open
+  paid
+  void
+  uncollectible
 }

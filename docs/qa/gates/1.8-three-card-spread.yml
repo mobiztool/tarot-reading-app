@@ -1,0 +1,91 @@
+# Quality Gate Decision
+# Story 1.8: 3-Card Spread Flow (Past-Present-Future)
+
+gate:
+  story_id: "1.8"
+  story_name: "3-Card Spread Flow (Past-Present-Future)"
+  epic: "Epic 1: Core Reading Features"
+
+decision:
+  status: PASS
+  date: "2025-12-30"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 94
+
+scores:
+  overall: 94
+  user_experience: 95
+  animations: 96
+  data_model: 94
+  analytics: 92
+
+acceptance_criteria:
+  total: 13
+  passed: 13
+  failed: 0
+  details:
+    - ac: "AC1: /reading/three-card page"
+      status: PASS
+      evidence: "src/app/reading/three-card/page.tsx"
+    - ac: "AC2: Spread explanation"
+      status: PASS
+      evidence: "Past-Present-Future description"
+    - ac: "AC3: 'เลือกไพ่' button"
+      status: PASS
+      evidence: "Triggers 3-card flow"
+    - ac: "AC4: Card fan display"
+      status: PASS
+      evidence: "Visual representation"
+    - ac: "AC5: Sequential 3-card draw"
+      status: PASS
+      evidence: "Position feedback (1/3, 2/3, 3/3)"
+    - ac: "AC6: Staggered flip animation"
+      status: PASS
+      evidence: "~2.5s total, sequential"
+    - ac: "AC7: 3 cards horizontal/vertical"
+      status: PASS
+      evidence: "Desktop: horizontal, Mobile: stacked"
+    - ac: "AC8: Position labels"
+      status: PASS
+      evidence: "อดีต, ปัจจุบัน, อนาคต"
+    - ac: "AC9: Position-specific interpretation"
+      status: PASS
+      evidence: "Each card has context"
+    - ac: "AC10: Summary section"
+      status: PASS
+      evidence: "Cohesive narrative"
+    - ac: "AC11: Action buttons"
+      status: PASS
+      evidence: "แชร์, ดูอีกครั้ง, กลับหน้าแรก"
+    - ac: "AC12: Database save with positions"
+      status: PASS
+      evidence: "reading_cards junction table"
+    - ac: "AC13: Analytics tracked"
+      status: PASS
+      evidence: "reading_type: three_card, positions"
+
+bugs:
+  p0: 0
+  p1: 0
+  p2: 0
+
+tests:
+  e2e:
+    - test: "Complete 3-card flow"
+      result: PASS
+    - test: "Sequential draw"
+      result: PASS
+    - test: "Staggered animation"
+      result: PASS
+    - test: "Database save with 3 cards"
+      result: PASS
+
+notes:
+  - "Complex flow executed well"
+  - "Animation timing perfect"
+  - "Core feature complete"
+
+traceability:
+  document: "docs/qa/epic1-requirements-traceability.md"
+  test_scenarios: "TS-1.8.1 through TS-1.8.13"
+

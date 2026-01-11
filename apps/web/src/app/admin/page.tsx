@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 // =============================================================================
 // TYPES
@@ -50,8 +51,16 @@ const ADMIN_MODULES: AdminModule[] = [
     color: 'from-blue-500 to-cyan-500',
   },
   {
+    id: 'subscriptions',
+    title: 'Subscription Analytics',
+    description: 'ดู MRR, ARR, Churn Rate, LTV, Conversion Funnel และ Retention',
+    icon: '💳',
+    href: '/admin/subscriptions',
+    color: 'from-green-500 to-emerald-500',
+  },
+  {
     id: 'analytics',
-    title: 'Analytics Dashboard',
+    title: 'Spread Analytics',
     description: 'วิเคราะห์การใช้งาน Spread, Conversion Funnel, และ Retention',
     icon: '📊',
     href: '/admin/analytics/spreads',
@@ -149,14 +158,7 @@ export default function AdminDashboard() {
   };
 
   if (authLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-pulse text-6xl mb-4">🔮</div>
-          <p className="text-slate-400">กำลังตรวจสอบสิทธิ์...</p>
-        </div>
-      </div>
-    );
+    return <PageLoader message="กำลังตรวจสอบสิทธิ์..." />;
   }
 
   return (
@@ -279,7 +281,7 @@ function QuickStatCard({
 }
 
 function AdminModuleCard({ module }: { module: AdminModule }) {
-  const isAvailable = module.id === 'users' || module.id === 'analytics';
+  const isAvailable = module.id === 'users' || module.id === 'analytics' || module.id === 'subscriptions';
   
   return (
     <Link
@@ -340,3 +342,4 @@ function AdminModuleCard({ module }: { module: AdminModule }) {
     </Link>
   );
 }
+

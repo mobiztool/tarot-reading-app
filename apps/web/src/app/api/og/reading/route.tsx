@@ -182,7 +182,7 @@ export async function GET(request: NextRequest) {
                     transform: card.isReversed ? 'rotate(180deg)' : 'none',
                   }}
                 >
-                  <span style={{ fontSize: '64px' }}>🃏</span>
+                  <span style={{ fontSize: '64px' }}>🎴</span>
                 </div>
 
                 {/* Card Name */}
@@ -290,3 +290,4 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+

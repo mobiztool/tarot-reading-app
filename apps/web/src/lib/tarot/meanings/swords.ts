@@ -228,3 +228,5 @@ export const SWORDS: Record<string, CardDetailedMeanings> = {
     },
   },
 };
+
+

@@ -228,3 +228,5 @@ export const WANDS: Record<string, CardDetailedMeanings> = {
     },
   },
 };
+
+

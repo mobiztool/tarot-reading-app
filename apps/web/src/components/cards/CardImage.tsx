@@ -54,9 +54,12 @@ export function CardImage({
         style={{
           objectFit: 'cover',
         }}
+        unoptimized={imageSrc.endsWith('.svg')}
       />
     </div>
   );
 }
 
 export default CardImage;
+
+

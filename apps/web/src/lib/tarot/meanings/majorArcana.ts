@@ -356,3 +356,5 @@ export const MAJOR_ARCANA: Record<string, CardDetailedMeanings> = {
     },
   },
 };
+
+

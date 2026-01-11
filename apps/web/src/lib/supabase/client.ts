@@ -28,3 +28,4 @@ export function createClient() {
   supabaseClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
   return supabaseClient;
 }
+

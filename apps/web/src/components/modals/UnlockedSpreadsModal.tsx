@@ -159,7 +159,7 @@ export function UnlockedSpreadsModal({ isOpen, onClose }: UnlockedSpreadsModalPr
             onClick={onClose}
             className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold rounded-xl text-center transition-all"
           >
-            🃏 เริ่มดูดวงเลย
+            🎴 เริ่มดูดวงเลย
           </Link>
           <button
             onClick={onClose}

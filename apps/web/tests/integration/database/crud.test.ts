@@ -7,6 +7,7 @@ const prisma = new PrismaClient({
 
 describe('Database CRUD Operations', () => {
   beforeAll(async () => {
+    // Ensure database is connected
     await prisma.$connect();
   });
 
@@ -15,6 +16,7 @@ describe('Database CRUD Operations', () => {
   });
 
   afterEach(async () => {
+    // Clean up test readings (keep cards)
     await prisma.reading.deleteMany();
   });
 
@@ -91,6 +93,7 @@ describe('Database CRUD Operations', () => {
 
   describe('Reading Retrieval', () => {
     it('should fetch reading with cards', async () => {
+      // Create a test reading first
       const cards = await prisma.card.findMany({ take: 1 });
       const created = await prisma.reading.create({
         data: {
@@ -105,6 +108,7 @@ describe('Database CRUD Operations', () => {
         },
       });
 
+      // Fetch it with cards included
       const reading = await prisma.reading.findUnique({
         where: { id: created.id },
         include: {
@@ -164,10 +168,12 @@ describe('Database CRUD Operations', () => {
         },
       });
 
+      // Delete reading
       await prisma.reading.delete({
         where: { id: reading.id },
       });
 
+      // Verify reading_cards were cascade deleted
       const readingCards = await prisma.readingCard.findMany({
         where: { reading_id: reading.id },
       });

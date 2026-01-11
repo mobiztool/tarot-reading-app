@@ -1,0 +1,61 @@
+# Quality Gate Decision
+# Story 2.15: Epic 2 Testing & Quality Assurance
+
+gate:
+  story_id: "2.15"
+  story_name: "Epic 2 Testing & Quality Assurance"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation of all Epic 2 stories"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+  details:
+    - ac: "AC1: Functional testing"
+      status: PENDING
+    - ac: "AC2: E2E tests (Playwright)"
+      status: PENDING
+    - ac: "AC3: Security testing"
+      status: PENDING
+    - ac: "AC4: Cross-browser testing"
+      status: PENDING
+    - ac: "AC5: Accessibility testing"
+      status: PENDING
+    - ac: "AC6: Performance testing"
+      status: PENDING
+    - ac: "AC7: Edge case testing"
+      status: PENDING
+    - ac: "AC8: Integration testing"
+      status: PENDING
+    - ac: "AC9: Email deliverability"
+      status: PENDING
+    - ac: "AC10: Regression testing"
+      status: PENDING
+    - ac: "AC11: P0/P1 bugs fixed"
+      status: PENDING
+    - ac: "AC12: Documentation"
+      status: PENDING
+
+risk_level: HIGH
+priority: P0
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.15.1 through TS-2.15.12"
+
+exit_criteria:
+  - "All P0 scenarios pass: 100%"
+  - "All P1 scenarios pass: 100%"
+  - "P2 scenarios pass: ≥90%"
+  - "Security audit: PASS"
+  - "RLS policies verified"
+  - "No P0/P1 bugs open"
+

@@ -7,6 +7,7 @@ import { TarotCard } from '@/components/cards';
 import { useTarotReading, useCards, useSaveReading, useAuth, useAnalytics } from '@/lib/hooks';
 import { SUIT_NAMES } from '@/types/card';
 import { generateDetailedPrediction } from '@/lib/tarot/cardMeanings';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 // Position labels สำหรับ Career Spread
 const POSITION_LABELS = {
@@ -132,19 +133,7 @@ export default function CareerReadingPage() {
 
   // Loading auth
   if (isAuthLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-emerald-950/20 to-slate-900 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-pulse mb-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-emerald-500/50 to-teal-500/50 rounded-full flex items-center justify-center">
-              <span className="text-5xl">💼</span>
-            </div>
-          </div>
-          <h2 className="text-xl font-bold text-emerald-300 mb-2">กำลังตรวจสอบ...</h2>
-          <p className="text-slate-400">รอสักครู่</p>
-        </div>
-      </div>
-    );
+    return <PageLoader message="กำลังตรวจสอบ..." />;
   }
 
   // Not authenticated - show login gate
@@ -178,19 +167,7 @@ export default function CareerReadingPage() {
 
   // Loading cards from database
   if (isLoadingCards) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-emerald-950/20 to-slate-900 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-pulse mb-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-emerald-500/50 to-teal-500/50 rounded-full flex items-center justify-center">
-              <span className="text-5xl">🃏</span>
-            </div>
-          </div>
-          <h2 className="text-xl font-bold text-emerald-300 mb-2">กำลังโหลดไพ่...</h2>
-          <p className="text-slate-400">รอสักครู่</p>
-        </div>
-      </div>
-    );
+    return <PageLoader message="กำลังโหลดไพ่..." />;
   }
 
   // Idle state - Show question input and start button
@@ -614,3 +591,5 @@ function generateCareerGuidance(drawnCards: { card: { nameTh: string }; isRevers
     return `มีทั้งไพ่ตั้งตรงและกลับหัว แสดงถึงความสมดุลระหว่างโอกาสและความท้าทาย ควรใช้ความระมัดระวังในการตัดสินใจ พร้อมกับเปิดรับโอกาสที่เข้ามา การวางแผนอย่างรอบคอบและการปรับตัวตามสถานการณ์จะเป็นกุญแจสำคัญสู่ความสำเร็จ อย่าลืมพัฒนาทักษะและสร้างความสัมพันธ์ที่ดีกับเพื่อนร่วมงาน`;
   }
 }
+
+

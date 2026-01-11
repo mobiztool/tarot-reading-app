@@ -228,3 +228,5 @@ export const PENTACLES: Record<string, CardDetailedMeanings> = {
     },
   },
 };
+
+

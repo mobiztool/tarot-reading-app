@@ -308,3 +308,4 @@ export function createMockDeck(): TarotCardData[] {
 
   return deck;
 }
+

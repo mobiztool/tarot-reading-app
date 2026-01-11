@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { TarotCard } from '@/components/cards';
 import { Header } from '@/components/layout/Header';
 import { useAuth, useAnalytics } from '@/lib/hooks';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 interface ReadingCard {
   position: number;
@@ -337,9 +338,7 @@ export default function HistoryPage() {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center">
-          <div className="animate-spin text-4xl">🔮</div>
-        </div>
+        <PageLoader message="กำลังโหลด..." />
       </>
     );
   }

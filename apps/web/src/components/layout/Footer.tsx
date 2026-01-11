@@ -35,7 +35,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/guide"
+                  href="/cards"
                   className="text-slate-400 hover:text-purple-light transition-colors text-sm"
                 >
                   คู่มือไพ่ยิปซี

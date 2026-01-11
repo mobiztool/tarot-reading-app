@@ -68,7 +68,7 @@ export default function BlogPage() {
                 {/* Post Image Placeholder */}
                 <div className="aspect-video bg-gradient-to-br from-purple-900/50 to-indigo-900/50 relative overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-6xl">🂴</span>
+                    <span className="text-6xl">🎴</span>
                   </div>
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 bg-purple-600/80 text-white text-xs rounded-full">
@@ -133,3 +133,4 @@ export default function BlogPage() {
     </>
   );
 }
+

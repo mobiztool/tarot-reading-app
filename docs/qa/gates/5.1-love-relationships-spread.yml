@@ -1,0 +1,58 @@
+# Quality Gate Decision
+# Story 5.1: Love & Relationships Spread
+
+gate:
+  story_id: "5.1"
+  story_name: "Love & Relationships Spread"
+  epic: "Epic 5: Login Tier Spreads (Phase 2)"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+  details:
+    - ac: "AC1: /reading/love route (login-required)"
+      status: PENDING
+    - ac: "AC2: 3 positions (You, Other, Energy)"
+      status: PENDING
+    - ac: "AC3: Position-specific interpretations"
+      status: PENDING
+    - ac: "AC4: Love question examples"
+      status: PENDING
+    - ac: "AC5: 3 cards with Thai labels"
+      status: PENDING
+    - ac: "AC6: Relationship analysis"
+      status: PENDING
+    - ac: "AC7: Advice section"
+      status: PENDING
+    - ac: "AC8: reading_type: love_relationships"
+      status: PENDING
+    - ac: "AC9: Auth redirect"
+      status: PENDING
+    - ac: "AC10: Analytics"
+      status: PENDING
+    - ac: "AC11: Mobile responsive"
+      status: PENDING
+    - ac: "AC12: Performance"
+      status: PENDING
+
+risk_level: MEDIUM
+priority: P1
+
+test_design:
+  document: "docs/qa/epic5-test-design.md"
+  scenarios: "TS-5.1.1 through TS-5.1.5"
+
+dependencies:
+  - "Epic 2: Authentication"
+  - "Story 5.4: Access Control"
+  - "Story 5.6: Content Creation"
+

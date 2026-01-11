@@ -25,7 +25,7 @@ export default function CardDemoPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-300 to-amber-300 mb-4">
-            🂴 Card Component Demo
+            🎴 Card Component Demo
           </h1>
           <p className="text-slate-400 text-lg">คลิกที่ไพ่เพื่อพลิกดู • Click cards to flip them</p>
         </div>
@@ -163,3 +163,4 @@ export default function CardDemoPage() {
     </div>
   );
 }
+

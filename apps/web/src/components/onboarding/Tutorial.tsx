@@ -17,7 +17,7 @@ const TUTORIAL_STEPS: TutorialStepData[] = [
     id: 'choose-type',
     title: 'เลือกรูปแบบการดูดวง',
     description: 'เลือกระหว่าง "ดูดวงประจำวัน" สำหรับคำแนะนำรายวัน หรือ "ไพ่ 3 ใบ" สำหรับดูอดีต ปัจจุบัน อนาคต',
-    emoji: '🃏',
+    emoji: '🎴',
     position: 'center',
   },
   {

@@ -13,6 +13,12 @@ export const config = {
   // Error Tracking
   sentryDsn: process.env.NEXT_PUBLIC_SENTRY_DSN || '',
 
+  // Stripe Payment Gateway
+  stripePublishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY || '',
+  stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
+  stripeApiVersion: process.env.STRIPE_API_VERSION || '2023-10-16',
+
   // Environment
   nodeEnv: process.env.NODE_ENV || 'development',
   isProduction: process.env.NODE_ENV === 'production',

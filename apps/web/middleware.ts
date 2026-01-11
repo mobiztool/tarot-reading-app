@@ -17,3 +17,4 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|cards|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
+

@@ -4,13 +4,13 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useAnalytics } from '@/lib/hooks/useAnalytics';
 import {
-  SpreadConfig,
+  type SpreadInfo,
   getUpgradeBenefits,
   getUpgradeMessage,
 } from '@/lib/access-control';
 
 interface LoginGateProps {
-  spread: SpreadConfig;
+  spread: SpreadInfo;
   redirectTo?: string;
 }
 
@@ -170,4 +170,3 @@ export function LoginGate({ spread, redirectTo }: LoginGateProps) {
 }
 
 export default LoginGate;
-

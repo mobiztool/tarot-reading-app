@@ -1,0 +1,50 @@
+# Quality Gate Decision
+# Story 2.5: Database Schema for Users & Readings Association
+
+gate:
+  story_id: "2.5"
+  story_name: "Database Schema for Users & Readings"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 10
+  passed: 0
+  failed: 0
+  pending: 10
+  details:
+    - ac: "AC1: Users table schema"
+      status: PENDING
+    - ac: "AC2: Readings table user_id"
+      status: PENDING
+    - ac: "AC3: Database migration"
+      status: PENDING
+    - ac: "AC4: Prisma schema updated"
+      status: PENDING
+    - ac: "AC5: RLS policies"
+      status: PENDING
+    - ac: "AC6: Index on user_id"
+      status: PENDING
+    - ac: "AC7: Cascade delete"
+      status: PENDING
+    - ac: "AC8: Anonymous readings"
+      status: PENDING
+    - ac: "AC9: Reading claiming"
+      status: PENDING
+    - ac: "AC10: Queries tested"
+      status: PENDING
+
+risk_level: HIGH
+priority: P0
+security_critical: true
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.5.1 through TS-2.5.10"
+

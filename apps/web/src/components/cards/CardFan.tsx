@@ -187,6 +187,7 @@ export function CardFan({
                   sizes={`${pos.cardWidth}px`}
                   className="object-cover"
                   priority={index < 12}
+                  unoptimized={backImage.endsWith('.svg')}
                 />
 
                 {/* Hover Glow Overlay */}
@@ -272,6 +273,7 @@ export function CardDeck({ isShuffling = false }: { isShuffling?: boolean }) {
             fill
             sizes="128px"
             className="object-cover"
+            unoptimized={backImage.endsWith('.svg')}
           />
         </div>
       ))}

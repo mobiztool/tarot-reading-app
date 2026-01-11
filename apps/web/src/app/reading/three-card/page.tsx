@@ -6,6 +6,7 @@ import { TarotCard, CardFan } from '@/components/cards';
 import { useTarotReading, useCards, useSaveReading } from '@/lib/hooks';
 import { SUIT_NAMES } from '@/types/card';
 import { generateDetailedPrediction } from '@/lib/tarot/cardMeanings';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 const POSITION_LABELS = {
   past: { th: 'อดีต', en: 'Past', emoji: '⏪', color: 'from-blue-500 to-indigo-600' },
@@ -109,19 +110,7 @@ export default function ThreeCardReadingPage() {
 
   // Loading cards from database
   if (isLoadingCards) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-pulse mb-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple-500/50 to-amber-500/50 rounded-full flex items-center justify-center">
-              <span className="text-5xl">🃏</span>
-            </div>
-          </div>
-          <h2 className="text-xl font-bold text-purple-300 mb-2">กำลังโหลดไพ่...</h2>
-          <p className="text-slate-400">รอสักครู่</p>
-        </div>
-      </div>
-    );
+    return <PageLoader message="กำลังโหลดไพ่..." />;
   }
 
   // Selection mode - Show CardFan for 3 card selection (CHECK THIS BEFORE idle)

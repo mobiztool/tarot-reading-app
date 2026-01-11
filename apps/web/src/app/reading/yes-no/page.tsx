@@ -16,6 +16,7 @@ import {
   ConfidenceLevel,
   drawYesNoCard,
 } from '@/lib/tarot/yesNoInterpretation';
+import { PageLoader } from '@/components/ui/MysticalLoader';
 
 // Example questions
 const EXAMPLE_QUESTIONS = [
@@ -159,11 +160,7 @@ export default function YesNoSpreadPage() {
 
   // Loading state
   if (authLoading || cardsLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-950 via-indigo-900 to-slate-900">
-        <div className="animate-pulse text-violet-300">กำลังโหลด...</div>
-      </div>
-    );
+    return <PageLoader message="กำลังโหลด..." />;
   }
 
   // Get confidence bar width
@@ -480,3 +477,4 @@ export default function YesNoSpreadPage() {
     </main>
   );
 }
+
