@@ -4,14 +4,19 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { TarotCard, CardFan } from '@/components/cards';
 import { useTarotReading, useCards, useSaveReading, useAuth } from '@/lib/hooks';
-import { SUIT_NAMES, PositionLabel } from '@/types/card';
+import { SUIT_NAMES } from '@/types/card';
 import { generateDetailedPrediction } from '@/lib/tarot/cardMeanings';
 import { PageLoader } from '@/components/ui/MysticalLoader';
 import { PremiumGate } from '@/components/gates';
 import { canAccessSpread, SPREAD_INFO } from '@/lib/access-control/spreads';
 
+// Celtic Cross specific position type
+type CelticCrossPosition = 
+  | 'cc_present' | 'cc_challenge' | 'cc_past' | 'cc_future' | 'cc_above'
+  | 'cc_below' | 'cc_advice' | 'cc_external' | 'cc_hopes_fears' | 'cc_outcome';
+
 // Celtic Cross 10 Position Labels
-const CELTIC_CROSS_POSITIONS: PositionLabel[] = [
+const CELTIC_CROSS_POSITIONS: CelticCrossPosition[] = [
   'cc_present',
   'cc_challenge',
   'cc_past',
@@ -24,7 +29,7 @@ const CELTIC_CROSS_POSITIONS: PositionLabel[] = [
   'cc_outcome',
 ];
 
-const POSITION_LABELS = {
+const POSITION_LABELS: Record<CelticCrossPosition, { th: string; en: string; emoji: string; color: string; shortTh: string }> = {
   cc_present: { th: 'สถานการณ์ปัจจุบัน', en: 'Present Situation', emoji: '⏺️', color: 'from-purple-500 to-pink-600', shortTh: 'ปัจจุบัน' },
   cc_challenge: { th: 'อุปสรรค/ความท้าทาย', en: 'Challenge', emoji: '⚔️', color: 'from-red-500 to-orange-600', shortTh: 'อุปสรรค' },
   cc_past: { th: 'รากฐาน/อดีต', en: 'Foundation/Past', emoji: '⏪', color: 'from-blue-500 to-indigo-600', shortTh: 'อดีต' },
