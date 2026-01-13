@@ -1,74 +1,132 @@
-# Quality Gate Decision
-# Story 6.2: Subscription Management System
+# Quality Gate Decision: Story 6.2 - Subscription Management System
+# Powered by BMAD™ Core - Quinn (Test Architect)
 
-gate:
-  story_id: "6.2"
-  story_name: "Subscription Management System"
-  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+schema: 1
+story: "6.2"
+story_title: "Subscription Management System"
+gate: "CONCERNS"
+status_reason: "Well-structured subscription system with good business logic, but ZERO test coverage on critical tier access control and quota management. Must add tests before production."
+reviewer: "Quinn (Test Architect)"
+updated: "2026-01-13T11:00:00Z"
 
-decision:
-  status: PENDING
-  date: "2026-01-13"
-  reviewer: "Quinn (QA Lead)"
-  confidence: 0
-  notes: "Awaiting implementation verification"
+top_issues:
+  - id: "TEST-004"
+    severity: high
+    finding: "No unit tests for subscription helpers - business logic untested (0% coverage)"
+    suggested_action: "Add unit tests for getUserTier, canUserAccessSpread, getRemainingReadingsToday, isInGracePeriod"
+    suggested_owner: dev
+    
+  - id: "TEST-005"
+    severity: high
+    finding: "No integration tests for subscription API routes"
+    suggested_action: "Add integration tests for GET/POST /api/subscriptions with auth and error scenarios"
+    suggested_owner: dev
+    
+  - id: "TEST-006"
+    severity: high
+    finding: "No tests for webhook subscription sync handlers"
+    suggested_action: "Add integration tests for subscription.created/updated/deleted webhook events"
+    suggested_owner: dev
+    
+  - id: "IMPL-002"
+    severity: medium
+    finding: "Pending manual tasks - Stripe products not created yet"
+    suggested_action: "Create Stripe products (Basic ฿99, Pro ฿199, VIP ฿399) and add price IDs to env"
+    suggested_owner: dev
 
-acceptance_criteria:
-  total: 12
-  passed: 0
-  failed: 0
-  pending: 12
-  details:
-    - ac: "AC1: Subscriptions table created"
-      status: PENDING
-      priority: P0
-    - ac: "AC2: Tiers defined (Basic ฿99, Pro ฿199, VIP ฿399)"
-      status: PENDING
-      priority: P0
-    - ac: "AC3: Create subscription via Stripe API"
-      status: PENDING
-      priority: P0
-    - ac: "AC4: Cancel subscription (immediate/end of period)"
-      status: PENDING
-      priority: P1
-    - ac: "AC5: Pause subscription"
-      status: PENDING
-      priority: P2
-    - ac: "AC6: Resume paused subscription"
-      status: PENDING
-      priority: P2
-    - ac: "AC7: Status tracked (active, canceled, past_due, paused, trialing)"
-      status: PENDING
-      priority: P0
-    - ac: "AC8: Webhook handling syncs to database"
-      status: PENDING
-      priority: P0
-    - ac: "AC9: Database always in sync with Stripe"
-      status: PENDING
-      priority: P0
-    - ac: "AC10: Profile displays tier, status, next billing"
-      status: PENDING
-      priority: P1
-    - ac: "AC11: Subscription history viewable"
-      status: PENDING
-      priority: P2
-    - ac: "AC12: Grace period after cancellation"
-      status: PENDING
-      priority: P1
+waiver: { active: false }
 
-risk_level: HIGH
-priority: P0
+risk_summary:
+  totals:
+    critical: 0
+    high: 3
+    medium: 1
+    low: 0
+  highest:
+    risk: "Untested tier access control and quota logic"
+    score: 8
+    impact: "Users could access premium features without paying, or be blocked incorrectly"
+    probability: "Medium-High - complex business logic without validation"
+  recommendations:
+    must_fix:
+      - "Add unit tests for helpers.ts (>90% coverage)"
+      - "Add unit tests for tiers.ts (100% coverage)"
+      - "Add integration tests for subscription API"
+      - "Add integration tests for webhook sync"
+    monitor:
+      - "Grace period access logic"
+      - "Trial period functionality"
+      - "Subscription lifecycle edge cases"
 
-test_design:
-  document: "docs/qa/epic6-test-design.md"
-  scenarios: "TS-6.2.1 through TS-6.2.4"
+quality_score: 70
+# 100 - (3 high × 10) - (1 medium × 5) = 65, +5 for good code quality
 
-dependencies:
-  - "Story 6.1: Stripe Integration"
+expires: "2026-01-27T00:00:00Z"
 
-blocking_issues: []
+evidence:
+  tests_reviewed: 0
+  tests_required: 20
+  risks_identified: 4
+  code_files_reviewed: 5
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]  # Code implemented
+    ac_gaps: []  # All ACs implemented, but not tested
 
-bugs:
-  p0: 0
-  p1: 0
-  p2: 0
+nfr_validation:
+  security:
+    status: PASS
+    notes: "Proper authentication, authorization checks. User isolation enforced."
+    
+  performance:
+    status: PASS
+    notes: "Efficient queries with indexes. Lazy loading pattern used."
+    
+  reliability:
+    status: CONCERNS
+    notes: "Good error handling, but no tests to validate reliability under various scenarios."
+    
+  maintainability:
+    status: PASS
+    notes: "Clean code, well-organized, good separation of concerns."
+
+recommendations:
+  immediate:
+    - action: "Add unit tests for lib/subscription/helpers.ts"
+      refs: ["src/lib/subscription/helpers.ts"]
+      priority: "P0"
+      
+    - action: "Add unit tests for lib/subscription/tiers.ts"
+      refs: ["src/lib/subscription/tiers.ts"]
+      priority: "P0"
+      
+    - action: "Add integration tests for subscription API"
+      refs: ["src/app/api/subscriptions/route.ts"]
+      priority: "P0"
+      
+    - action: "Add integration tests for webhook subscription sync"
+      refs: ["src/app/api/webhooks/stripe/route.ts"]
+      priority: "P0"
+      
+  future:
+    - action: "Create Stripe products and add price IDs to environment"
+      refs: ["Stripe Dashboard"]
+      priority: "P1"
+      
+    - action: "Add E2E tests for subscription flow"
+      refs: ["tests/e2e/subscription-flow.spec.ts"]
+      priority: "P1"
+      
+    - action: "Add monitoring for subscription sync failures"
+      refs: ["DevOps"]
+      priority: "P2"
+
+compliance:
+  coding_standards: PASS
+  project_structure: PASS
+  testing_strategy: FAIL
+  documentation: PASS
+
+history:
+  - at: "2026-01-13T11:00:00Z"
+    gate: CONCERNS
+    note: "Good implementation but zero test coverage on business-critical subscription logic."

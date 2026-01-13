@@ -23,7 +23,14 @@ export interface TarotCardData {
   symbolism?: string;
 }
 
-export type PositionLabel = 'past' | 'present' | 'future' | 'you' | 'other' | 'relationship_energy' | 'current_situation' | 'challenge_opportunity' | 'outcome';
+export type PositionLabel = 
+  | 'past' | 'present' | 'future' 
+  | 'you' | 'other' | 'relationship_energy' 
+  | 'current_situation' | 'challenge_opportunity' | 'outcome'
+  // Celtic Cross positions (10 cards)
+  | 'cc_present' | 'cc_challenge' | 'cc_past' | 'cc_future' 
+  | 'cc_above' | 'cc_below' | 'cc_advice' | 'cc_external' 
+  | 'cc_hopes_fears' | 'cc_outcome';
 
 export interface DrawnCard {
   card: TarotCardData;

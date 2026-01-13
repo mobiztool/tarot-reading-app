@@ -126,6 +126,7 @@ enum ReadingType {
   love_relationships
   career_money
   yes_no
+  celtic_cross
 }
 
 // ============================================================================
@@ -160,6 +161,17 @@ enum PositionLabel {
   challenge_opportunity
   outcome
   yes_no_answer
+  // Celtic Cross positions (10 cards)
+  cc_present
+  cc_challenge
+  cc_past
+  cc_future
+  cc_above
+  cc_below
+  cc_advice
+  cc_external
+  cc_hopes_fears
+  cc_outcome
 }
 
 // ============================================================================

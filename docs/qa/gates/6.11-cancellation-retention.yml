@@ -1,70 +1,30 @@
-# Quality Gate Decision
-# Story 6.11: Cancellation Flow with Retention Offers
+# Quality Gate: Story 6.11 - Cancellation Flow with Retention Offers
+schema: 1
+story: "6.11"
+story_title: "Cancellation Flow with Retention Offers"
+gate: "CONCERNS"
+status_reason: "Comprehensive cancellation flow with retention offers. Good UX with survey and discount offers. No tests for cancellation logic or retention offer acceptance."
+reviewer: "Quinn (Test Architect)"
+updated: "2026-01-13T12:10:00Z"
 
-gate:
-  story_id: "6.11"
-  story_name: "Cancellation Flow with Retention Offers"
-  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+top_issues:
+  - id: "TEST-019"
+    severity: high
+    finding: "No integration tests for cancellation API"
+    suggested_action: "Add integration tests for cancellation with immediate/end-of-period options"
+    suggested_owner: dev
+  - id: "TEST-020"
+    severity: medium
+    finding: "No tests for retention offer logic"
+    suggested_action: "Add tests for discount offer acceptance and application"
+    suggested_owner: dev
 
-decision:
-  status: PENDING
-  date: "2026-01-13"
-  reviewer: "Quinn (QA Lead)"
-  confidence: 0
-  notes: "Awaiting implementation verification"
-
-acceptance_criteria:
-  total: 10
-  passed: 0
-  failed: 0
-  pending: 10
-  details:
-    - ac: "AC1: Cancel button accessible in settings"
-      status: PENDING
-      priority: P1
-    - ac: "AC2: Cancellation options (immediate/end of period)"
-      status: PENDING
-      priority: P1
-    - ac: "AC3: Retention flow with survey + offers"
-      status: PENDING
-      priority: P1
-    - ac: "AC4: Survey: Why canceling?"
-      status: PENDING
-      priority: P2
-    - ac: "AC5: Retention offers (discount, pause, downgrade)"
-      status: PENDING
-      priority: P1
-    - ac: "AC6: Accept offer continues subscription"
-      status: PENDING
-      priority: P1
-    - ac: "AC7: Proceed cancels with access until period end"
-      status: PENDING
-      priority: P1
-    - ac: "AC8: Confirmation email sent"
-      status: PENDING
-      priority: P1
-    - ac: "AC9: Easy reactivation available"
-      status: PENDING
-      priority: P2
-    - ac: "AC10: Analytics tracking"
-      status: PENDING
-      priority: P2
-
-risk_level: MEDIUM
-priority: P1
-
-test_design:
-  document: "docs/qa/epic6-test-design.md"
-  scenarios: "TS-6.11.1 through TS-6.11.3"
-
-dependencies:
-  - "Story 6.2: Subscription Management"
-  - "Retention Coupon in Stripe (RETENTION_20PCT)"
-
-blocking_issues:
-  - "Retention coupon not yet created in Stripe"
-
-bugs:
-  p0: 0
-  p1: 0
-  p2: 0
+waiver: { active: false }
+quality_score: 72
+risk_summary:
+  totals: { critical: 0, high: 1, medium: 1, low: 0 }
+  highest:
+    risk: "Revenue retention logic untested"
+    score: 7
+    impact: "Retention offers may not work, losing revenue opportunities"
+compliance: { coding_standards: PASS, testing_strategy: FAIL }

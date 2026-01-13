@@ -385,6 +385,412 @@ export const YES_NO_POSITION: YesNoPositionContext = {
 };
 
 // =============================================================================
+// CELTIC CROSS SPREAD POSITIONS (10 Cards)
+// =============================================================================
+
+export const CELTIC_CROSS_POSITIONS: Record<string, PositionContext> = {
+  cc_present: {
+    id: 'cc_present',
+    name: 'Present Situation',
+    nameTh: 'สถานการณ์ปัจจุบัน',
+    description: 'The central card representing your current state, the heart of the matter',
+    descriptionTh: 'ไพ่กลางที่แสดงสถานะปัจจุบันของคุณ หัวใจของเรื่อง',
+    focusAreas: [
+      'Your current circumstances',
+      'The core issue',
+      'Present energy',
+      'Where you stand now',
+      'The main theme',
+    ],
+    focusAreasTh: [
+      'สถานการณ์ปัจจุบันของคุณ',
+      'ประเด็นหลัก',
+      'พลังงานปัจจุบัน',
+      'ตำแหน่งที่คุณยืนอยู่ตอนนี้',
+      'ธีมหลัก',
+    ],
+    interpretationGuide:
+      'This is the central significator showing exactly where you are. ' +
+      'It sets the tone for the entire reading. ' +
+      'All other cards relate back to this central theme.',
+    interpretationGuideTh:
+      'นี่คือไพ่กลางที่แสดงตำแหน่งที่คุณอยู่อย่างแม่นยำ ' +
+      'มันตั้งโทนสำหรับการอ่านทั้งหมด ' +
+      'ไพ่อื่นๆ ทั้งหมดเชื่อมโยงกลับมาที่ธีมกลางนี้',
+    exampleQuestions: [
+      'What is my current situation?',
+      'What is the core of this matter?',
+      'What energy surrounds me now?',
+    ],
+    exampleQuestionsTh: [
+      'สถานการณ์ปัจจุบันของฉันคืออะไร?',
+      'แก่นของเรื่องนี้คืออะไร?',
+      'พลังงานอะไรล้อมรอบฉันตอนนี้?',
+    ],
+  },
+
+  cc_challenge: {
+    id: 'cc_challenge',
+    name: 'Challenge/Crossing',
+    nameTh: 'อุปสรรค/ความท้าทาย',
+    description: 'The immediate obstacle or challenge you face, crossing your path',
+    descriptionTh: 'อุปสรรคเฉพาะหน้าหรือความท้าทายที่คุณเผชิญ ขวางเส้นทางของคุณ',
+    focusAreas: [
+      'Main obstacle',
+      'What blocks you',
+      'Conflicts or tensions',
+      'Internal struggles',
+      'External challenges',
+    ],
+    focusAreasTh: [
+      'อุปสรรคหลัก',
+      'สิ่งที่ขวางกั้นคุณ',
+      'ความขัดแย้งหรือความตึงเครียด',
+      'การต่อสู้ภายใน',
+      'ความท้าทายภายนอก',
+    ],
+    interpretationGuide:
+      'This card crosses the present situation, showing what opposes you. ' +
+      'Even positive cards here indicate something to overcome. ' +
+      'It may also reveal hidden strengths through adversity.',
+    interpretationGuideTh:
+      'ไพ่นี้ขวางสถานการณ์ปัจจุบัน แสดงสิ่งที่ต่อต้านคุณ ' +
+      'แม้ไพ่เชิงบวกที่นี่ก็บ่งบอกสิ่งที่ต้องข้ามผ่าน ' +
+      'อาจเผยจุดแข็งที่ซ่อนอยู่ผ่านความทุกข์ยาก',
+    exampleQuestions: [
+      'What is blocking my progress?',
+      'What challenge must I face?',
+      'What opposition am I dealing with?',
+    ],
+    exampleQuestionsTh: [
+      'อะไรขวางกั้นความก้าวหน้าของฉัน?',
+      'ความท้าทายอะไรที่ฉันต้องเผชิญ?',
+      'ฉันกำลังรับมือกับการต่อต้านอะไร?',
+    ],
+  },
+
+  cc_past: {
+    id: 'cc_past',
+    name: 'Foundation/Past',
+    nameTh: 'รากฐาน/อดีต',
+    description: 'The foundation of the situation, recent past events that led here',
+    descriptionTh: 'รากฐานของสถานการณ์ เหตุการณ์ในอดีตที่นำมาสู่ปัจจุบัน',
+    focusAreas: [
+      'Past influences',
+      'Root causes',
+      'How you got here',
+      'Past patterns',
+      'Foundation of current situation',
+    ],
+    focusAreasTh: [
+      'อิทธิพลจากอดีต',
+      'สาเหตุที่แท้จริง',
+      'คุณมาถึงจุดนี้ได้อย่างไร',
+      'รูปแบบจากอดีต',
+      'รากฐานของสถานการณ์ปัจจุบัน',
+    ],
+    interpretationGuide:
+      'This position reveals the foundation upon which everything rests. ' +
+      'It shows past events or patterns still influencing today. ' +
+      'Understanding this helps explain the present.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้เผยรากฐานที่ทุกอย่างตั้งอยู่ ' +
+      'แสดงเหตุการณ์หรือรูปแบบในอดีตที่ยังคงมีอิทธิพลต่อวันนี้ ' +
+      'การเข้าใจสิ่งนี้ช่วยอธิบายปัจจุบัน',
+    exampleQuestions: [
+      'What from my past affects this?',
+      'What patterns am I repeating?',
+      'How did this situation develop?',
+    ],
+    exampleQuestionsTh: [
+      'อะไรจากอดีตของฉันส่งผลต่อสิ่งนี้?',
+      'ฉันกำลังทำซ้ำรูปแบบอะไร?',
+      'สถานการณ์นี้พัฒนามาอย่างไร?',
+    ],
+  },
+
+  cc_future: {
+    id: 'cc_future',
+    name: 'Near Future',
+    nameTh: 'อนาคตอันใกล้',
+    description: 'What is coming in the near future, the next phase of this journey',
+    descriptionTh: 'สิ่งที่กำลังจะมาในอนาคตอันใกล้ ระยะถัดไปของการเดินทางนี้',
+    focusAreas: [
+      'Upcoming events',
+      'Short-term developments',
+      'What to expect soon',
+      'Immediate trajectory',
+      'Near-future energy',
+    ],
+    focusAreasTh: [
+      'เหตุการณ์ที่จะมาถึง',
+      'พัฒนาการระยะสั้น',
+      'สิ่งที่ควรคาดหวังในเร็วๆ นี้',
+      'ทิศทางเฉพาะหน้า',
+      'พลังงานอนาคตอันใกล้',
+    ],
+    interpretationGuide:
+      'This card shows what is likely to happen soon. ' +
+      'It represents the next phase, usually within weeks to months. ' +
+      'This energy is approaching and can still be influenced.',
+    interpretationGuideTh:
+      'ไพ่นี้แสดงสิ่งที่น่าจะเกิดขึ้นเร็วๆ นี้ ' +
+      'แสดงระยะถัดไป โดยปกติภายในสัปดาห์ถึงเดือน ' +
+      'พลังงานนี้กำลังเข้ามาและยังสามารถเปลี่ยนแปลงได้',
+    exampleQuestions: [
+      'What is coming my way?',
+      'What should I expect soon?',
+      'What is the next phase?',
+    ],
+    exampleQuestionsTh: [
+      'อะไรกำลังจะมาหาฉัน?',
+      'ควรคาดหวังอะไรในเร็วๆ นี้?',
+      'ระยะถัดไปคืออะไร?',
+    ],
+  },
+
+  cc_above: {
+    id: 'cc_above',
+    name: 'Goals/Aspirations',
+    nameTh: 'เป้าหมาย/ความปรารถนา',
+    description: 'Your conscious goals, what you are striving for, your best possible outcome',
+    descriptionTh: 'เป้าหมายที่รู้ตัว สิ่งที่คุณมุ่งมั่น ผลลัพธ์ที่ดีที่สุดที่เป็นไปได้',
+    focusAreas: [
+      'Conscious goals',
+      'What you want',
+      'Ideal outcome',
+      'Your aspirations',
+      'Best-case scenario',
+    ],
+    focusAreasTh: [
+      'เป้าหมายที่รู้ตัว',
+      'สิ่งที่คุณต้องการ',
+      'ผลลัพธ์ในอุดมคติ',
+      'ความปรารถนาของคุณ',
+      'สถานการณ์ที่ดีที่สุด',
+    ],
+    interpretationGuide:
+      'This position crowns the reading, showing your highest aspirations. ' +
+      'It reveals what you are consciously working toward. ' +
+      'Compare this with the outcome to see if your goals align with destiny.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้ครอบการอ่าน แสดงความปรารถนาสูงสุดของคุณ ' +
+      'เผยให้เห็นสิ่งที่คุณกำลังทำงานอย่างมีสติ ' +
+      'เปรียบเทียบกับผลลัพธ์เพื่อดูว่าเป้าหมายสอดคล้องกับโชคชะตาหรือไม่',
+    exampleQuestions: [
+      'What am I truly striving for?',
+      'What is my best possible outcome?',
+      'What do I consciously want?',
+    ],
+    exampleQuestionsTh: [
+      'ฉันกำลังมุ่งมั่นเพื่ออะไรจริงๆ?',
+      'ผลลัพธ์ที่ดีที่สุดของฉันคืออะไร?',
+      'ฉันต้องการอะไรอย่างมีสติ?',
+    ],
+  },
+
+  cc_below: {
+    id: 'cc_below',
+    name: 'Subconscious',
+    nameTh: 'จิตใต้สำนึก',
+    description: 'Your subconscious influences, hidden factors, underlying feelings',
+    descriptionTh: 'อิทธิพลจิตใต้สำนึก ปัจจัยที่ซ่อนอยู่ ความรู้สึกที่ซ่อนเร้น',
+    focusAreas: [
+      'Hidden influences',
+      'Subconscious patterns',
+      'Underlying feelings',
+      'Deep desires',
+      'What you are not aware of',
+    ],
+    focusAreasTh: [
+      'อิทธิพลที่ซ่อนอยู่',
+      'รูปแบบจิตใต้สำนึก',
+      'ความรู้สึกที่ซ่อนเร้น',
+      'ความปรารถนาลึกๆ',
+      'สิ่งที่คุณไม่รู้ตัว',
+    ],
+    interpretationGuide:
+      'This position reveals what lies beneath the surface. ' +
+      'It shows subconscious drives and hidden influences. ' +
+      'This may reveal what you truly want or fear.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้เผยสิ่งที่อยู่ใต้พื้นผิว ' +
+      'แสดงแรงขับจิตใต้สำนึกและอิทธิพลที่ซ่อนอยู่ ' +
+      'อาจเผยสิ่งที่คุณต้องการหรือกลัวจริงๆ',
+    exampleQuestions: [
+      'What am I not seeing?',
+      'What subconscious patterns affect me?',
+      'What do I truly feel inside?',
+    ],
+    exampleQuestionsTh: [
+      'อะไรที่ฉันไม่เห็น?',
+      'รูปแบบจิตใต้สำนึกอะไรส่งผลต่อฉัน?',
+      'ฉันรู้สึกอะไรจริงๆ ภายใน?',
+    ],
+  },
+
+  cc_advice: {
+    id: 'cc_advice',
+    name: 'Advice',
+    nameTh: 'คำแนะนำ',
+    description: 'The guidance and advice for handling this situation',
+    descriptionTh: 'คำแนะนำและแนวทางในการจัดการสถานการณ์นี้',
+    focusAreas: [
+      'Recommended approach',
+      'What to do',
+      'Attitude to adopt',
+      'Best strategy',
+      'How to proceed',
+    ],
+    focusAreasTh: [
+      'แนวทางที่แนะนำ',
+      'ควรทำอะไร',
+      'ทัศนคติที่ควรมี',
+      'กลยุทธ์ที่ดีที่สุด',
+      'ดำเนินการอย่างไร',
+    ],
+    interpretationGuide:
+      'This card offers direct guidance on how to approach the situation. ' +
+      'It suggests the attitude or action most helpful now. ' +
+      'Consider this the wisdom of the cards speaking to you.',
+    interpretationGuideTh:
+      'ไพ่นี้ให้คำแนะนำโดยตรงเกี่ยวกับวิธีจัดการสถานการณ์ ' +
+      'แนะนำทัศนคติหรือการกระทำที่เป็นประโยชน์มากที่สุดตอนนี้ ' +
+      'ถือว่านี่คือปัญญาของไพ่ที่พูดกับคุณ',
+    exampleQuestions: [
+      'What should I do?',
+      'How should I approach this?',
+      'What attitude serves me best?',
+    ],
+    exampleQuestionsTh: [
+      'ฉันควรทำอะไร?',
+      'ควรจัดการเรื่องนี้อย่างไร?',
+      'ทัศนคติอะไรที่ดีที่สุดสำหรับฉัน?',
+    ],
+  },
+
+  cc_external: {
+    id: 'cc_external',
+    name: 'External Influences',
+    nameTh: 'อิทธิพลภายนอก',
+    description: 'Outside influences, other people, environment affecting the situation',
+    descriptionTh: 'อิทธิพลภายนอก คนอื่นๆ สภาพแวดล้อมที่ส่งผลต่อสถานการณ์',
+    focusAreas: [
+      'Other people involved',
+      'Environmental factors',
+      'External pressures',
+      'Social influences',
+      'Outside circumstances',
+    ],
+    focusAreasTh: [
+      'คนอื่นที่เกี่ยวข้อง',
+      'ปัจจัยด้านสภาพแวดล้อม',
+      'แรงกดดันภายนอก',
+      'อิทธิพลทางสังคม',
+      'สถานการณ์ภายนอก',
+    ],
+    interpretationGuide:
+      'This position shows external factors beyond your control. ' +
+      'It may represent other people, environment, or circumstances. ' +
+      'Understanding these helps you navigate them.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้แสดงปัจจัยภายนอกที่อยู่นอกเหนือการควบคุมของคุณ ' +
+      'อาจแสดงถึงคนอื่น สภาพแวดล้อม หรือสถานการณ์ ' +
+      'การเข้าใจสิ่งเหล่านี้ช่วยให้คุณนำทางผ่านได้',
+    exampleQuestions: [
+      'How do others affect this?',
+      'What external factors should I know?',
+      'What is the environment like?',
+    ],
+    exampleQuestionsTh: [
+      'คนอื่นส่งผลต่อสิ่งนี้อย่างไร?',
+      'ปัจจัยภายนอกอะไรที่ควรรู้?',
+      'สภาพแวดล้อมเป็นอย่างไร?',
+    ],
+  },
+
+  cc_hopes_fears: {
+    id: 'cc_hopes_fears',
+    name: 'Hopes & Fears',
+    nameTh: 'ความหวังและความกลัว',
+    description: 'Your hopes and fears about the situation, often intertwined',
+    descriptionTh: 'ความหวังและความกลัวของคุณเกี่ยวกับสถานการณ์ มักพันกัน',
+    focusAreas: [
+      'What you hope for',
+      'What you fear',
+      'Inner conflicts',
+      'Dual nature of desire',
+      'Psychological state',
+    ],
+    focusAreasTh: [
+      'สิ่งที่คุณหวัง',
+      'สิ่งที่คุณกลัว',
+      'ความขัดแย้งภายใน',
+      'ธรรมชาติสองด้านของความปรารถนา',
+      'สถานะทางจิตใจ',
+    ],
+    interpretationGuide:
+      'This position reveals the duality of human nature. ' +
+      'Often what we hope for and fear are two sides of the same coin. ' +
+      'A positive card may show hope; challenging card may show fear.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้เผยความเป็นสองด้านของธรรมชาติมนุษย์ ' +
+      'บ่อยครั้งสิ่งที่เราหวังและกลัวเป็นสองด้านของเหรียญเดียวกัน ' +
+      'ไพ่เชิงบวกอาจแสดงความหวัง ไพ่ท้าทายอาจแสดงความกลัว',
+    exampleQuestions: [
+      'What do I hope/fear about this?',
+      'What are my inner conflicts?',
+      'What secretly drives my decisions?',
+    ],
+    exampleQuestionsTh: [
+      'ฉันหวัง/กลัวอะไรเกี่ยวกับสิ่งนี้?',
+      'ความขัดแย้งภายในของฉันคืออะไร?',
+      'อะไรขับเคลื่อนการตัดสินใจของฉันอย่างลับๆ?',
+    ],
+  },
+
+  cc_outcome: {
+    id: 'cc_outcome',
+    name: 'Final Outcome',
+    nameTh: 'ผลลัพธ์สุดท้าย',
+    description: 'The likely final outcome if all energies continue as they are',
+    descriptionTh: 'ผลลัพธ์สุดท้ายที่น่าจะเป็นหากพลังงานทั้งหมดดำเนินต่อไปเช่นนี้',
+    focusAreas: [
+      'Final outcome',
+      'Where this is heading',
+      'Ultimate resolution',
+      'Long-term result',
+      'Destiny potential',
+    ],
+    focusAreasTh: [
+      'ผลลัพธ์สุดท้าย',
+      'สิ่งนี้กำลังมุ่งหน้าไปไหน',
+      'การแก้ไขขั้นสุดท้าย',
+      'ผลลัพธ์ระยะยาว',
+      'ศักยภาพโชคชะตา',
+    ],
+    interpretationGuide:
+      'This is the culmination of all the energies in the reading. ' +
+      'It shows the most probable outcome if things continue. ' +
+      'Remember: the querent can always change the outcome through action.',
+    interpretationGuideTh:
+      'นี่คือจุดสุดยอดของพลังงานทั้งหมดในการอ่าน ' +
+      'แสดงผลลัพธ์ที่น่าจะเป็นที่สุดหากสิ่งต่างๆ ดำเนินต่อไป ' +
+      'จำไว้: ผู้ถามสามารถเปลี่ยนผลลัพธ์ได้เสมอผ่านการกระทำ',
+    exampleQuestions: [
+      'Where is this ultimately heading?',
+      'What is the final outcome?',
+      'How will this resolve?',
+    ],
+    exampleQuestionsTh: [
+      'สิ่งนี้กำลังมุ่งหน้าไปไหนในที่สุด?',
+      'ผลลัพธ์สุดท้ายคืออะไร?',
+      'สิ่งนี้จะคลี่คลายอย่างไร?',
+    ],
+  },
+};
+
+// =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
 
@@ -410,9 +816,16 @@ export function getYesNoPositionContext(): YesNoPositionContext {
 }
 
 /**
+ * Get position context for a Celtic Cross spread position
+ */
+export function getCelticCrossPositionContext(position: string): PositionContext | undefined {
+  return CELTIC_CROSS_POSITIONS[position];
+}
+
+/**
  * Get all position contexts for a spread type
  */
-export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no'): PositionContext[] {
+export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross'): PositionContext[] {
   switch (spreadType) {
     case 'love':
       return Object.values(LOVE_SPREAD_POSITIONS);
@@ -420,6 +833,8 @@ export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no'): Po
       return Object.values(CAREER_SPREAD_POSITIONS);
     case 'yes_no':
       return [YES_NO_POSITION];
+    case 'celtic_cross':
+      return Object.values(CELTIC_CROSS_POSITIONS);
     default:
       return [];
   }
@@ -430,7 +845,7 @@ export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no'): Po
  * Use this to contextualize card meanings based on position
  */
 export function getPositionInterpretationPrefix(
-  spreadType: 'love' | 'career' | 'yes_no',
+  spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross',
   position: string,
   isReversed: boolean
 ): string {
@@ -442,6 +857,8 @@ export function getPositionInterpretationPrefix(
     context = CAREER_SPREAD_POSITIONS[position];
   } else if (spreadType === 'yes_no') {
     context = YES_NO_POSITION;
+  } else if (spreadType === 'celtic_cross') {
+    context = CELTIC_CROSS_POSITIONS[position];
   }
 
   if (!context) return '';

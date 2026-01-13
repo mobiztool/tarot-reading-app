@@ -1,76 +1,161 @@
-# Quality Gate Decision
-# Story 6.1: Stripe Payment Gateway Integration
+# Quality Gate Decision: Story 6.1 - Stripe Payment Gateway Integration
+# Powered by BMAD™ Core - Quinn (Test Architect)
 
-gate:
-  story_id: "6.1"
-  story_name: "Stripe Payment Gateway Integration"
-  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+schema: 1
+story: "6.1"
+story_title: "Stripe Payment Gateway Integration"
+gate: "CONCERNS"
+status_reason: "Solid implementation with excellent code quality, but ZERO test coverage on payment-critical code is unacceptable. Critical path code requires >90% coverage per testing strategy. Manual tasks incomplete."
+reviewer: "Quinn (Test Architect)"
+updated: "2026-01-13T10:30:00Z"
 
-decision:
-  status: PENDING
-  date: "2026-01-13"
-  reviewer: "Quinn (QA Lead)"
-  confidence: 0
-  notes: "Awaiting implementation verification and security audit"
+# Issues identified (severity: low | medium | high)
+top_issues:
+  - id: "TEST-001"
+    severity: high
+    finding: "No unit tests for Stripe customer management (customer.ts) - 0% coverage"
+    suggested_action: "Add comprehensive unit tests with mocked Stripe API calls"
+    suggested_owner: dev
+    
+  - id: "TEST-002"
+    severity: high
+    finding: "No integration tests for webhook handler - critical payment events untested"
+    suggested_action: "Add integration tests for all webhook event handlers with database validation"
+    suggested_owner: dev
+    
+  - id: "TEST-003"
+    severity: high
+    finding: "No E2E tests for payment flows - user-facing payment experience untested"
+    suggested_action: "Add Playwright E2E tests for successful/failed payments, 3DS flow"
+    suggested_owner: dev
+    
+  - id: "IMPL-001"
+    severity: medium
+    finding: "Multiple TODO placeholders for email service integration not implemented"
+    suggested_action: "Implement sendInvoiceEmail() and sendPaymentFailedEmail() or create follow-up story"
+    suggested_owner: dev
+    
+  - id: "AC-001"
+    severity: medium
+    finding: "AC 12 (end-to-end test payment) not verified - marked as user action required"
+    suggested_action: "Complete manual testing with test cards and document results"
+    suggested_owner: dev
+    
+  - id: "SEC-001"
+    severity: medium
+    finding: "No rate limiting on webhook endpoint - vulnerable to abuse"
+    suggested_action: "Add rate limiting middleware (10 req/min per IP)"
+    suggested_owner: dev
 
-acceptance_criteria:
-  total: 12
-  passed: 0
-  failed: 0
-  pending: 12
-  details:
-    - ac: "AC1: Stripe account created (test + production)"
-      status: PENDING
-      priority: P0
-    - ac: "AC2: Stripe SDK installed (@stripe/stripe-js, stripe)"
-      status: PENDING
-      priority: P0
-    - ac: "AC3: API keys in environment variables"
-      status: PENDING
-      priority: P0
-    - ac: "AC4: Webhook endpoint created and verified"
-      status: PENDING
-      priority: P0
-    - ac: "AC5: Test mode functional"
-      status: PENDING
-      priority: P0
-    - ac: "AC6: Payment intents API integrated"
-      status: PENDING
-      priority: P0
-    - ac: "AC7: Customer creation on signup"
-      status: PENDING
-      priority: P1
-    - ac: "AC8: Secret keys never exposed client-side"
-      status: PENDING
-      priority: P0
-    - ac: "AC9: Error handling for payment failures"
-      status: PENDING
-      priority: P1
-    - ac: "AC10: PCI compliance verified"
-      status: PENDING
-      priority: P0
-    - ac: "AC11: Stripe Dashboard configured"
-      status: PENDING
-      priority: P1
-    - ac: "AC12: E2E test payment successful"
-      status: PENDING
-      priority: P0
+waiver: { active: false }
 
-risk_level: HIGH
-priority: P0
-security_critical: true
+# Risk Assessment
+risk_summary:
+  totals:
+    critical: 0
+    high: 3
+    medium: 3
+    low: 0
+  highest:
+    risk: "No automated tests for payment-critical code"
+    score: 9
+    impact: "Payment failures, security vulnerabilities, data corruption undetected"
+    probability: "High - complex integration without validation"
+  recommendations:
+    must_fix:
+      - "Add unit tests for customer.ts (>90% coverage)"
+      - "Add integration tests for webhook handler"
+      - "Add E2E tests for payment flows"
+      - "Complete AC 12 end-to-end payment verification"
+    monitor:
+      - "Webhook event deduplication"
+      - "Email service integration"
+      - "Rate limiting implementation"
 
-test_design:
-  document: "docs/qa/epic6-test-design.md"
-  scenarios: "TS-6.1.1 through TS-6.1.6"
+# Quality Metrics
+quality_score: 65
+# Calculation: 100 - (3 high issues × 10) - (3 medium issues × 5) = 100 - 30 - 15 = 55
+# Adjusted +10 for excellent code quality = 65
 
-dependencies:
-  - "Stripe Account (User Action)"
-  - "Environment Variables Configuration"
+expires: "2026-01-27T00:00:00Z"
 
-blocking_issues: []
+# Evidence from review
+evidence:
+  tests_reviewed: 0
+  tests_required: 15
+  risks_identified: 6
+  code_files_reviewed: 8
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  # Code implemented
+    ac_gaps: [12]  # End-to-end test not verified
 
-bugs:
-  p0: 0
-  p1: 0
-  p2: 0
+# Non-Functional Requirements Validation
+nfr_validation:
+  security:
+    status: CONCERNS
+    notes: "Good architecture (webhook signature verification, no secret exposure, PCI-compliant), but no tests to validate security assumptions. Rate limiting missing on webhook endpoint."
+    
+  performance:
+    status: PASS
+    notes: "Lazy loading, singleton pattern, efficient database queries. No performance concerns."
+    
+  reliability:
+    status: CONCERNS
+    notes: "Comprehensive error handling with Sentry integration, but no tests to validate error scenarios work correctly."
+    
+  maintainability:
+    status: PASS
+    notes: "Clean code, well-documented, follows standards. Good separation of concerns."
+
+# Recommendations
+recommendations:
+  immediate:  # Must fix before production
+    - action: "Add unit tests for lib/stripe/customer.ts"
+      refs: ["src/lib/stripe/customer.ts"]
+      priority: "P0"
+      
+    - action: "Add unit tests for lib/stripe/errors.ts"
+      refs: ["src/lib/stripe/errors.ts"]
+      priority: "P0"
+      
+    - action: "Add integration tests for webhook handler"
+      refs: ["src/app/api/webhooks/stripe/route.ts"]
+      priority: "P0"
+      
+    - action: "Add E2E tests for payment flow (Playwright)"
+      refs: ["tests/e2e/payment-flow.spec.ts"]
+      priority: "P0"
+      
+    - action: "Complete AC 12 - Run end-to-end payment test with test cards"
+      refs: ["Story 6.1 AC 12"]
+      priority: "P0"
+      
+  future:  # Can be addressed in follow-up stories
+    - action: "Implement email service integration (sendInvoiceEmail, sendPaymentFailedEmail)"
+      refs: ["src/app/api/webhooks/stripe/route.ts:514", "route.ts:597"]
+      priority: "P1"
+      
+    - action: "Add rate limiting to webhook endpoint"
+      refs: ["src/app/api/webhooks/stripe/route.ts"]
+      priority: "P1"
+      
+    - action: "Add webhook event deduplication logic"
+      refs: ["src/app/api/webhooks/stripe/route.ts"]
+      priority: "P2"
+      
+    - action: "Set up monitoring/alerting for webhook failures"
+      refs: ["DevOps"]
+      priority: "P2"
+
+# Compliance with project standards
+compliance:
+  coding_standards: PASS
+  project_structure: PASS
+  testing_strategy: FAIL  # 0% coverage vs required >90% for critical paths
+  documentation: PASS
+
+# Gate History
+history:
+  - at: "2026-01-13T10:30:00Z"
+    gate: CONCERNS
+    note: "Initial review - excellent code quality but zero test coverage on payment-critical code. Must add tests before production."

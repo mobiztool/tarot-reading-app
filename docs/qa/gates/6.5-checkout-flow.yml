@@ -1,76 +1,26 @@
-# Quality Gate Decision
-# Story 6.5: Checkout Flow & Payment Experience
+# Quality Gate: Story 6.5 - Checkout Flow & Payment Experience
+schema: 1
+story: "6.5"
+story_title: "Checkout Flow & Payment Experience"
+gate: "CONCERNS"
+status_reason: "Stripe Checkout integration properly implemented (PCI compliant), but NO E2E tests for complete checkout flow with test cards."
+reviewer: "Quinn (Test Architect)"
+updated: "2026-01-13T11:40:00Z"
 
-gate:
-  story_id: "6.5"
-  story_name: "Checkout Flow & Payment Experience"
-  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+top_issues:
+  - id: "TEST-010"
+    severity: high
+    finding: "No E2E tests for checkout flow (test cards → success/failure)"
+    suggested_action: "Add Playwright E2E tests for successful and failed payment scenarios"
+    suggested_owner: dev
+  - id: "TEST-011"
+    severity: medium
+    finding: "No integration tests for checkout session creation API"
+    suggested_action: "Add integration tests for POST /api/checkout/create"
+    suggested_owner: dev
 
-decision:
-  status: PENDING
-  date: "2026-01-13"
-  reviewer: "Quinn (QA Lead)"
-  confidence: 0
-  notes: "Awaiting implementation verification - HIGH RISK payment flow"
-
-acceptance_criteria:
-  total: 12
-  passed: 0
-  failed: 0
-  pending: 12
-  details:
-    - ac: "AC1: Checkout page /checkout?tier=X"
-      status: PENDING
-      priority: P0
-    - ac: "AC2: Stripe Checkout integration (hosted)"
-      status: PENDING
-      priority: P0
-    - ac: "AC3: Payment summary displayed"
-      status: PENDING
-      priority: P1
-    - ac: "AC4: Secure card input by Stripe"
-      status: PENDING
-      priority: P0
-    - ac: "AC5: Loading state during processing"
-      status: PENDING
-      priority: P1
-    - ac: "AC6: Success redirect /subscription/success"
-      status: PENDING
-      priority: P0
-    - ac: "AC7: Failure redirect /subscription/failed"
-      status: PENDING
-      priority: P0
-    - ac: "AC8: Email confirmation triggered"
-      status: PENDING
-      priority: P1
-    - ac: "AC9: Analytics tracked"
-      status: PENDING
-      priority: P2
-    - ac: "AC10: Mobile-optimized"
-      status: PENDING
-      priority: P1
-    - ac: "AC11: Test mode works with test cards"
-      status: PENDING
-      priority: P0
-    - ac: "AC12: Session timeout handling"
-      status: PENDING
-      priority: P2
-
-risk_level: HIGH
-priority: P0
-security_critical: true
-
-test_design:
-  document: "docs/qa/epic6-test-design.md"
-  scenarios: "TS-6.5.1 through TS-6.5.4"
-
-dependencies:
-  - "Story 6.1: Stripe Integration"
-  - "Story 6.2: Subscription Management"
-
-blocking_issues: []
-
-bugs:
-  p0: 0
-  p1: 0
-  p2: 0
+waiver: { active: false }
+quality_score: 72
+risk_summary:
+  totals: { critical: 0, high: 1, medium: 1, low: 0 }
+compliance: { coding_standards: PASS, testing_strategy: FAIL }

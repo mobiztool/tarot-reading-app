@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { DrawnCard, TarotCardData } from '@/types/card';
 import { createReadingSession, createMockDeck, ReadingSession } from '@/lib/tarot';
 
-export type ReadingType = 'daily' | 'three-card' | 'love' | 'career';
+export type ReadingType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross';
 export type ReadingState = 'idle' | 'shuffling' | 'drawing' | 'revealing' | 'complete';
 
 interface UseTarotReadingReturn {

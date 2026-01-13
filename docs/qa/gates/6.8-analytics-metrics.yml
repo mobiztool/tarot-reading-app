@@ -1,0 +1,30 @@
+# Quality Gate: Story 6.8 - Subscription Analytics & Metrics
+schema: 1
+story: "6.8"
+story_title: "Subscription Analytics & Metrics"
+gate: "CONCERNS"
+status_reason: "Analytics calculations implemented for MRR, ARR, churn, retention. Good business logic but ZERO test coverage on financial calculations."
+reviewer: "Quinn (Test Architect)"
+updated: "2026-01-13T11:55:00Z"
+
+top_issues:
+  - id: "TEST-014"
+    severity: high
+    finding: "No unit tests for revenue calculations (MRR, ARR, LTV)"
+    suggested_action: "Add unit tests for all financial calculation functions"
+    suggested_owner: dev
+  - id: "TEST-015"
+    severity: high
+    finding: "No tests for churn rate and retention calculations"
+    suggested_action: "Add unit tests for churn/retention metrics with edge cases"
+    suggested_owner: dev
+
+waiver: { active: false }
+quality_score: 70
+risk_summary:
+  totals: { critical: 0, high: 2, medium: 0, low: 0 }
+  highest:
+    risk: "Financial calculations untested"
+    score: 8
+    impact: "Incorrect revenue reporting, wrong business decisions"
+compliance: { coding_standards: PASS, testing_strategy: FAIL }

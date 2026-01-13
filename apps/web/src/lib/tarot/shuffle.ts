@@ -132,9 +132,37 @@ export function generateReadingSessionId(): string {
 }
 
 /**
+ * Draw ten cards for Celtic Cross spread
+ * Position 0: Present Situation (สถานการณ์ปัจจุบัน)
+ * Position 1: Challenge (อุปสรรค/ความท้าทาย)
+ * Position 2: Past/Foundation (รากฐาน/อดีต)
+ * Position 3: Future (อนาคตอันใกล้)
+ * Position 4: Above (เป้าหมาย/ความปรารถนา)
+ * Position 5: Below (จิตใต้สำนึก)
+ * Position 6: Advice (คำแนะนำ)
+ * Position 7: External Influences (อิทธิพลภายนอก)
+ * Position 8: Hopes & Fears (ความหวัง/ความกลัว)
+ * Position 9: Final Outcome (ผลลัพธ์สุดท้าย)
+ */
+export function drawCelticCrossSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 10, [
+    'cc_present',
+    'cc_challenge',
+    'cc_past',
+    'cc_future',
+    'cc_above',
+    'cc_below',
+    'cc_advice',
+    'cc_external',
+    'cc_hopes_fears',
+    'cc_outcome',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
-export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career';
+export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross';
 
 export interface ReadingSession {
   id: string;
@@ -163,6 +191,9 @@ export function createReadingSession(
       break;
     case 'career':
       drawnCards = drawCareerSpread(deck);
+      break;
+    case 'celtic-cross':
+      drawnCards = drawCelticCrossSpread(deck);
       break;
     case 'three-card':
     default:
