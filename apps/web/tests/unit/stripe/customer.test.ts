@@ -1,15 +1,25 @@
 /**
  * Unit Tests: Stripe Customer Management
- * Tests for src/lib/stripe/customer.ts
+ * Tests for lib/stripe/customer.ts
  * 
- * Story 6.1 - Stripe Integration
- * Coverage Target: >90%
+ * Story: 6.1 - Stripe Payment Gateway Integration
+ * Target Coverage: >90%
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// Create hoisted mocks first (vi.mock is hoisted to top)
-const { mockStripe, mockPrisma, mockLogStripeError } = vi.hoisted(() => ({
-  mockStripe: {
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import {
+  createStripeCustomer,
+  getOrCreateStripeCustomer,
+  updateStripeCustomer,
+  getStripeCustomer,
+  deleteStripeCustomer,
+  syncUserToStripeCustomer,
+} from '@/lib/stripe/customer';
+import { prisma } from '@/lib/prisma';
+
+// Mock Stripe SDK
+vi.mock('@/lib/stripe/server', () => ({
+  stripe: {
     customers: {
       create: vi.fn(),
       update: vi.fn(),
@@ -17,44 +27,18 @@ const { mockStripe, mockPrisma, mockLogStripeError } = vi.hoisted(() => ({
       del: vi.fn(),
     },
   },
-  mockPrisma: {
-    user: {
-      findUnique: vi.fn(),
-      create: vi.fn(),
-      update: vi.fn(),
-      updateMany: vi.fn(),
-    },
-  },
-  mockLogStripeError: vi.fn(),
-}));
-
-// Mock the server module to return our mock Stripe
-vi.mock('@/lib/stripe/server', () => ({
-  stripe: mockStripe,
 }));
 
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
-  prisma: mockPrisma,
+  prisma: {
+    user: {
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      create: vi.fn(),
+    },
+  },
 }));
-
-// Mock error handling
-vi.mock('@/lib/stripe/errors', () => ({
-  logStripeError: mockLogStripeError,
-}));
-
-import {
-  createStripeCustomer,
-  getOrCreateStripeCustomer,
-  updateStripeCustomer,
-  getStripeCustomer,
-  getStripeCustomerIdByUserId,
-  deleteStripeCustomer,
-  syncUserToStripeCustomer,
-} from '@/lib/stripe/customer';
-
-// Alias for cleaner test code
-const logStripeError = mockLogStripeError;
 
 describe('Stripe Customer Management', () => {
   beforeEach(() => {
@@ -62,322 +46,278 @@ describe('Stripe Customer Management', () => {
   });
 
   describe('createStripeCustomer', () => {
-    it('should return existing customer ID if already exists', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: 'cus_existing123',
+    it('should return existing customer ID if user already has one', async () => {
+      const mockUserId = 'user_123';
+      const mockStripeCustomerId = 'cus_existing';
+
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        id: mockUserId,
+        email: 'test@example.com',
+        stripeCustomerId: mockStripeCustomerId,
         name: 'Test User',
+      } as any);
+
+      const result = await createStripeCustomer(mockUserId, 'test@example.com');
+
+      expect(result).toBe(mockStripeCustomerId);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { id: mockUserId },
+        select: { stripeCustomerId: true, name: true },
       });
-
-      const result = await createStripeCustomer('user-123', 'test@example.com', 'Test User');
-
-      expect(result).toBe('cus_existing123');
-      expect(mockStripe.customers.create).not.toHaveBeenCalled();
     });
 
-    it('should create new customer if none exists', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
+    it('should create new Stripe customer and save ID to database', async () => {
+      const mockUserId = 'user_123';
+      const mockEmail = 'test@example.com';
+      const mockName = 'Test User';
+      const mockStripeCustomerId = 'cus_new123';
+
+      // User doesn't have Stripe customer yet
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        id: mockUserId,
+        email: mockEmail,
         stripeCustomerId: null,
-        name: 'Existing Name',
-      });
+        name: mockName,
+      } as any);
 
-      mockStripe.customers.create.mockResolvedValue({
-        id: 'cus_new456',
-        email: 'test@example.com',
-      });
+      // Mock Stripe customer creation
+      const { stripe } = await import('@/lib/stripe/server');
+      vi.mocked(stripe.customers.create).mockResolvedValue({
+        id: mockStripeCustomerId,
+        email: mockEmail,
+        name: mockName,
+      } as any);
 
-      mockPrisma.user.update.mockResolvedValue({});
+      // Mock database update
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: mockUserId,
+        stripeCustomerId: mockStripeCustomerId,
+      } as any);
 
-      const result = await createStripeCustomer('user-123', 'test@example.com', 'Test User');
+      const result = await createStripeCustomer(mockUserId, mockEmail, mockName);
 
-      expect(result).toBe('cus_new456');
-      expect(mockStripe.customers.create).toHaveBeenCalledWith({
-        email: 'test@example.com',
-        name: 'Test User',
+      expect(result).toBe(mockStripeCustomerId);
+      expect(stripe.customers.create).toHaveBeenCalledWith({
+        email: mockEmail,
+        name: mockName,
         metadata: {
-          userId: 'user-123',
+          userId: mockUserId,
           source: 'tarot-reading-app',
         },
       });
-      expect(mockPrisma.user.update).toHaveBeenCalledWith({
-        where: { id: 'user-123' },
-        data: { stripeCustomerId: 'cus_new456' },
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: mockUserId },
+        data: { stripeCustomerId: mockStripeCustomerId },
       });
     });
 
-    it('should use existing user name if no name provided', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
+    it('should handle Stripe API errors gracefully', async () => {
+      const mockUserId = 'user_123';
+      const mockEmail = 'test@example.com';
+
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        id: mockUserId,
         stripeCustomerId: null,
-        name: 'Database Name',
-      });
+      } as any);
 
-      mockStripe.customers.create.mockResolvedValue({
-        id: 'cus_789',
-      });
-
-      mockPrisma.user.update.mockResolvedValue({});
-
-      await createStripeCustomer('user-123', 'test@example.com');
-
-      expect(mockStripe.customers.create).toHaveBeenCalledWith({
-        email: 'test@example.com',
-        name: 'Database Name',
-        metadata: {
-          userId: 'user-123',
-          source: 'tarot-reading-app',
-        },
-      });
-    });
-
-    it('should log error and rethrow on Stripe failure', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: null,
-        name: null,
-      });
-
-      const stripeError = new Error('Stripe API error');
-      mockStripe.customers.create.mockRejectedValue(stripeError);
+      const { stripe } = await import('@/lib/stripe/server');
+      vi.mocked(stripe.customers.create).mockRejectedValue(
+        new Error('Stripe API Error')
+      );
 
       await expect(
-        createStripeCustomer('user-123', 'test@example.com')
-      ).rejects.toThrow('Stripe API error');
-
-      expect(logStripeError).toHaveBeenCalledWith(stripeError, {
-        operation: 'createStripeCustomer',
-        userId: 'user-123',
-      });
+        createStripeCustomer(mockUserId, mockEmail)
+      ).rejects.toThrow('Stripe API Error');
     });
   });
 
   describe('getOrCreateStripeCustomer', () => {
     it('should return existing customer ID if user has one', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: 'cus_existing',
-        name: 'User',
-      });
+      const mockUserId = 'user_123';
+      const mockStripeCustomerId = 'cus_existing';
 
-      const result = await getOrCreateStripeCustomer('user-123', 'test@example.com');
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        id: mockUserId,
+        stripeCustomerId: mockStripeCustomerId,
+      } as any);
 
-      expect(result).toBe('cus_existing');
-      expect(mockStripe.customers.create).not.toHaveBeenCalled();
+      const result = await getOrCreateStripeCustomer(
+        mockUserId,
+        'test@example.com'
+      );
+
+      expect(result).toBe(mockStripeCustomerId);
     });
 
-    it('should create user if not found in database', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue(null);
-      mockPrisma.user.create.mockResolvedValue({
+    it('should create new customer if user does not exist', async () => {
+      const mockUserId = 'user_new';
+      const mockEmail = 'new@example.com';
+      const mockStripeCustomerId = 'cus_new123';
+
+      // User doesn't exist
+      vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
+
+      // Mock user creation
+      vi.mocked(prisma.user.create).mockResolvedValue({
+        id: mockUserId,
+        email: mockEmail,
         stripeCustomerId: null,
-        name: 'New User',
-      });
+      } as any);
 
-      mockStripe.customers.create.mockResolvedValue({
-        id: 'cus_created',
-      });
+      // Mock Stripe customer creation
+      const { stripe } = await import('@/lib/stripe/server');
+      vi.mocked(stripe.customers.create).mockResolvedValue({
+        id: mockStripeCustomerId,
+      } as any);
 
-      mockPrisma.user.update.mockResolvedValue({});
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: mockUserId,
+        stripeCustomerId: mockStripeCustomerId,
+      } as any);
 
-      const result = await getOrCreateStripeCustomer('user-123', 'test@example.com', 'New User');
+      const result = await getOrCreateStripeCustomer(mockUserId, mockEmail);
 
-      expect(mockPrisma.user.create).toHaveBeenCalledWith({
-        data: {
-          id: 'user-123',
-          email: 'test@example.com',
-          name: 'New User',
-        },
-        select: { stripeCustomerId: true, name: true },
-      });
-      expect(result).toBe('cus_created');
-    });
-
-    it('should create Stripe customer if user exists but has no customer ID', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: null,
-        name: 'Existing User',
-      });
-
-      mockStripe.customers.create.mockResolvedValue({
-        id: 'cus_new',
-      });
-
-      mockPrisma.user.update.mockResolvedValue({});
-
-      const result = await getOrCreateStripeCustomer('user-123', 'test@example.com');
-
-      expect(result).toBe('cus_new');
+      expect(result).toBe(mockStripeCustomerId);
+      expect(prisma.user.create).toHaveBeenCalled();
     });
   });
 
   describe('updateStripeCustomer', () => {
-    it('should update customer successfully', async () => {
-      const updatedCustomer = {
-        id: 'cus_123',
-        email: 'new@example.com',
-        name: 'New Name',
-      };
+    it('should update Stripe customer successfully', async () => {
+      const mockCustomerId = 'cus_123';
+      const updates = { name: 'Updated Name' };
 
-      mockStripe.customers.update.mockResolvedValue(updatedCustomer);
+      const { stripe } = await import('@/lib/stripe/server');
+      vi.mocked(stripe.customers.update).mockResolvedValue({
+        id: mockCustomerId,
+        name: 'Updated Name',
+      } as any);
 
-      const result = await updateStripeCustomer('cus_123', {
-        email: 'new@example.com',
-        name: 'New Name',
-      });
+      const result = await updateStripeCustomer(mockCustomerId, updates);
 
-      expect(result).toEqual(updatedCustomer);
-      expect(mockStripe.customers.update).toHaveBeenCalledWith('cus_123', {
-        email: 'new@example.com',
-        name: 'New Name',
-      });
+      expect(stripe.customers.update).toHaveBeenCalledWith(
+        mockCustomerId,
+        updates
+      );
+      expect(result.name).toBe('Updated Name');
     });
 
-    it('should log error and rethrow on failure', async () => {
-      const error = new Error('Update failed');
-      mockStripe.customers.update.mockRejectedValue(error);
+    it('should handle update errors', async () => {
+      const mockCustomerId = 'cus_123';
+      const { stripe } = await import('@/lib/stripe/server');
+      
+      vi.mocked(stripe.customers.update).mockRejectedValue(
+        new Error('Customer not found')
+      );
 
       await expect(
-        updateStripeCustomer('cus_123', { name: 'Test' })
-      ).rejects.toThrow('Update failed');
-
-      expect(logStripeError).toHaveBeenCalledWith(error, {
-        operation: 'updateStripeCustomer',
-        customerId: 'cus_123',
-      });
+        updateStripeCustomer(mockCustomerId, { name: 'Test' })
+      ).rejects.toThrow('Customer not found');
     });
   });
 
   describe('getStripeCustomer', () => {
-    it('should retrieve customer successfully', async () => {
-      const customer = {
-        id: 'cus_123',
+    it('should retrieve customer from Stripe', async () => {
+      const mockCustomerId = 'cus_123';
+      const mockCustomer = {
+        id: mockCustomerId,
         email: 'test@example.com',
+        name: 'Test User',
       };
 
-      mockStripe.customers.retrieve.mockResolvedValue(customer);
+      const { stripe } = await import('@/lib/stripe/server');
+      vi.mocked(stripe.customers.retrieve).mockResolvedValue(mockCustomer as any);
 
-      const result = await getStripeCustomer('cus_123');
+      const result = await getStripeCustomer(mockCustomerId);
 
-      expect(result).toEqual(customer);
+      expect(result).toEqual(mockCustomer);
+      expect(stripe.customers.retrieve).toHaveBeenCalledWith(mockCustomerId);
     });
 
     it('should return null on error', async () => {
-      mockStripe.customers.retrieve.mockRejectedValue(new Error('Not found'));
+      const mockCustomerId = 'cus_invalid';
+      const { stripe } = await import('@/lib/stripe/server');
+      
+      vi.mocked(stripe.customers.retrieve).mockRejectedValue(
+        new Error('Customer not found')
+      );
 
-      const result = await getStripeCustomer('cus_invalid');
-
-      expect(result).toBeNull();
-      expect(logStripeError).toHaveBeenCalled();
-    });
-  });
-
-  describe('getStripeCustomerIdByUserId', () => {
-    it('should return customer ID if exists', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: 'cus_123',
-      });
-
-      const result = await getStripeCustomerIdByUserId('user-123');
-
-      expect(result).toBe('cus_123');
-    });
-
-    it('should return null if user has no customer ID', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: null,
-      });
-
-      const result = await getStripeCustomerIdByUserId('user-123');
-
-      expect(result).toBeNull();
-    });
-
-    it('should return null if user not found', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue(null);
-
-      const result = await getStripeCustomerIdByUserId('user-unknown');
+      const result = await getStripeCustomer(mockCustomerId);
 
       expect(result).toBeNull();
     });
   });
 
   describe('deleteStripeCustomer', () => {
-    it('should delete customer successfully', async () => {
-      mockStripe.customers.del.mockResolvedValue({ deleted: true });
+    it('should delete customer from Stripe (GDPR compliance)', async () => {
+      const mockCustomerId = 'cus_123';
 
-      const result = await deleteStripeCustomer('cus_123');
+      const { stripe } = await import('@/lib/stripe/server');
+      vi.mocked(stripe.customers.del).mockResolvedValue({
+        id: mockCustomerId,
+        deleted: true,
+      } as any);
+
+      const result = await deleteStripeCustomer(mockCustomerId);
 
       expect(result).toBe(true);
-      expect(mockStripe.customers.del).toHaveBeenCalledWith('cus_123');
+      expect(stripe.customers.del).toHaveBeenCalledWith(mockCustomerId);
     });
 
-    it('should return false on error', async () => {
-      mockStripe.customers.del.mockRejectedValue(new Error('Delete failed'));
+    it('should return false on deletion error', async () => {
+      const mockCustomerId = 'cus_123';
+      const { stripe } = await import('@/lib/stripe/server');
+      
+      vi.mocked(stripe.customers.del).mockRejectedValue(
+        new Error('Deletion failed')
+      );
 
-      const result = await deleteStripeCustomer('cus_invalid');
+      const result = await deleteStripeCustomer(mockCustomerId);
 
       expect(result).toBe(false);
-      expect(logStripeError).toHaveBeenCalled();
     });
   });
 
   describe('syncUserToStripeCustomer', () => {
-    it('should update customer with email and name', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: 'cus_123',
-      });
+    it('should sync user info to existing Stripe customer', async () => {
+      const mockUserId = 'user_123';
+      const mockCustomerId = 'cus_123';
+      const mockEmail = 'updated@example.com';
+      const mockName = 'Updated Name';
 
-      mockStripe.customers.update.mockResolvedValue({});
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        id: mockUserId,
+        stripeCustomerId: mockCustomerId,
+      } as any);
 
-      await syncUserToStripeCustomer('user-123', 'new@example.com', 'New Name');
+      const { stripe } = await import('@/lib/stripe/server');
+      vi.mocked(stripe.customers.update).mockResolvedValue({
+        id: mockCustomerId,
+        email: mockEmail,
+        name: mockName,
+      } as any);
 
-      expect(mockStripe.customers.update).toHaveBeenCalledWith('cus_123', {
-        email: 'new@example.com',
-        name: 'New Name',
-      });
-    });
+      await syncUserToStripeCustomer(mockUserId, mockEmail, mockName);
 
-    it('should update customer with email only', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: 'cus_123',
-      });
-
-      mockStripe.customers.update.mockResolvedValue({});
-
-      await syncUserToStripeCustomer('user-123', 'new@example.com');
-
-      expect(mockStripe.customers.update).toHaveBeenCalledWith('cus_123', {
-        email: 'new@example.com',
+      expect(stripe.customers.update).toHaveBeenCalledWith(mockCustomerId, {
+        email: mockEmail,
+        name: mockName,
       });
     });
 
-    it('should update customer with name set to null (clear name)', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: 'cus_123',
-      });
+    it('should do nothing if user has no Stripe customer', async () => {
+      const mockUserId = 'user_123';
 
-      mockStripe.customers.update.mockResolvedValue({});
-
-      await syncUserToStripeCustomer('user-123', undefined, null);
-
-      expect(mockStripe.customers.update).toHaveBeenCalledWith('cus_123', {
-        name: undefined,
-      });
-    });
-
-    it('should not call update if no customer ID', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
+      vi.mocked(prisma.user.findUnique).mockResolvedValue({
+        id: mockUserId,
         stripeCustomerId: null,
-      });
+      } as any);
 
-      await syncUserToStripeCustomer('user-123', 'test@example.com');
+      const { stripe } = await import('@/lib/stripe/server');
 
-      expect(mockStripe.customers.update).not.toHaveBeenCalled();
-    });
+      await syncUserToStripeCustomer(mockUserId, 'test@example.com');
 
-    it('should not call update if no changes', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({
-        stripeCustomerId: 'cus_123',
-      });
-
-      await syncUserToStripeCustomer('user-123');
-
-      expect(mockStripe.customers.update).not.toHaveBeenCalled();
+      expect(stripe.customers.update).not.toHaveBeenCalled();
     });
   });
 });

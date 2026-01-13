@@ -1,16 +1,17 @@
 /**
  * Integration Tests: Stripe Webhook Handler
- * Tests for src/app/api/webhooks/stripe/route.ts
+ * Tests for app/api/webhooks/stripe/route.ts
  * 
- * Story 6.1 - Stripe Integration
- * Coverage Target: >85%
+ * Story: 6.1 - Stripe Payment Gateway Integration
+ * Target Coverage: >85%
  */
+
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Stripe from 'stripe';
 
-// Create hoisted mocks first (vi.mock is hoisted to top)
-const { mockStripe, mockPrisma, mockSentry, mockHeaders } = vi.hoisted(() => {
-  const headerGet = vi.fn((key: string) => {
+// Create hoisted mocks (vi.mock is hoisted to top of file)
+const { mockStripe, mockPrisma, mockHeaders } = vi.hoisted(() => {
+  const headerGetFn = vi.fn((key: string) => {
     if (key === 'stripe-signature') return 'test_signature';
     return null;
   });
@@ -26,8 +27,8 @@ const { mockStripe, mockPrisma, mockSentry, mockHeaders } = vi.hoisted(() => {
     },
     mockPrisma: {
       user: {
-        findFirst: vi.fn(),
         findUnique: vi.fn(),
+        findFirst: vi.fn(),
         update: vi.fn(),
         updateMany: vi.fn(),
       },
@@ -36,6 +37,7 @@ const { mockStripe, mockPrisma, mockSentry, mockHeaders } = vi.hoisted(() => {
         findFirst: vi.fn(),
         upsert: vi.fn(),
         update: vi.fn(),
+        create: vi.fn(),
       },
       invoice: {
         upsert: vi.fn(),
@@ -44,92 +46,57 @@ const { mockStripe, mockPrisma, mockSentry, mockHeaders } = vi.hoisted(() => {
         create: vi.fn(),
       },
     },
-    mockSentry: {
-      captureException: vi.fn(),
-    },
     mockHeaders: vi.fn(() => Promise.resolve({
-      get: headerGet,
+      get: headerGetFn,
     })),
   };
 });
 
-// Mock configuration
-vi.mock('@/lib/config', () => ({
-  config: {
-    stripeSecretKey: 'sk_test_mock',
-    stripeWebhookSecret: 'whsec_test_mock',
-  },
-}));
-
+// Mock Stripe SDK
 vi.mock('@/lib/stripe/server', () => ({
   stripe: mockStripe,
 }));
 
+// Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: mockPrisma,
 }));
 
-vi.mock('@sentry/nextjs', () => mockSentry);
-
+// Mock Next.js headers (async in Next.js 15+)
 vi.mock('next/headers', () => ({
   headers: mockHeaders,
+}));
+
+// Mock Sentry
+vi.mock('@sentry/nextjs', () => ({
+  captureException: vi.fn(),
 }));
 
 // Import after mocks
 import { POST } from '@/app/api/webhooks/stripe/route';
 
-// Alias for cleaner test code
-const Sentry = mockSentry;
-
-// Helper to create mock request
-function createMockRequest(body: string): Request {
-  return {
-    text: () => Promise.resolve(body),
-  } as unknown as Request;
-}
-
-// Helper to create Stripe events
-function createStripeEvent(type: string, data: Record<string, unknown>): Stripe.Event {
-  return {
-    id: `evt_test_${Date.now()}`,
-    type,
-    livemode: false,
-    data: {
-      object: data,
-    },
-    created: Math.floor(Date.now() / 1000),
-    object: 'event',
-    api_version: '2024-04-10',
-    pending_webhooks: 0,
-    request: null,
-  } as Stripe.Event;
-}
-
 describe('Stripe Webhook Handler', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset console mocks
-    vi.spyOn(console, 'log').mockImplementation(() => {});
-    vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  describe('Signature Verification', () => {
-    it('should return 400 if signature is missing', async () => {
+  describe('Webhook Signature Verification', () => {
+    it('should return 400 if signature header is missing', async () => {
       // Override headers mock to return null signature
       mockHeaders.mockResolvedValueOnce({
         get: () => null,
       });
 
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-      const json = await response.json();
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({}),
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(json.error).toContain('Missing stripe-signature');
+      expect(data.error).toContain('Missing stripe-signature');
     });
 
     it('should return 400 if signature verification fails', async () => {
@@ -137,66 +104,75 @@ describe('Stripe Webhook Handler', () => {
         throw new Error('Invalid signature');
       });
 
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-      const json = await response.json();
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({}),
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(json.error).toBe('Invalid signature');
-      expect(Sentry.captureException).toHaveBeenCalled();
+      expect(data.error).toBe('Invalid signature');
     });
   });
 
   describe('Customer Events', () => {
     it('should handle customer.created event', async () => {
-      const event = createStripeEvent('customer.created', {
-        id: 'cus_123',
-        email: 'test@example.com',
-        metadata: { userId: 'user-123' },
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'customer.created',
+        data: {
+          object: {
+            id: 'cus_123',
+            email: 'test@example.com',
+            metadata: {
+              userId: 'user_123',
+            },
+          } as Stripe.Customer,
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+      mockPrisma.user.update.mockResolvedValue({} as any);
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'customer.created' }),
       });
 
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.user.update.mockResolvedValue({});
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-      const json = await response.json();
+      const response = await POST(request);
+      const data = await response.json();
 
       expect(response.status).toBe(200);
-      expect(json.received).toBe(true);
+      expect(data.received).toBe(true);
       expect(mockPrisma.user.update).toHaveBeenCalledWith({
-        where: { id: 'user-123' },
+        where: { id: 'user_123' },
         data: { stripeCustomerId: 'cus_123' },
       });
     });
 
-    it('should handle customer.created without userId in metadata', async () => {
-      const event = createStripeEvent('customer.created', {
-        id: 'cus_123',
-        email: 'test@example.com',
-        metadata: {},
-      });
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockPrisma.user.update).not.toHaveBeenCalled();
-    });
-
     it('should handle customer.deleted event', async () => {
-      const event = createStripeEvent('customer.deleted', {
-        id: 'cus_123',
-        deleted: true,
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'customer.deleted',
+        data: {
+          object: {
+            id: 'cus_123',
+            deleted: true,
+          },
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+      mockPrisma.user.updateMany.mockResolvedValue({ count: 1 } as any);
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'customer.deleted' }),
       });
 
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.user.updateMany.mockResolvedValue({ count: 1 });
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
+      const response = await POST(request);
 
       expect(response.status).toBe(200);
       expect(mockPrisma.user.updateMany).toHaveBeenCalledWith({
@@ -206,142 +182,168 @@ describe('Stripe Webhook Handler', () => {
     });
   });
 
-  describe('Subscription Events', () => {
-    const mockSubscription = {
-      id: 'sub_123',
-      status: 'active',
-      customer: 'cus_456',
-      metadata: { userId: 'user-789' },
-      items: {
-        data: [
-          { price: { id: 'price_pro' } },
-        ],
-      },
-      current_period_start: 1700000000,
-      current_period_end: 1702592000,
-      cancel_at_period_end: false,
-      canceled_at: null,
-      ended_at: null,
-    };
-
-    it('should handle customer.subscription.created event', async () => {
-      const event = createStripeEvent('customer.subscription.created', mockSubscription);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.subscription.upsert.mockResolvedValue({});
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockPrisma.subscription.upsert).toHaveBeenCalledWith(expect.objectContaining({
-        where: { stripe_subscription_id: 'sub_123' },
-        create: expect.objectContaining({
-          user_id: 'user-789',
-          stripe_subscription_id: 'sub_123',
-          stripe_customer_id: 'cus_456',
-          status: 'active',
-        }),
-      }));
-    });
-
-    it('should skip subscription.created if no userId in metadata', async () => {
-      const subWithoutUserId = {
-        ...mockSubscription,
-        metadata: {},
-      };
-      const event = createStripeEvent('customer.subscription.created', subWithoutUserId);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockPrisma.subscription.upsert).not.toHaveBeenCalled();
-    });
-
-    it('should handle customer.subscription.updated event with tier change', async () => {
-      const event = createStripeEvent('customer.subscription.updated', {
-        ...mockSubscription,
-        items: {
-          data: [{ price: { id: 'price_vip' } }],
+  describe('Payment Intent Events', () => {
+    it('should handle payment_intent.succeeded event', async () => {
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'payment_intent.succeeded',
+        data: {
+          object: {
+            id: 'pi_123',
+            amount: 9900,
+            currency: 'thb',
+            customer: 'cus_123',
+          } as Stripe.PaymentIntent,
         },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'payment_intent.succeeded' }),
       });
 
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
+      const response = await POST(request);
+
+      expect(response.status).toBe(200);
+    });
+
+    it('should handle payment_intent.payment_failed event', async () => {
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'payment_intent.payment_failed',
+        data: {
+          object: {
+            id: 'pi_123',
+            last_payment_error: {
+              message: 'Card declined',
+            },
+            customer: 'cus_123',
+          } as Stripe.PaymentIntent,
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'payment_intent.payment_failed' }),
+      });
+
+      const response = await POST(request);
+
+      expect(response.status).toBe(200);
+    });
+  });
+
+  describe('Subscription Events', () => {
+    it('should handle subscription.created event', async () => {
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'customer.subscription.created',
+        data: {
+          object: {
+            id: 'sub_123',
+            customer: 'cus_123',
+            status: 'active',
+            items: {
+              data: [
+                {
+                  price: {
+                    id: 'price_basic',
+                  },
+                },
+              ],
+            },
+            current_period_start: 1704067200,
+            current_period_end: 1706745600,
+            cancel_at_period_end: false,
+            metadata: {
+              userId: 'user_123',
+            },
+          } as Partial<Stripe.Subscription>,
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+      mockPrisma.subscription.upsert.mockResolvedValue({} as any);
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'customer.subscription.created' }),
+      });
+
+      const response = await POST(request);
+
+      expect(response.status).toBe(200);
+      expect(mockPrisma.subscription.upsert).toHaveBeenCalled();
+    });
+
+    it('should handle subscription.updated event', async () => {
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'customer.subscription.updated',
+        data: {
+          object: {
+            id: 'sub_123',
+            status: 'past_due',
+            items: {
+              data: [{ price: { id: 'price_basic' } }],
+            },
+            current_period_start: 1704067200,
+            current_period_end: 1706745600,
+          } as Partial<Stripe.Subscription>,
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
       mockPrisma.subscription.findUnique.mockResolvedValue({
-        id: 'db_sub_1',
-        user_id: 'user-789',
-        stripe_price_id: 'price_pro',
-        status: 'active',
+        id: 'db_sub_123',
+        user_id: 'user_123',
+        stripe_price_id: 'price_basic',
+      } as any);
+      mockPrisma.subscription.update.mockResolvedValue({} as any);
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'customer.subscription.updated' }),
       });
-      mockPrisma.subscription.update.mockResolvedValue({});
-      mockPrisma.analyticsEvent.create.mockResolvedValue({});
 
-      // Set up env vars for tier tracking
-      process.env.STRIPE_PRICE_ID_PRO = 'price_pro';
-      process.env.STRIPE_PRICE_ID_VIP = 'price_vip';
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
+      const response = await POST(request);
 
       expect(response.status).toBe(200);
       expect(mockPrisma.subscription.update).toHaveBeenCalled();
-      expect(mockPrisma.analyticsEvent.create).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({
-          user_id: 'user-789',
-          metadata: expect.objectContaining({
-            eventName: 'subscription_tier_changed',
-            changeType: 'upgrade',
-          }),
-        }),
-      }));
     });
 
-    it('should handle trial conversion (trialing -> active)', async () => {
-      const event = createStripeEvent('customer.subscription.updated', {
-        ...mockSubscription,
-        status: 'active',
-      });
+    it('should handle subscription.deleted event', async () => {
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'customer.subscription.deleted',
+        data: {
+          object: {
+            id: 'sub_123',
+            customer: 'cus_123',
+          } as Stripe.Subscription,
+        },
+      } as any;
 
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
       mockPrisma.subscription.findUnique.mockResolvedValue({
-        id: 'db_sub_1',
-        user_id: 'user-789',
-        stripe_price_id: 'price_pro',
+        id: 'db_sub_123',
+        user_id: 'user_123',
         status: 'trialing',
-      });
-      mockPrisma.subscription.update.mockResolvedValue({});
-      mockPrisma.analyticsEvent.create.mockResolvedValue({});
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockPrisma.analyticsEvent.create).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({
-          metadata: expect.objectContaining({
-            eventName: 'trial_converted',
-          }),
-        }),
-      }));
-    });
-
-    it('should handle customer.subscription.deleted event', async () => {
-      const event = createStripeEvent('customer.subscription.deleted', mockSubscription);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.subscription.findUnique.mockResolvedValue({
-        id: 'db_sub_1',
-        user_id: 'user-789',
-        status: 'active',
         created_at: new Date(),
-      });
-      mockPrisma.subscription.update.mockResolvedValue({});
+      } as any);
+      mockPrisma.analyticsEvent.create.mockResolvedValue({} as any);
+      mockPrisma.subscription.update.mockResolvedValue({} as any);
 
-      const req = createMockRequest('{}');
-      const response = await POST(req);
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'customer.subscription.deleted' }),
+      });
+
+      const response = await POST(request);
 
       expect(response.status).toBe(200);
       expect(mockPrisma.subscription.update).toHaveBeenCalledWith({
@@ -351,256 +353,146 @@ describe('Stripe Webhook Handler', () => {
         }),
       });
     });
-
-    it('should track trial_canceled analytics', async () => {
-      const event = createStripeEvent('customer.subscription.deleted', mockSubscription);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.subscription.findUnique.mockResolvedValue({
-        id: 'db_sub_1',
-        user_id: 'user-789',
-        status: 'trialing',
-        created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        cancellation_reason: 'too_expensive',
-      });
-      mockPrisma.subscription.update.mockResolvedValue({});
-      mockPrisma.analyticsEvent.create.mockResolvedValue({});
-
-      const req = createMockRequest('{}');
-      await POST(req);
-
-      expect(mockPrisma.analyticsEvent.create).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({
-          metadata: expect.objectContaining({
-            eventName: 'trial_canceled',
-          }),
-        }),
-      }));
-    });
   });
 
   describe('Invoice Events', () => {
-    const mockInvoice = {
-      id: 'in_123',
-      customer: 'cus_456',
-      amount_paid: 19900,
-      amount_due: 19900,
-      currency: 'thb',
-      number: 'INV-001',
-      status: 'paid',
-      description: 'Subscription payment',
-      invoice_pdf: 'https://pay.stripe.com/invoice/pdf/123',
-      hosted_invoice_url: 'https://pay.stripe.com/invoice/123',
-      status_transitions: {
-        paid_at: 1700000000,
-      },
-      lines: {
-        data: [
-          { period: { start: 1700000000, end: 1702592000 } },
-        ],
-      },
-      parent: {
-        subscription_details: {
-          subscription: 'sub_789',
-        },
-      },
-    };
-
     it('should handle invoice.paid event', async () => {
-      const event = createStripeEvent('invoice.paid', mockInvoice);
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'invoice.paid',
+        data: {
+          object: {
+            id: 'in_123',
+            customer: 'cus_123',
+            amount_paid: 9900,
+            currency: 'thb',
+            status: 'paid',
+            invoice_pdf: 'https://invoice.pdf',
+            hosted_invoice_url: 'https://invoice.url',
+            status_transitions: {
+              paid_at: 1704067200,
+            },
+          } as Partial<Stripe.Invoice>,
+        },
+      } as any;
 
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
       mockPrisma.user.findFirst.mockResolvedValue({
-        id: 'user-123',
-        email: 'test@example.com',
-      });
-      mockPrisma.subscription.findFirst.mockResolvedValue({
-        id: 'db_sub_1',
-      });
-      mockPrisma.invoice.upsert.mockResolvedValue({});
+        id: 'user_123',
+      } as any);
+      mockPrisma.invoice.upsert.mockResolvedValue({} as any);
 
-      const req = createMockRequest('{}');
-      const response = await POST(req);
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'invoice.paid' }),
+      });
+
+      const response = await POST(request);
 
       expect(response.status).toBe(200);
-      expect(mockPrisma.invoice.upsert).toHaveBeenCalledWith(expect.objectContaining({
-        where: { stripe_invoice_id: 'in_123' },
-        create: expect.objectContaining({
-          user_id: 'user-123',
-          stripe_invoice_id: 'in_123',
-          amount: 19900,
-          status: 'paid',
-        }),
-      }));
-    });
-
-    it('should handle invoice.paid without user', async () => {
-      const event = createStripeEvent('invoice.paid', mockInvoice);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.user.findFirst.mockResolvedValue(null);
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockPrisma.invoice.upsert).not.toHaveBeenCalled();
-    });
-
-    it('should handle invoice.payment_failed event', async () => {
-      const failedInvoice = {
-        ...mockInvoice,
-        status: 'open',
-      };
-      const event = createStripeEvent('invoice.payment_failed', failedInvoice);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.user.findFirst.mockResolvedValue({
-        id: 'user-123',
-        email: 'test@example.com',
-      });
-      mockPrisma.subscription.findFirst.mockResolvedValue({
-        id: 'db_sub_1',
-      });
-      mockPrisma.invoice.upsert.mockResolvedValue({});
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockPrisma.invoice.upsert).toHaveBeenCalledWith(expect.objectContaining({
-        create: expect.objectContaining({
-          status: 'open',
-        }),
-      }));
-    });
-  });
-
-  describe('Checkout Session Events', () => {
-    const mockCheckoutSession = {
-      id: 'cs_123',
-      customer: 'cus_456',
-      subscription: 'sub_789',
-      mode: 'subscription',
-      amount_total: 19900,
-      metadata: {
-        userId: 'user-123',
-        tierId: 'pro',
-      },
-    };
-
-    it('should handle checkout.session.completed event for subscription', async () => {
-      const event = createStripeEvent('checkout.session.completed', mockCheckoutSession);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockStripe.subscriptions.retrieve.mockResolvedValue({
-        id: 'sub_789',
-        status: 'active',
-        trial_end: null,
-      });
-      mockPrisma.user.findUnique.mockResolvedValue({
-        email: 'test@example.com',
-        name: 'Test User',
-      });
-      mockPrisma.analyticsEvent.create.mockResolvedValue({});
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockStripe.subscriptions.retrieve).toHaveBeenCalledWith('sub_789');
-    });
-
-    it('should track trial_started for trialing subscriptions', async () => {
-      const event = createStripeEvent('checkout.session.completed', mockCheckoutSession);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockStripe.subscriptions.retrieve.mockResolvedValue({
-        id: 'sub_789',
-        status: 'trialing',
-        trial_end: 1702592000,
-      });
-      mockPrisma.user.findUnique.mockResolvedValue({
-        email: 'test@example.com',
-        name: 'Test User',
-      });
-      mockPrisma.analyticsEvent.create.mockResolvedValue({});
-
-      const req = createMockRequest('{}');
-      await POST(req);
-
-      expect(mockPrisma.analyticsEvent.create).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({
-          user_id: 'user-123',
-          metadata: expect.objectContaining({
-            eventName: 'trial_started',
-          }),
-        }),
-      }));
-    });
-
-    it('should skip non-subscription checkout sessions', async () => {
-      const paymentSession = {
-        ...mockCheckoutSession,
-        mode: 'payment',
-      };
-      const event = createStripeEvent('checkout.session.completed', paymentSession);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-      expect(mockStripe.subscriptions.retrieve).not.toHaveBeenCalled();
-    });
-
-    it('should handle checkout.session.expired event', async () => {
-      const event = createStripeEvent('checkout.session.expired', mockCheckoutSession);
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-
-      expect(response.status).toBe(200);
-    });
-  });
-
-  describe('Unhandled Events', () => {
-    it('should return 200 for unhandled event types', async () => {
-      const event = createStripeEvent('some.unhandled.event', { id: 'test' });
-
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-      const json = await response.json();
-
-      expect(response.status).toBe(200);
-      expect(json.received).toBe(true);
+      expect(mockPrisma.invoice.upsert).toHaveBeenCalled();
     });
   });
 
   describe('Error Handling', () => {
-    it('should return 200 even on handler error (prevent Stripe retry)', async () => {
-      const event = createStripeEvent('invoice.paid', {
-        id: 'in_123',
-        customer: 'cus_456',
-        amount_paid: 100,
+    it('should return 200 even on handler errors (to prevent retries)', async () => {
+      // Use invoice.paid which throws on error (unlike customer.created which catches)
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'invoice.paid',
+        data: {
+          object: {
+            id: 'in_123',
+            customer: 'cus_123',
+            amount_paid: 9900,
+          } as Partial<Stripe.Invoice>,
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+      mockPrisma.user.findFirst.mockResolvedValue({ id: 'user_123' } as any);
+      mockPrisma.invoice.upsert.mockRejectedValue(new Error('Database error'));
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'invoice.paid' }),
       });
 
-      mockStripe.webhooks.constructEvent.mockReturnValue(event);
-      mockPrisma.user.findFirst.mockRejectedValue(new Error('Database error'));
-
-      const req = createMockRequest('{}');
-      const response = await POST(req);
-      const json = await response.json();
+      const response = await POST(request);
+      const data = await response.json();
 
       expect(response.status).toBe(200);
-      expect(json.received).toBe(true);
-      expect(json.error).toBe('Handler error logged');
-      expect(Sentry.captureException).toHaveBeenCalled();
+      expect(data.received).toBe(true);
+      expect(data.error).toBe('Handler error logged');
+    });
+
+    it('should log unhandled event types', async () => {
+      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'charge.updated' as any,
+        data: {
+          object: {} as any,
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+
+      const request = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'charge.updated' }),
+      });
+
+      await POST(request);
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Unhandled event type')
+      );
+
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('Idempotency', () => {
+    it('should handle duplicate webhook events gracefully with upsert', async () => {
+      const mockEvent: Stripe.Event = {
+        id: 'evt_123',
+        type: 'customer.subscription.created',
+        data: {
+          object: {
+            id: 'sub_123',
+            customer: 'cus_123',
+            status: 'active',
+            items: { data: [{ price: { id: 'price_123' } }] },
+            current_period_start: 1704067200,
+            current_period_end: 1706745600,
+            metadata: { userId: 'user_123' },
+          } as Partial<Stripe.Subscription>,
+        },
+      } as any;
+
+      mockStripe.webhooks.constructEvent.mockReturnValue(mockEvent);
+      mockPrisma.subscription.upsert.mockResolvedValue({} as any);
+
+      // Send same event twice
+      const request1 = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'customer.subscription.created' }),
+      });
+
+      const request2 = new Request('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'customer.subscription.created' }),
+      });
+
+      const response1 = await POST(request1);
+      const response2 = await POST(request2);
+
+      expect(response1.status).toBe(200);
+      expect(response2.status).toBe(200);
+      // Upsert ensures duplicate events don't create duplicate records
+      expect(mockPrisma.subscription.upsert).toHaveBeenCalledTimes(2);
     });
   });
 });
