@@ -92,7 +92,9 @@ export function AutoSync() {
         </div>
       )}
       
-      {/* Manual sync button - always visible */}
+      {/* Manual sync button - hidden (AutoSync handles it automatically) */}
+      {/* To re-enable, uncomment the button below */}
+      {/*
       <div className="mb-4 flex justify-end">
         <button
           onClick={handleManualSync}
@@ -105,6 +107,7 @@ export function AutoSync() {
           {syncing ? 'กำลังซิงค์...' : 'ซิงค์จาก Stripe'}
         </button>
       </div>
+      */}
     </>
   );
 }
