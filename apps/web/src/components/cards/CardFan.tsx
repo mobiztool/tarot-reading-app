@@ -9,6 +9,7 @@ interface CardFanProps {
   onSelectCard: (index: number) => void;
   selectedIndex?: number | null;
   disabled?: boolean;
+  disabledIndices?: number[];
 }
 
 /**
@@ -20,6 +21,7 @@ export function CardFan({
   onSelectCard,
   selectedIndex = null,
   disabled = false,
+  disabledIndices = [],
 }: CardFanProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showGuide, setShowGuide] = useState(true);
@@ -43,7 +45,7 @@ export function CardFan({
 
   const handleCardClick = useCallback(
     (index: number) => {
-      if (disabled) return;
+      if (disabled || disabledIndices.includes(index)) return;
       
       // Haptic feedback
       if ('vibrate' in navigator) {
@@ -56,7 +58,7 @@ export function CardFan({
       
       onSelectCard(index);
     },
-    [disabled, onSelectCard]
+    [disabled, disabledIndices, onSelectCard]
   );
 
   // Calculate card positions for realistic fan spread
@@ -126,6 +128,7 @@ export function CardFan({
         {cardPositions.map((pos, index) => {
           const isHovered = hoveredIndex === index;
           const isSelected = selectedIndex === index;
+          const isCardDisabled = disabled || disabledIndices.includes(index);
           
           // Z-index: hovered/selected on top, otherwise left-to-right stacking
           const baseZIndex = index;
@@ -136,7 +139,7 @@ export function CardFan({
               className={`
                 absolute cursor-pointer
                 transition-all duration-200 ease-out
-                ${disabled ? 'cursor-not-allowed opacity-50' : ''}
+                ${isCardDisabled ? 'cursor-not-allowed opacity-40' : ''}
               `}
               style={{
                 // Position at center bottom with pivot point
@@ -155,9 +158,9 @@ export function CardFan({
                 `,
                 zIndex: isHovered ? 100 : isSelected ? 99 : baseZIndex,
               }}
-              onMouseEnter={() => !disabled && setHoveredIndex(index)}
+              onMouseEnter={() => !isCardDisabled && setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              onTouchStart={() => !disabled && setHoveredIndex(index)}
+              onTouchStart={() => !isCardDisabled && setHoveredIndex(index)}
               onTouchEnd={() => setHoveredIndex(null)}
               onClick={() => handleCardClick(index)}
               onKeyDown={(e) => {
@@ -167,9 +170,10 @@ export function CardFan({
                 }
               }}
               role="button"
-              tabIndex={disabled ? -1 : 0}
+              tabIndex={isCardDisabled ? -1 : 0}
               aria-label={`เลือกไพ่ใบที่ ${index + 1}`}
               aria-pressed={isSelected}
+              aria-disabled={isCardDisabled}
             >
               {/* Card */}
               <div

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { TarotCard } from '@/components/cards';
+import { TarotCard, CardFan } from '@/components/cards';
 import { useTarotReading, useCards, useSaveReading, useAuth, useAnalytics } from '@/lib/hooks';
 import { SUIT_NAMES } from '@/types/card';
 import { generateDetailedPrediction } from '@/lib/tarot/cardMeanings';
@@ -34,6 +34,8 @@ const POSITION_LABELS = {
   },
 };
 
+const POSITIONS = ['current_situation', 'challenge_opportunity', 'outcome'] as const;
+
 // Example questions สำหรับ Career Spread
 const CAREER_QUESTIONS = [
   'ควรเปลี่ยนงานหรือยัง?',
@@ -54,6 +56,11 @@ export default function CareerReadingPage() {
   const [startTime, setStartTime] = useState<number | null>(null);
   const hasSavedRef = useRef(false);
   const hasTrackedLoginPromptRef = useRef(false);
+
+  // Card selection states
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [selectionStep, setSelectionStep] = useState(0); // 0, 1, 2 for three cards
+  const [selectedFanIndices, setSelectedFanIndices] = useState<number[]>([]);
 
   // Fetch real cards from database
   const { cards, isLoading: isLoadingCards } = useCards();
@@ -82,16 +89,38 @@ export default function CareerReadingPage() {
     }
   }, [isAuthLoading, isAuthenticated, router]);
 
-  const handleStartReading = () => {
+  // Start selection mode (show card fan)
+  const handleStartSelection = () => {
     // Track career spread started
     trackCareerSpreadStarted(!!question);
     setStartTime(Date.now());
-    
-    startReading('career', question || undefined);
-    setSelectedCardIndex(null);
-    setNextCardToReveal(0);
-    setIsSaved(false);
-    hasSavedRef.current = false;
+    setIsSelecting(true);
+    setSelectionStep(0);
+    setSelectedFanIndices([]);
+  };
+
+  // Handle card selection from fan
+  const handleSelectFromFan = (index: number) => {
+    // Check if this card was already selected
+    if (selectedFanIndices.includes(index)) return;
+
+    const newSelectedIndices = [...selectedFanIndices, index];
+    setSelectedFanIndices(newSelectedIndices);
+
+    if (newSelectedIndices.length < 3) {
+      // Move to next selection step
+      setSelectionStep(newSelectedIndices.length);
+    } else {
+      // All 3 cards selected, start reading after brief delay
+      setTimeout(() => {
+        startReading('career', question || undefined);
+        setIsSelecting(false);
+        setSelectedCardIndex(null);
+        setNextCardToReveal(0);
+        setIsSaved(false);
+        hasSavedRef.current = false;
+      }, 800);
+    }
   };
 
   const handleRevealCard = (index: number) => {
@@ -103,6 +132,9 @@ export default function CareerReadingPage() {
 
   const handleReset = () => {
     resetReading();
+    setIsSelecting(false);
+    setSelectionStep(0);
+    setSelectedFanIndices([]);
     setSelectedCardIndex(null);
     setNextCardToReveal(0);
     setIsSaved(false);
@@ -170,6 +202,107 @@ export default function CareerReadingPage() {
     return <PageLoader message="กำลังโหลดไพ่..." />;
   }
 
+  // Selection mode - Show CardFan for 3 card selection
+  if (isSelecting) {
+    const currentPosition = POSITIONS[selectionStep];
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-emerald-950/20 to-slate-900 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Header with current position */}
+          <div className="text-center mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-300 mb-2">
+              เลือกไพ่ใบที่ {selectionStep + 1}
+            </h2>
+            <div className={`inline-block px-6 py-2 rounded-full bg-gradient-to-r ${POSITION_LABELS[currentPosition].color} text-white font-medium text-lg mb-2`}>
+              {POSITION_LABELS[currentPosition].emoji} {POSITION_LABELS[currentPosition].th}
+            </div>
+            <p className="text-slate-400">เลือกไพ่ที่ดึงดูดใจคุณ</p>
+          </div>
+
+          {/* Question reminder */}
+          {question && (
+            <div className="text-center mb-4">
+              <p className="text-emerald-400 text-sm italic">&ldquo;{question}&rdquo;</p>
+            </div>
+          )}
+
+          {/* Progress Indicator */}
+          <div className="flex justify-center gap-3 mb-6 flex-wrap">
+            {POSITIONS.map((pos, idx) => (
+              <div 
+                key={pos}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
+                  idx < selectionStep 
+                    ? 'bg-green-600/30 border border-green-500/50' 
+                    : idx === selectionStep 
+                      ? `bg-gradient-to-r ${POSITION_LABELS[pos].color} shadow-lg` 
+                      : 'bg-slate-800/50 border border-slate-700/50'
+                }`}
+              >
+                {idx < selectionStep ? (
+                  <span className="text-green-400">✓</span>
+                ) : (
+                  <span>{POSITION_LABELS[pos].emoji}</span>
+                )}
+                <span className={`${idx === selectionStep ? 'text-white' : 'text-slate-400'} text-sm`}>
+                  {POSITION_LABELS[pos].th}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Card Fan */}
+          <CardFan
+            cardCount={22}
+            onSelectCard={handleSelectFromFan}
+            selectedIndex={selectedFanIndices[selectedFanIndices.length - 1] ?? null}
+            disabledIndices={selectedFanIndices}
+            disabled={selectedFanIndices.length >= 3}
+          />
+
+          {/* Selected cards preview */}
+          <div className="mt-6">
+            <p className="text-center text-slate-500 text-sm mb-3">ไพ่ที่เลือกแล้ว: {selectedFanIndices.length}/3</p>
+            <div className="flex justify-center gap-3">
+              {POSITIONS.map((pos, idx) => (
+                <div
+                  key={pos}
+                  className={`w-12 h-16 md:w-16 md:h-20 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                    idx < selectedFanIndices.length
+                      ? `bg-gradient-to-br ${POSITION_LABELS[pos].color} shadow-lg`
+                      : 'bg-slate-800/50 border-2 border-dashed border-slate-600'
+                  }`}
+                >
+                  {idx < selectedFanIndices.length ? (
+                    <span className="text-white text-lg">✓</span>
+                  ) : (
+                    <span className="text-slate-600 text-lg">{POSITION_LABELS[pos].emoji}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Back button */}
+          <div className="text-center mt-6">
+            <button
+              onClick={() => {
+                setIsSelecting(false);
+                setSelectionStep(0);
+                setSelectedFanIndices([]);
+              }}
+              className="text-slate-500 hover:text-slate-300 transition-colors"
+              disabled={selectedFanIndices.length >= 3}
+            >
+              ← ย้อนกลับ
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Idle state - Show question input and start button
   if (readingState === 'idle') {
     return (
@@ -188,7 +321,7 @@ export default function CareerReadingPage() {
 
           {/* Position Preview */}
           <div className="flex justify-center gap-4 mb-8 flex-wrap">
-            {(['current_situation', 'challenge_opportunity', 'outcome'] as const).map((pos) => (
+            {POSITIONS.map((pos) => (
               <div key={pos} className="text-center">
                 <div
                   className={`w-16 h-24 md:w-20 md:h-28 rounded-xl bg-gradient-to-br ${POSITION_LABELS[pos].color} opacity-30 flex items-center justify-center mb-2`}
@@ -207,7 +340,7 @@ export default function CareerReadingPage() {
               ความหมายของตำแหน่งไพ่
             </h3>
             <div className="space-y-3">
-              {(['current_situation', 'challenge_opportunity', 'outcome'] as const).map((pos) => (
+              {POSITIONS.map((pos) => (
                 <div key={pos} className="flex items-start gap-3">
                   <span className="text-xl">{POSITION_LABELS[pos].emoji}</span>
                   <div>
@@ -255,11 +388,11 @@ export default function CareerReadingPage() {
           {/* Start Button */}
           <div className="text-center">
             <button
-              onClick={handleStartReading}
+              onClick={handleStartSelection}
               className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 hover:-translate-y-1"
             >
               <span className="text-xl mr-3">💼</span>
-              เริ่มดูดวงการงาน
+              เลือกไพ่ของคุณ
             </button>
           </div>
 
@@ -289,7 +422,7 @@ export default function CareerReadingPage() {
             ))}
           </div>
           <h2 className="text-2xl font-bold text-emerald-300 mb-2">
-            {readingState === 'shuffling' ? 'กำลังสับไพ่...' : 'กำลังจั่วไพ่ 3 ใบ...'}
+            กำลังจั่วไพ่ 3 ใบ...
           </h2>
           <p className="text-slate-400">โปรดรอสักครู่</p>
         </div>
@@ -308,8 +441,7 @@ export default function CareerReadingPage() {
           {/* Three Cards Layout */}
           <div className="flex justify-center items-center gap-4 md:gap-8 mb-8 flex-wrap">
             {drawnCards.map((drawnCard, index) => {
-              const positions = ['current_situation', 'challenge_opportunity', 'outcome'] as const;
-              const pos = positions[index];
+              const pos = POSITIONS[index];
               const isRevealed = revealedCards[index];
               const canReveal = index === nextCardToReveal;
 
@@ -359,7 +491,6 @@ export default function CareerReadingPage() {
   // Complete state - Show all revealed cards and interpretation
   if ((readingState === 'revealing' || readingState === 'complete') && allRevealed) {
     const selectedCard = selectedCardIndex !== null ? drawnCards[selectedCardIndex] : null;
-    const positions = ['current_situation', 'challenge_opportunity', 'outcome'] as const;
 
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-emerald-950/20 to-slate-900 py-8 px-4">
@@ -375,7 +506,7 @@ export default function CareerReadingPage() {
           {/* Three Cards Layout */}
           <div className="flex justify-center items-start gap-3 md:gap-6 mb-8 flex-wrap">
             {drawnCards.map((drawnCard, index) => {
-              const pos = positions[index];
+              const pos = POSITIONS[index];
               const isSelected = selectedCardIndex === index;
 
               return (
@@ -421,10 +552,10 @@ export default function CareerReadingPage() {
               {/* Card Header */}
               <div className="text-center mb-6">
                 <div
-                  className={`inline-block px-4 py-1 rounded-full bg-gradient-to-r ${POSITION_LABELS[positions[selectedCardIndex]].color} text-white text-sm font-medium mb-4`}
+                  className={`inline-block px-4 py-1 rounded-full bg-gradient-to-r ${POSITION_LABELS[POSITIONS[selectedCardIndex]].color} text-white text-sm font-medium mb-4`}
                 >
-                  {POSITION_LABELS[positions[selectedCardIndex]].emoji}{' '}
-                  {POSITION_LABELS[positions[selectedCardIndex]].th}
+                  {POSITION_LABELS[POSITIONS[selectedCardIndex]].emoji}{' '}
+                  {POSITION_LABELS[POSITIONS[selectedCardIndex]].th}
                 </div>
 
                 <h2 className="text-2xl md:text-3xl font-bold font-card text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-300 mb-1">
@@ -458,10 +589,10 @@ export default function CareerReadingPage() {
               {/* Position-Specific Interpretation */}
               <div className="bg-teal-900/20 border border-teal-500/20 rounded-xl p-4 mb-4">
                 <h3 className="text-lg font-bold text-teal-300 mb-2">
-                  {POSITION_LABELS[positions[selectedCardIndex]].emoji} ในตำแหน่ง &quot;{POSITION_LABELS[positions[selectedCardIndex]].th}&quot;
+                  {POSITION_LABELS[POSITIONS[selectedCardIndex]].emoji} ในตำแหน่ง &quot;{POSITION_LABELS[POSITIONS[selectedCardIndex]].th}&quot;
                 </h3>
                 <p className="text-slate-200 leading-relaxed">
-                  {getCareerPositionInterpretation(selectedCard.card.nameTh, selectedCard.isReversed, positions[selectedCardIndex])}
+                  {getCareerPositionInterpretation(selectedCard.card.nameTh, selectedCard.isReversed, POSITIONS[selectedCardIndex])}
                 </p>
               </div>
 
@@ -591,5 +722,3 @@ function generateCareerGuidance(drawnCards: { card: { nameTh: string }; isRevers
     return `มีทั้งไพ่ตั้งตรงและกลับหัว แสดงถึงความสมดุลระหว่างโอกาสและความท้าทาย ควรใช้ความระมัดระวังในการตัดสินใจ พร้อมกับเปิดรับโอกาสที่เข้ามา การวางแผนอย่างรอบคอบและการปรับตัวตามสถานการณ์จะเป็นกุญแจสำคัญสู่ความสำเร็จ อย่าลืมพัฒนาทักษะและสร้างความสัมพันธ์ที่ดีกับเพื่อนร่วมงาน`;
   }
 }
-
-

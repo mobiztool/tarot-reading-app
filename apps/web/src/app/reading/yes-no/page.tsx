@@ -7,14 +7,13 @@ import { useSaveReading } from '@/lib/hooks/useSaveReading';
 import { useAnalytics } from '@/lib/hooks/useAnalytics';
 import { useCards } from '@/lib/hooks/useCards';
 import { DrawnCard } from '@/types/card';
-import { TarotCard } from '@/components/cards/TarotCard';
+import { TarotCard, CardFan } from '@/components/cards';
 import {
   interpretCardAsYesNo,
   YesNoResult,
   CONFIDENCE_LABELS,
   ANSWER_LABELS,
   ConfidenceLevel,
-  drawYesNoCard,
 } from '@/lib/tarot/yesNoInterpretation';
 import { PageLoader } from '@/components/ui/MysticalLoader';
 
@@ -28,7 +27,7 @@ const EXAMPLE_QUESTIONS = [
 ];
 
 // Reading states
-type ReadingState = 'initial' | 'shuffling' | 'drawn' | 'revealed' | 'complete';
+type ReadingState = 'initial' | 'selecting' | 'drawn' | 'revealed' | 'complete';
 
 // Minimum question length
 const MIN_QUESTION_LENGTH = 10;
@@ -47,6 +46,7 @@ export default function YesNoSpreadPage() {
   const [yesNoResult, setYesNoResult] = useState<YesNoResult | null>(null);
   const [savedReadingId, setSavedReadingId] = useState<string | null>(null);
   const [showFullMeaning, setShowFullMeaning] = useState(false);
+  const [selectedFanIndex, setSelectedFanIndex] = useState<number | null>(null);
 
   // Refs
   const startTimeRef = useRef<Date | null>(null);
@@ -79,34 +79,42 @@ export default function YesNoSpreadPage() {
     setQuestionError(null);
   }, []);
 
-  // Start reading
-  const handleStartReading = useCallback(async () => {
+  // Start selection mode (show card fan)
+  const handleStartSelection = useCallback(() => {
     if (!validateQuestion(question)) {
       return;
     }
 
     startTimeRef.current = new Date();
-    setReadingState('shuffling');
+    setReadingState('selecting');
+    setSelectedFanIndex(null);
 
     // Track start event
     track('yes_no_started', {
       question_length: question.length,
     });
-
-    // Simulate shuffling delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Draw card
-    const { card, isReversed } = drawYesNoCard(deck);
-
-    const drawn: DrawnCard = {
-      card,
-      isReversed,
-    };
-
-    setDrawnCard(drawn);
-    setReadingState('drawn');
   }, [question, validateQuestion, track]);
+
+  // Handle card selection from fan
+  const handleSelectFromFan = useCallback((index: number) => {
+    setSelectedFanIndex(index);
+
+    // Draw the card based on selection after brief delay
+    setTimeout(() => {
+      // Random selection from deck with reversed chance
+      const randomIndex = Math.floor(Math.random() * deck.length);
+      const card = deck[randomIndex];
+      const isReversed = Math.random() < 0.3; // 30% chance of reversed
+
+      const drawn: DrawnCard = {
+        card,
+        isReversed,
+      };
+
+      setDrawnCard(drawn);
+      setReadingState('drawn');
+    }, 800);
+  }, [deck]);
 
   // Reveal card and interpret
   const handleRevealCard = useCallback(async () => {
@@ -155,6 +163,7 @@ export default function YesNoSpreadPage() {
     setYesNoResult(null);
     setSavedReadingId(null);
     setShowFullMeaning(false);
+    setSelectedFanIndex(null);
     startTimeRef.current = null;
   }, []);
 
@@ -197,7 +206,7 @@ export default function YesNoSpreadPage() {
             🔮 Yes/No Question
           </h1>
           <p className="text-violet-300 mt-2">
-            ถามคำถามใช่หรือไม่ รับคำตอบจากไพ่ 1 ใบ
+            ถามคำถามใช่หรือไม่ แล้วเลือกไพ่ที่ดึงดูดใจคุณ
           </p>
         </header>
 
@@ -270,20 +279,58 @@ export default function YesNoSpreadPage() {
 
             {/* Start Button */}
             <button
-              onClick={handleStartReading}
+              onClick={handleStartSelection}
               className="w-full py-4 bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-500 hover:to-pink-500 rounded-xl font-semibold text-lg shadow-lg shadow-violet-900/50 transition-all transform hover:scale-[1.02]"
             >
-              🎴 จั่วไพ่รับคำตอบ
+              🎴 เลือกไพ่ของคุณ
             </button>
           </div>
         )}
 
-        {/* Shuffling State */}
-        {readingState === 'shuffling' && (
-          <div className="text-center py-16 space-y-6">
-            <div className="text-6xl animate-bounce">🔮</div>
-            <p className="text-violet-200 text-xl">กำลังสับไพ่...</p>
-            <p className="text-violet-400 text-sm">&quot;{question}&quot;</p>
+        {/* Selection State - Card Fan */}
+        {readingState === 'selecting' && (
+          <div className="space-y-6">
+            {/* Question Display */}
+            <div className="text-center">
+              <p className="text-violet-400 text-sm">คำถามของคุณ:</p>
+              <p className="text-violet-100 text-lg font-medium">
+                &quot;{question}&quot;
+              </p>
+            </div>
+
+            {/* Instructions */}
+            <div className="text-center mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-purple-300 mb-2">
+                เลือกไพ่ที่เรียกหาคุณ
+              </h2>
+              <p className="text-slate-400">ตั้งสติ หายใจลึกๆ แล้วเลือกไพ่ที่ดึงดูดคุณที่สุด</p>
+            </div>
+
+            {/* Card Fan */}
+            <CardFan
+              cardCount={22}
+              onSelectCard={handleSelectFromFan}
+              selectedIndex={selectedFanIndex}
+              disabled={selectedFanIndex !== null}
+            />
+
+            {/* Selected Indicator */}
+            {selectedFanIndex !== null && (
+              <div className="text-center">
+                <p className="text-violet-300 animate-pulse">กำลังจั่วไพ่...</p>
+              </div>
+            )}
+
+            {/* Back button */}
+            <div className="text-center mt-4">
+              <button
+                onClick={() => setReadingState('initial')}
+                className="text-slate-500 hover:text-slate-300 transition-colors"
+                disabled={selectedFanIndex !== null}
+              >
+                ← ย้อนกลับ
+              </button>
+            </div>
           </div>
         )}
 
@@ -477,4 +524,3 @@ export default function YesNoSpreadPage() {
     </main>
   );
 }
-
