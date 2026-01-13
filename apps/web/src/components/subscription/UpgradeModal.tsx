@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { SUBSCRIPTION_TIERS, getTierPriceId, isHigherTier } from '@/lib/subscription/tiers';
+import { SUBSCRIPTION_TIERS, isHigherTier } from '@/lib/subscription/tiers';
 import { SubscriptionTier } from '@/types/subscription';
 import { format } from 'date-fns';
 import { th } from 'date-fns/locale';
@@ -75,17 +75,12 @@ export function UpgradeModal({
     setError(null);
 
     try {
-      const priceId = getTierPriceId(selectedTier);
-      if (!priceId) {
-        throw new Error('ไม่พบราคาสำหรับแพ็คเกจนี้');
-      }
-
+      // Send only tier - backend will look up the price ID from env vars
       const response = await fetch(`/api/subscriptions/${subscriptionId}/upgrade`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           newTier: selectedTier,
-          newPriceId: priceId,
         }),
       });
 

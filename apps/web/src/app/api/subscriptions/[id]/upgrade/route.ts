@@ -44,11 +44,21 @@ export async function POST(
     }
 
     // Parse request body
-    const { newTier, newPriceId } = await request.json();
+    const { newTier } = await request.json();
 
-    if (!newTier || !newPriceId) {
+    if (!newTier) {
       return NextResponse.json(
         { error: 'ข้อมูลไม่ครบถ้วน' },
+        { status: 400 }
+      );
+    }
+
+    // Get Price ID from server-side environment variables
+    const newPriceId = getTierPriceId(newTier as SubscriptionTier);
+    if (!newPriceId) {
+      console.error('[Upgrade API] No price ID found for tier:', newTier);
+      return NextResponse.json(
+        { error: 'ไม่พบราคาสำหรับแพ็คเกจนี้' },
         { status: 400 }
       );
     }
