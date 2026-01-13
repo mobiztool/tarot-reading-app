@@ -241,19 +241,41 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription): Pro
     id: subscription.id,
     status: subscription.status,
     customer: subscription.customer,
+    metadata: subscription.metadata,
   });
 
-  const userId = subscription.metadata?.userId;
+  let userId = subscription.metadata?.userId;
+  const customerId = subscription.customer as string;
 
+  // Fallback: if userId not in subscription metadata, try to find from customer
   if (!userId) {
-    console.error('[Stripe Webhook] No userId in subscription metadata');
-    return;
+    console.log('[Stripe Webhook] No userId in subscription metadata, looking up from customer');
+    
+    // Try to find user by stripeCustomerId
+    const user = await prisma.user.findFirst({
+      where: { stripeCustomerId: customerId },
+    });
+
+    if (user) {
+      userId = user.id;
+      console.log('[Stripe Webhook] Found userId from customer:', userId);
+    } else {
+      console.error('[Stripe Webhook] Could not find user for customer:', customerId);
+      // Don't return - let checkout.session.completed handle this
+      return;
+    }
   }
 
   const period = getSubscriptionPeriod(subscription);
 
   // Create subscription record in database
   // Note: tier is derived from stripe_price_id, not stored separately
+  console.log('[Stripe Webhook] Upserting subscription record:', {
+    subscriptionId: subscription.id,
+    userId,
+    status: subscription.status,
+  });
+
   await prisma.subscription.upsert({
     where: { stripe_subscription_id: subscription.id },
     update: {
@@ -268,7 +290,7 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription): Pro
     create: {
       user_id: userId,
       stripe_subscription_id: subscription.id,
-      stripe_customer_id: subscription.customer as string,
+      stripe_customer_id: customerId,
       stripe_price_id: subscription.items.data[0]?.price.id || '',
       status: subscription.status as 'active' | 'past_due' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'trialing' | 'unpaid' | 'paused',
       current_period_start: period.periodStart,
@@ -278,6 +300,8 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription): Pro
       ended_at: period.endedAt,
     },
   });
+
+  console.log('[Stripe Webhook] Subscription record created/updated successfully');
 }
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription): Promise<void> {
@@ -622,16 +646,56 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   const userId = session.metadata?.userId;
   const tierId = session.metadata?.tierId;
   const subscriptionId = session.subscription as string;
+  const customerId = session.customer as string;
 
   if (!userId || !subscriptionId) {
     console.error('[Stripe Webhook] Missing userId or subscriptionId in checkout session');
     return;
   }
 
-  // Check if this is a trial subscription
+  // Get the full subscription from Stripe
   const stripe = await getStripe();
   const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId);
   const isTrial = stripeSubscription.status === 'trialing';
+
+  // Calculate period dates
+  const period = getSubscriptionPeriod(stripeSubscription);
+
+  // Create or update subscription record in database
+  console.log('[Stripe Webhook] Creating subscription record:', {
+    userId,
+    subscriptionId,
+    customerId,
+    status: stripeSubscription.status,
+    priceId: stripeSubscription.items.data[0]?.price.id,
+  });
+
+  await prisma.subscription.upsert({
+    where: { stripe_subscription_id: subscriptionId },
+    update: {
+      status: stripeSubscription.status as 'active' | 'past_due' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'trialing' | 'unpaid' | 'paused',
+      stripe_price_id: stripeSubscription.items.data[0]?.price.id || '',
+      current_period_start: period.periodStart,
+      current_period_end: period.periodEnd,
+      cancel_at: period.cancelAt,
+      canceled_at: period.canceledAt,
+      ended_at: period.endedAt,
+    },
+    create: {
+      user_id: userId,
+      stripe_subscription_id: subscriptionId,
+      stripe_customer_id: customerId,
+      stripe_price_id: stripeSubscription.items.data[0]?.price.id || '',
+      status: stripeSubscription.status as 'active' | 'past_due' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'trialing' | 'unpaid' | 'paused',
+      current_period_start: period.periodStart,
+      current_period_end: period.periodEnd,
+      cancel_at: period.cancelAt,
+      canceled_at: period.canceledAt,
+      ended_at: period.endedAt,
+    },
+  });
+
+  console.log('[Stripe Webhook] Subscription record created successfully');
 
   // Track analytics - trial or direct payment
   if (isTrial) {
