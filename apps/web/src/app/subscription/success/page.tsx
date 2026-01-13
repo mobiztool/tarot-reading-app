@@ -1,14 +1,15 @@
 /**
  * Subscription Success Page
  * Shows confirmation after successful payment with celebration
+ * Auto-syncs subscription from Stripe on page load
  */
 
 'use client';
 
-import { Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle2, Sparkles, ArrowRight, Copy } from 'lucide-react';
+import { CheckCircle2, Sparkles, ArrowRight, Copy, Loader2 } from 'lucide-react';
 
 // CSS Confetti Animation Component
 function Confetti() {
@@ -67,7 +68,36 @@ function TransactionId({ sessionId }: { sessionId: string }) {
 
 function SuccessContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const sessionId = searchParams.get('session_id');
+  const [syncStatus, setSyncStatus] = useState<'syncing' | 'success' | 'error'>('syncing');
+  
+  // Auto-sync subscription on page load
+  useEffect(() => {
+    if (!sessionId) return;
+    
+    const syncSubscription = async () => {
+      try {
+        const res = await fetch('/api/subscriptions/sync', {
+          method: 'POST',
+        });
+        
+        if (res.ok) {
+          setSyncStatus('success');
+          // Refresh router cache to update subscription status globally
+          router.refresh();
+        } else {
+          console.error('Sync failed:', await res.text());
+          setSyncStatus('error');
+        }
+      } catch (err) {
+        console.error('Sync error:', err);
+        setSyncStatus('error');
+      }
+    };
+    
+    syncSubscription();
+  }, [sessionId, router]);
   
   // If no session ID, show redirect message
   if (!sessionId) {
@@ -109,9 +139,30 @@ function SuccessContent() {
           🎉 ยินดีต้อนรับสู่ Premium!
         </h1>
         
-        <p className="text-xl text-purple-200 mb-8">
+        <p className="text-xl text-purple-200 mb-4">
           การชำระเงินสำเร็จแล้ว คุณสามารถเข้าถึงฟีเจอร์พรีเมียมได้ทันที
         </p>
+        
+        {/* Sync Status Indicator */}
+        <div className="mb-6">
+          {syncStatus === 'syncing' && (
+            <div className="inline-flex items-center gap-2 bg-purple-600/50 text-purple-100 px-4 py-2 rounded-full text-sm">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              กำลังเปิดใช้งานแพ็คเกจ...
+            </div>
+          )}
+          {syncStatus === 'success' && (
+            <div className="inline-flex items-center gap-2 bg-green-600/50 text-green-100 px-4 py-2 rounded-full text-sm">
+              <CheckCircle2 className="w-4 h-4" />
+              เปิดใช้งานแพ็คเกจเรียบร้อยแล้ว!
+            </div>
+          )}
+          {syncStatus === 'error' && (
+            <div className="inline-flex items-center gap-2 bg-yellow-600/50 text-yellow-100 px-4 py-2 rounded-full text-sm">
+              ⚠️ กำลังดำเนินการ อาจใช้เวลาสักครู่
+            </div>
+          )}
+        </div>
 
         {/* Benefits */}
         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-purple-500/30">
