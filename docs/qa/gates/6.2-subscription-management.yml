@@ -1,0 +1,74 @@
+# Quality Gate Decision
+# Story 6.2: Subscription Management System
+
+gate:
+  story_id: "6.2"
+  story_name: "Subscription Management System"
+  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+
+decision:
+  status: PENDING
+  date: "2026-01-13"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation verification"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+  details:
+    - ac: "AC1: Subscriptions table created"
+      status: PENDING
+      priority: P0
+    - ac: "AC2: Tiers defined (Basic ฿99, Pro ฿199, VIP ฿399)"
+      status: PENDING
+      priority: P0
+    - ac: "AC3: Create subscription via Stripe API"
+      status: PENDING
+      priority: P0
+    - ac: "AC4: Cancel subscription (immediate/end of period)"
+      status: PENDING
+      priority: P1
+    - ac: "AC5: Pause subscription"
+      status: PENDING
+      priority: P2
+    - ac: "AC6: Resume paused subscription"
+      status: PENDING
+      priority: P2
+    - ac: "AC7: Status tracked (active, canceled, past_due, paused, trialing)"
+      status: PENDING
+      priority: P0
+    - ac: "AC8: Webhook handling syncs to database"
+      status: PENDING
+      priority: P0
+    - ac: "AC9: Database always in sync with Stripe"
+      status: PENDING
+      priority: P0
+    - ac: "AC10: Profile displays tier, status, next billing"
+      status: PENDING
+      priority: P1
+    - ac: "AC11: Subscription history viewable"
+      status: PENDING
+      priority: P2
+    - ac: "AC12: Grace period after cancellation"
+      status: PENDING
+      priority: P1
+
+risk_level: HIGH
+priority: P0
+
+test_design:
+  document: "docs/qa/epic6-test-design.md"
+  scenarios: "TS-6.2.1 through TS-6.2.4"
+
+dependencies:
+  - "Story 6.1: Stripe Integration"
+
+blocking_issues: []
+
+bugs:
+  p0: 0
+  p1: 0
+  p2: 0

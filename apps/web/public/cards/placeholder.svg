@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 420" width="240" height="420">
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d1b4e"/>
+      <stop offset="100%" style="stop-color:#1a1033"/>
+    </linearGradient>
+    
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37"/>
+      <stop offset="50%" style="stop-color:#f5d678"/>
+      <stop offset="100%" style="stop-color:#d4af37"/>
+    </linearGradient>
+
+    <filter id="textGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="240" height="420" rx="12" ry="12" fill="url(#cardBg)"/>
+  
+  <!-- Border -->
+  <rect x="8" y="8" width="224" height="404" rx="8" ry="8" fill="none" stroke="url(#gold)" stroke-width="2"/>
+
+  <!-- Question mark symbol -->
+  <g transform="translate(120, 180)" filter="url(#textGlow)">
+    <text 
+      x="0" 
+      y="0" 
+      text-anchor="middle" 
+      dominant-baseline="middle" 
+      font-family="Georgia, serif" 
+      font-size="120" 
+      fill="url(#gold)"
+      opacity="0.6"
+    >?</text>
+  </g>
+
+  <!-- Placeholder text -->
+  <text 
+    x="120" 
+    y="300" 
+    text-anchor="middle" 
+    font-family="Georgia, serif" 
+    font-size="16" 
+    fill="url(#gold)"
+    opacity="0.7"
+  >Tarot Card</text>
+  
+  <text 
+    x="120" 
+    y="325" 
+    text-anchor="middle" 
+    font-family="sans-serif" 
+    font-size="12" 
+    fill="#a78bfa"
+    opacity="0.5"
+  >ไพ่ยิปซี</text>
+
+  <!-- Decorative corners -->
+  <g stroke="url(#gold)" stroke-width="1.5" fill="none" opacity="0.5">
+    <path d="M25,45 L25,30 Q25,25 30,25 L45,25"/>
+    <path d="M215,45 L215,30 Q215,25 210,25 L195,25"/>
+    <path d="M25,375 L25,390 Q25,395 30,395 L45,395"/>
+    <path d="M215,375 L215,390 Q215,395 210,395 L195,395"/>
+  </g>
+</svg>
+
+

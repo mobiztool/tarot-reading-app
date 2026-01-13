@@ -1,0 +1,51 @@
+# Quality Gate Decision
+# Story 8.4: Phase 4 Batch 2 Testing & QA
+
+gate:
+  story_id: "8.4"
+  story_name: "Phase 4 Batch 2 Testing"
+  epic: "Epic 8: Premium Spreads Batch 2 (Phase 4)"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Final QA for Batch 2 spreads"
+
+acceptance_criteria:
+  total: 8
+  passed: 0
+  failed: 0
+  pending: 8
+
+risk_level: HIGH
+priority: P0
+
+testing_scope:
+  spreads_to_test:
+    - "Shadow Work"
+    - "Chakra Alignment"
+    - "Friendship"
+    - "Career Path"
+    - "Financial Abundance"
+  
+  test_areas:
+    - "Functional E2E"
+    - "Layout responsiveness"
+    - "Content quality"
+    - "Tier access control"
+    - "Performance"
+    - "Regression"
+
+exit_criteria:
+  - "All 5 spreads functional"
+  - "VIP-only restriction works"
+  - "Content quality approved"
+  - "No P0/P1 bugs"
+  - "Regression passed"
+
+test_design:
+  document: "docs/qa/epic8-test-design.md"
+  scenarios: "TS-8.4.1 through TS-8.4.4"
+

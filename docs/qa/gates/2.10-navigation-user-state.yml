@@ -1,0 +1,45 @@
+# Quality Gate Decision
+# Story 2.10: Navigation & User State Display
+
+gate:
+  story_id: "2.10"
+  story_name: "Navigation & User State Display"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 8
+  passed: 0
+  failed: 0
+  pending: 8
+  details:
+    - ac: "AC1: Header updates based on state"
+      status: PENDING
+    - ac: "AC2: Anonymous vs logged-in"
+      status: PENDING
+    - ac: "AC3: Profile icon dropdown"
+      status: PENDING
+    - ac: "AC4: Mobile hamburger menu"
+      status: PENDING
+    - ac: "AC5: Active page highlighting"
+      status: PENDING
+    - ac: "AC6: Smooth transitions"
+      status: PENDING
+    - ac: "AC7: Persistence across pages"
+      status: PENDING
+    - ac: "AC8: Loading states"
+      status: PENDING
+
+risk_level: LOW
+priority: P2
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.10.1 through TS-2.10.8"
+

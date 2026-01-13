@@ -1,0 +1,74 @@
+# Quality Gate Decision
+# Story 6.4: Pricing Page with Tier Comparison
+
+gate:
+  story_id: "6.4"
+  story_name: "Pricing Page with Tier Comparison"
+  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+
+decision:
+  status: PENDING
+  date: "2026-01-13"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation verification"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+  details:
+    - ac: "AC1: /pricing page with SEO"
+      status: PENDING
+      priority: P1
+    - ac: "AC2: 3 paid tiers displayed"
+      status: PENDING
+      priority: P0
+    - ac: "AC3: Feature comparison table"
+      status: PENDING
+      priority: P1
+    - ac: "AC4: Pro tier highlighted as 'Most Popular'"
+      status: PENDING
+      priority: P2
+    - ac: "AC5: Clear CTA buttons"
+      status: PENDING
+      priority: P0
+    - ac: "AC6: Monthly pricing displayed"
+      status: PENDING
+      priority: P0
+    - ac: "AC7: Annual plan placeholder"
+      status: PENDING
+      priority: P2
+    - ac: "AC8: FAQ section"
+      status: PENDING
+      priority: P2
+    - ac: "AC9: Social proof section"
+      status: PENDING
+      priority: P2
+    - ac: "AC10: Mobile responsive"
+      status: PENDING
+      priority: P1
+    - ac: "AC11: Trust signals"
+      status: PENDING
+      priority: P2
+    - ac: "AC12: Analytics tracking"
+      status: PENDING
+      priority: P2
+
+risk_level: LOW
+priority: P2
+
+test_design:
+  document: "docs/qa/epic6-test-design.md"
+  scenarios: "TS-6.4.1 through TS-6.4.4"
+
+dependencies:
+  - "Story 6.2: Subscription Tiers Configuration"
+
+blocking_issues: []
+
+bugs:
+  p0: 0
+  p1: 0
+  p2: 0

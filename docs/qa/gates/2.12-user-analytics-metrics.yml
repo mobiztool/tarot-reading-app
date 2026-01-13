@@ -1,0 +1,51 @@
+# Quality Gate Decision
+# Story 2.12: User Analytics & Retention Metrics
+
+gate:
+  story_id: "2.12"
+  story_name: "User Analytics & Retention Metrics"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 11
+  passed: 0
+  failed: 0
+  pending: 11
+  details:
+    - ac: "AC1: Analytics events"
+      status: PENDING
+    - ac: "AC2: Cohort tracking"
+      status: PENDING
+    - ac: "AC3: User properties GA4"
+      status: PENDING
+    - ac: "AC4: Funnel tracking"
+      status: PENDING
+    - ac: "AC5: Retention metrics"
+      status: PENDING
+    - ac: "AC6: Engagement metrics"
+      status: PENDING
+    - ac: "AC7: Conversion rate"
+      status: PENDING
+    - ac: "AC8: Privacy compliance"
+      status: PENDING
+    - ac: "AC9: Dashboard (future)"
+      status: PENDING
+    - ac: "AC10: A/B test infrastructure"
+      status: PENDING
+    - ac: "AC11: No PII tracked"
+      status: PENDING
+
+risk_level: LOW
+priority: P2
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.12.1 through TS-2.12.11"
+

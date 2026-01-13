@@ -1,0 +1,517 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-rgb: 255, 255, 255;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --foreground-rgb: 255, 255, 255;
+      --background-rgb: 0, 0, 0;
+    }
+  }
+
+  /* Force font application - Deep Mystical Theme */
+  html {
+    font-family: var(--font-noto-serif-thai), 'Noto Serif Thai', Georgia, serif;
+  }
+
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
+    font-family: var(--font-noto-serif-thai), 'Noto Serif Thai', Georgia, serif;
+  }
+
+  /* Headings use Cormorant Garamond - Elegant & Mystical */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===================== */
+  /* Accessibility Styles  */
+  /* ===================== */
+
+  /* Enhanced Focus Indicators - WCAG 2.1 AA compliant */
+  *:focus-visible {
+    outline: 2px solid #a855f7;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }  /* Remove default focus for mouse users, keep for keyboard */
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* High contrast focus for buttons and interactive elements */
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid #a855f7;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.3);
+  }
+
+  /* Form elements focus */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #a855f7;
+    outline-offset: 0;
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+  }
+
+  /* Skip link styles */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #a855f7;
+    color: white;
+    padding: 8px 16px;
+    z-index: 100;
+    transition: top 0.3s;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+}
+
+/* ===================== */
+/* Reduced Motion Support */
+/* ===================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable specific animations */
+  .animate-card-glow,
+  .animate-float,
+  .animate-pulse,
+  .animate-pulse-subtle,
+  .animate-bounce,
+  .animate-spin,
+  .animate-ping,
+  .animate-shimmer,
+  .card-shimmer::before {
+    animation: none !important;
+  }
+
+  /* Disable hover transforms */
+  .card-hover:hover {
+    transform: none !important;
+  }
+}
+
+/* ===================== */
+/* Tutorial Highlight    */
+/* ===================== */
+
+.tutorial-highlight {
+  position: relative;
+  z-index: 45;
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.5),
+              0 0 20px rgba(168, 85, 247, 0.3);
+  border-radius: 8px;
+  animation: tutorial-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tutorial-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.5),
+                0 0 20px rgba(168, 85, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(168, 85, 247, 0.3),
+                0 0 40px rgba(168, 85, 247, 0.5);
+  }
+}
+
+/* Cookie Banner Animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+/* Blob Animation Delays */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* ===================== */
+/* 3D Card Flip Styles   */
+/* ===================== */
+
+/* Perspective container */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Preserve 3D transforms */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Backface visibility */
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 3D Rotations */
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.3);
+}
+
+/* Card glow animation */
+@keyframes card-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(124, 58, 237, 0.5),
+      0 0 60px rgba(245, 158, 11, 0.2);
+  }
+}
+
+.animate-card-glow {
+  animation: card-glow 2s ease-in-out infinite;
+}
+
+/* Card shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.card-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Card selection animation */
+@keyframes card-select {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-card-select {
+  animation: card-select 0.3s ease-out;
+}/* Floating card animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Sparkle effect for revealed cards */
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sparkle-effect::after {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 1.5rem;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Slide up animation for modals */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+/* Pulse subtle animation */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* ===================== */
+/* Advanced Animations   */
+/* ===================== */
+
+/* Orbiting particle animations for MysticalLoader */
+@keyframes orbit-0 {
+  from { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+}
+
+@keyframes orbit-1 {
+  from { transform: rotate(120deg) translateX(45px) rotate(-120deg); }
+  to { transform: rotate(480deg) translateX(45px) rotate(-480deg); }
+}
+
+@keyframes orbit-2 {
+  from { transform: rotate(240deg) translateX(50px) rotate(-240deg); }
+  to { transform: rotate(600deg) translateX(50px) rotate(-600deg); }
+}
+
+/* Shuffle card animation */
+@keyframes shuffle-card {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-30%) translateY(-10px) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateX(-70%) translateY(-10px) rotate(5deg);
+  }
+}
+
+/* Button micro-interactions */
+.btn-interactive {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+}
+
+.btn-interactive:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Button glow effect */
+.btn-glow {
+  position: relative;
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #a855f7, #ec4899, #f59e0b, #a855f7);
+  background-size: 400% 400%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: glow-rotate 3s linear infinite;
+}
+
+.btn-glow:hover::before {
+  opacity: 1;
+}
+
+@keyframes glow-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Toast notification animation */
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.toast-enter {
+  animation: toast-slide-in 0.4s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+.toast-exit {
+  animation: toast-slide-out 0.4s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+/* Success celebration - confetti burst */
+@keyframes confetti-burst {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.success-burst::after {
+  content: '🎉';
+  position: absolute;
+  font-size: 2rem;
+  animation: confetti-burst 0.6s ease-out forwards;
+}
+
+/* Page transition fade */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition {
+  animation: page-fade-in 0.3s ease-out forwards;
+}
+
+/* Haptic pulse for mobile (visual feedback) */
+@keyframes haptic-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.haptic-feedback {
+  animation: haptic-pulse 0.15s ease-out;
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}

@@ -1,0 +1,68 @@
+# Quality Gate Decision
+# Story 6.8: Subscription Analytics & Metrics
+
+gate:
+  story_id: "6.8"
+  story_name: "Subscription Analytics & Metrics"
+  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+
+decision:
+  status: PENDING
+  date: "2026-01-13"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation verification"
+
+acceptance_criteria:
+  total: 10
+  passed: 0
+  failed: 0
+  pending: 10
+  details:
+    - ac: "AC1: MRR, ARR, revenue per user"
+      status: PENDING
+      priority: P2
+    - ac: "AC2: New subs, cancellations, churn rate"
+      status: PENDING
+      priority: P1
+    - ac: "AC3: Tier distribution percentage"
+      status: PENDING
+      priority: P2
+    - ac: "AC4: Conversion funnels tracked"
+      status: PENDING
+      priority: P1
+    - ac: "AC5: Retention by tier"
+      status: PENDING
+      priority: P2
+    - ac: "AC6: LTV calculation per tier"
+      status: PENDING
+      priority: P2
+    - ac: "AC7: Upgrade/downgrade tracking"
+      status: PENDING
+      priority: P1
+    - ac: "AC8: Cancellation reasons collected"
+      status: PENDING
+      priority: P1
+    - ac: "AC9: Admin dashboard"
+      status: PENDING
+      priority: P2
+    - ac: "AC10: Stripe Dashboard integration"
+      status: PENDING
+      priority: P2
+
+risk_level: LOW
+priority: P2
+
+test_design:
+  document: "docs/qa/epic6-test-design.md"
+  scenarios: "TS-6.8.1 through TS-6.8.3"
+
+dependencies:
+  - "Story 6.2: Subscription Management"
+
+blocking_issues: []
+
+bugs:
+  p0: 0
+  p1: 0
+  p2: 0

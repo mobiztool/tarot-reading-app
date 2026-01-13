@@ -1,0 +1,44 @@
+# Quality Gate Decision
+# Story 7.4: Relationship Deep Dive Spread (7 Cards)
+
+gate:
+  story_id: "7.4"
+  story_name: "Relationship Deep Dive"
+  epic: "Epic 7: Premium Spreads & Features (Phase 3)"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Deeper version of Love spread (5.1)"
+
+acceptance_criteria:
+  total: 10
+  passed: 0
+  failed: 0
+  pending: 10
+
+risk_level: MEDIUM
+priority: P1
+
+card_count: 7
+positions:
+  - "You"
+  - "Partner"
+  - "Connection"
+  - "Challenges"
+  - "Strengths"
+  - "Path Forward"
+  - "Outcome"
+
+relationship_types:
+  - "Romantic"
+  - "Family"
+  - "Friendship"
+  - "Work"
+
+test_design:
+  document: "docs/qa/epic7-test-design.md"
+  scenarios: "TS-7.4.1 through TS-7.4.4"
+

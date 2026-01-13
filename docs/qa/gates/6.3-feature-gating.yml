@@ -1,0 +1,75 @@
+# Quality Gate Decision
+# Story 6.3: Feature Gating by Subscription Tier
+
+gate:
+  story_id: "6.3"
+  story_name: "Feature Gating by Subscription Tier"
+  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+
+decision:
+  status: PENDING
+  date: "2026-01-13"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation verification"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+  details:
+    - ac: "AC1: Spread access matrix (Free 2, Basic 5, Pro 10, VIP 18)"
+      status: PENDING
+      priority: P0
+    - ac: "AC2: canAccessSpread() function"
+      status: PENDING
+      priority: P0
+    - ac: "AC3: Premium gate component"
+      status: PENDING
+      priority: P1
+    - ac: "AC4: Tier requirement badge shown"
+      status: PENDING
+      priority: P1
+    - ac: "AC5: Upgrade flow from gate to pricing"
+      status: PENDING
+      priority: P1
+    - ac: "AC6: Feature comparison on gate"
+      status: PENDING
+      priority: P2
+    - ac: "AC7: Reading limits (3/day free, unlimited paid)"
+      status: PENDING
+      priority: P1
+    - ac: "AC8: Premium badge on locked spreads"
+      status: PENDING
+      priority: P2
+    - ac: "AC9: Analytics tracking (gate_shown, upgrade_clicked)"
+      status: PENDING
+      priority: P2
+    - ac: "AC10: Future-proof architecture"
+      status: PENDING
+      priority: P2
+    - ac: "AC11: Grace period support"
+      status: PENDING
+      priority: P1
+    - ac: "AC12: Error handling for denied access"
+      status: PENDING
+      priority: P1
+
+risk_level: MEDIUM
+priority: P1
+
+test_design:
+  document: "docs/qa/epic6-test-design.md"
+  scenarios: "TS-6.3.1 through TS-6.3.3"
+
+dependencies:
+  - "Story 6.2: Subscription Management"
+  - "Story 5.4: Spread Access Control"
+
+blocking_issues: []
+
+bugs:
+  p0: 0
+  p1: 0
+  p2: 0

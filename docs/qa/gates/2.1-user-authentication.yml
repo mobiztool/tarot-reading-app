@@ -1,0 +1,60 @@
+# Quality Gate Decision
+# Story 2.1: User Authentication with Supabase Auth
+
+gate:
+  story_id: "2.1"
+  story_name: "User Authentication with Supabase Auth"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 13
+  passed: 0
+  failed: 0
+  pending: 13
+  details:
+    - ac: "AC1: Supabase Auth configured"
+      status: PENDING
+    - ac: "AC2: Sign up page created"
+      status: PENDING
+    - ac: "AC3: Email validation"
+      status: PENDING
+    - ac: "AC4: Password validation"
+      status: PENDING
+    - ac: "AC5: Password strength indicator"
+      status: PENDING
+    - ac: "AC6: Google OAuth"
+      status: PENDING
+    - ac: "AC7: Facebook OAuth"
+      status: PENDING
+    - ac: "AC8: Email verification"
+      status: PENDING
+    - ac: "AC9: Sign up success redirect"
+      status: PENDING
+    - ac: "AC10: Error handling"
+      status: PENDING
+    - ac: "AC11: Terms & Privacy links"
+      status: PENDING
+    - ac: "AC12: PDPA compliance"
+      status: PENDING
+    - ac: "AC13: Analytics tracked"
+      status: PENDING
+
+risk_level: HIGH
+priority: P0
+security_critical: true
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.1.1 through TS-2.1.13"
+
+dependencies:
+  - "Story 1.2: Database ready"
+  - "Supabase project configured"
+

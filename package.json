@@ -1,0 +1,20 @@
+{
+  "name": "tarot-app",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@8.15.4",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @tarot/web dev",
+    "build": "pnpm --filter @tarot/web build",
+    "start": "pnpm --filter @tarot/web start",
+    "lint": "pnpm --filter @tarot/web lint",
+    "format": "prettier --write .",
+    "type-check": "pnpm --filter @tarot/web type-check"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.0"
+  }
+}

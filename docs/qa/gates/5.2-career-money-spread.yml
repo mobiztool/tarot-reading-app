@@ -1,0 +1,70 @@
+# Quality Gate Decision
+# Story 5.2: Career & Money Spread
+
+gate:
+  story_id: "5.2"
+  story_name: "Career & Money Spread"
+  epic: "Epic 5: Login Tier Spreads (Phase 2)"
+
+decision:
+  status: PASS
+  date: "2026-01-13"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 95
+  notes: "All tests passed. Implementation follows same pattern as 5.1."
+
+scores:
+  functionality: 100
+  code_quality: 95
+  test_coverage: 100
+  documentation: 95
+
+acceptance_criteria:
+  total: 12
+  passed: 12
+  failed: 0
+  pending: 0
+  details:
+    - ac: "AC1: /reading/career route (login-required)"
+      status: PASS
+      evidence: "src/app/reading/career/page.tsx created"
+    - ac: "AC2: 3 positions (Current, Challenge, Outcome)"
+      status: PASS
+      evidence: "PositionLabel enum updated"
+    - ac: "AC3: Career-specific interpretations"
+      status: PASS
+      evidence: "positionInterpretations.ts with career contexts"
+    - ac: "AC4: Career question examples"
+      status: PASS
+      evidence: "Thai examples in component"
+    - ac: "AC5-8: DB, Auth, Analytics"
+      status: PASS
+      evidence: "Same pattern as Story 5.1"
+    - ac: "AC9-12: Mobile, Performance"
+      status: PASS
+      evidence: "E2E tests passed"
+
+test_results:
+  unit_tests:
+    total: 9
+    passed: 9
+    failed: 0
+    file: "tests/unit/career-spread.test.ts"
+  e2e_tests:
+    total: 8
+    passed: 5
+    skipped: 3
+    failed: 0
+    file: "tests/e2e/career-spread.spec.ts"
+
+bugs:
+  p0: 0
+  p1: 0
+  p2: 0
+
+risk_level: MEDIUM
+priority: P1
+
+test_design:
+  document: "docs/qa/epic5-test-design.md"
+  scenarios: "TS-5.2.1 through TS-5.2.3"

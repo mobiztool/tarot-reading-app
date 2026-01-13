@@ -1,0 +1,85 @@
+# Quality Gate Decision
+# Story 6.12: Payment Testing & Security QA
+
+gate:
+  story_id: "6.12"
+  story_name: "Payment Testing & Security QA"
+  epic: "Epic 6: Premium Subscription & Payments (Phase 3)"
+
+decision:
+  status: PENDING
+  date: "2026-01-13"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Final QA story - must pass before Epic 6 launch"
+
+acceptance_criteria:
+  total: 12
+  passed: 0
+  failed: 0
+  pending: 12
+  details:
+    - ac: "AC1: All Stripe test cards tested"
+      status: PENDING
+      priority: P0
+    - ac: "AC2: Webhook testing complete"
+      status: PENDING
+      priority: P0
+    - ac: "AC3: Security audit passed"
+      status: PENDING
+      priority: P0
+    - ac: "AC4: Subscription lifecycle tested"
+      status: PENDING
+      priority: P0
+    - ac: "AC5: Edge cases handled"
+      status: PENDING
+      priority: P0
+    - ac: "AC6: Cross-browser payment forms work"
+      status: PENDING
+      priority: P1
+    - ac: "AC7: Mobile payment UX tested"
+      status: PENDING
+      priority: P1
+    - ac: "AC8: Refund testing (admin)"
+      status: PENDING
+      priority: P2
+    - ac: "AC9: Tax calculation verified (VAT 7%)"
+      status: PENDING
+      priority: P1
+    - ac: "AC10: All P0/P1 bugs fixed"
+      status: PENDING
+      priority: P0
+    - ac: "AC11: Legal review complete"
+      status: PENDING
+      priority: P0
+    - ac: "AC12: QA sign-off for launch"
+      status: PENDING
+      priority: P0
+
+risk_level: HIGH
+priority: P0
+security_critical: true
+
+test_design:
+  document: "docs/qa/epic6-test-design.md"
+  scenarios: "TS-6.12.1 through TS-6.12.5"
+
+dependencies:
+  - "All Stories 6.1-6.11 completed"
+  - "Legal Review"
+  - "Security Audit"
+
+blocking_issues:
+  - "Stories 6.10, 6.11 not yet implemented"
+
+launch_checklist:
+  - "Switch to production Stripe keys"
+  - "Verify webhook endpoint (production URL)"
+  - "Test one real payment (small amount)"
+  - "Configure monitoring and alerts"
+  - "Prepare rollback plan"
+
+bugs:
+  p0: 0
+  p1: 0
+  p2: 0

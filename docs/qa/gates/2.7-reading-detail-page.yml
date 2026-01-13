@@ -1,0 +1,44 @@
+# Quality Gate Decision
+# Story 2.7: Reading Detail Page (Historical)
+
+gate:
+  story_id: "2.7"
+  story_name: "Reading Detail Page"
+  epic: "Epic 2: User Account & Reading History"
+
+decision:
+  status: PENDING
+  date: "2026-01-07"
+  reviewer: "Quinn (QA Lead)"
+  confidence: 0
+  notes: "Awaiting implementation"
+
+acceptance_criteria:
+  total: 7
+  passed: 0
+  failed: 0
+  pending: 7
+  details:
+    - ac: "AC1: Dynamic route"
+      status: PENDING
+    - ac: "AC2: Reuse result components"
+      status: PENDING
+    - ac: "AC3: Delete functionality"
+      status: PENDING
+    - ac: "AC4: Permission checks (RLS)"
+      status: PENDING
+    - ac: "AC5: URL shareability"
+      status: PENDING
+    - ac: "AC6: 404 handling"
+      status: PENDING
+    - ac: "AC7: Analytics"
+      status: PENDING
+
+risk_level: MEDIUM
+priority: P1
+security_critical: true
+
+test_design:
+  document: "docs/qa/epic2-test-design.md"
+  scenarios: "TS-2.7.1 through TS-2.7.7"
+

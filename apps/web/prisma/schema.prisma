@@ -1,0 +1,363 @@
+// Prisma Schema for Tarot Reading App
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// CARDS TABLE (Reference Data - 78 Tarot Cards)
+// ============================================================================
+model Card {
+  id                 String   @id @default(uuid()) @db.Uuid
+  number             Int
+  name               String   @db.VarChar(100)
+  name_th            String   @db.VarChar(100)
+  suit               Suit
+  arcana             Arcana
+  image_url          String   @db.Text
+  image_back_url     String   @default("/cards/back.webp") @db.Text
+  meaning_upright    String   @db.Text
+  meaning_reversed   String   @db.Text
+  keywords_upright   String[] @db.VarChar(50)
+  keywords_reversed  String[] @db.VarChar(50)
+  symbolism          String?  @db.Text
+  advice             String   @db.Text
+  element            Element?
+  slug               String   @unique @db.VarChar(100)
+  created_at         DateTime @default(now()) @db.Timestamptz
+
+  reading_cards      ReadingCard[]
+
+  @@map("cards")
+  @@unique([suit, number])
+  @@index([suit])
+  @@index([arcana])
+  @@index([slug])
+}
+
+enum Suit {
+  major_arcana
+  wands
+  cups
+  swords
+  pentacles
+}
+
+enum Arcana {
+  major
+  minor
+}
+
+enum Element {
+  fire
+  water
+  air
+  earth
+}
+
+// ============================================================================
+// USERS TABLE
+// ============================================================================
+model User {
+  id                  String       @id @db.Uuid
+  email               String       @unique @db.VarChar(255)
+  name                String?      @db.VarChar(100)
+  profile_picture_url String?      @db.Text
+  created_at          DateTime     @default(now()) @db.Timestamptz
+  updated_at          DateTime     @updatedAt @db.Timestamptz
+  last_login_at       DateTime?    @db.Timestamptz
+  email_verified      Boolean      @default(false)
+  auth_provider       AuthProvider @default(email)
+  
+  // Stripe Integration (Story 6.1)
+  stripeCustomerId    String?      @unique @map("stripe_customer_id") @db.VarChar(255)
+
+  readings         Reading[]
+  analytics_events AnalyticsEvent[]
+  subscriptions    Subscription[]
+  invoices         Invoice[]
+
+  @@map("users")
+  @@index([email])
+  @@index([created_at])
+  @@index([stripeCustomerId])
+}
+
+enum AuthProvider {
+  email
+  google
+  facebook
+}
+
+// ============================================================================
+// READINGS TABLE
+// ============================================================================
+model Reading {
+  id            String      @id @default(uuid()) @db.Uuid
+  user_id       String?     @db.Uuid
+  session_id    String?     @db.VarChar(255)
+  reading_type  ReadingType
+  question      String?     @db.VarChar(500)
+  created_at    DateTime    @default(now()) @db.Timestamptz
+  updated_at    DateTime    @updatedAt @db.Timestamptz
+  is_favorite   Boolean     @default(false)
+  notes         String?     @db.VarChar(2000)
+
+  user             User?            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  reading_cards    ReadingCard[]
+  analytics_events AnalyticsEvent[]
+
+  @@map("readings")
+  @@index([user_id])
+  @@index([session_id])
+  @@index([created_at(sort: Desc)])
+  @@index([user_id, created_at(sort: Desc)])
+  @@index([reading_type])
+}
+
+enum ReadingType {
+  daily
+  three_card
+  love_relationships
+  career_money
+  yes_no
+}
+
+// ============================================================================
+// READING_CARDS TABLE (Junction Table)
+// ============================================================================
+model ReadingCard {
+  id             String         @id @default(uuid()) @db.Uuid
+  reading_id     String         @db.Uuid
+  card_id        String         @db.Uuid
+  position       Int
+  position_label PositionLabel?
+  is_reversed    Boolean        @default(false)
+  created_at     DateTime       @default(now()) @db.Timestamptz
+
+  reading        Reading @relation(fields: [reading_id], references: [id], onDelete: Cascade)
+  card           Card    @relation(fields: [card_id], references: [id], onDelete: Restrict)
+
+  @@map("reading_cards")
+  @@unique([reading_id, position])
+  @@index([reading_id])
+  @@index([card_id])
+}
+
+enum PositionLabel {
+  past
+  present
+  future
+  you
+  other
+  relationship_energy
+  current_situation
+  challenge_opportunity
+  outcome
+  yes_no_answer
+}
+
+// ============================================================================
+// POSITION CONTEXTS TABLE (Story 5.6 - Login Tier Content)
+// ============================================================================
+model PositionContext {
+  id                    String      @id @default(uuid()) @db.Uuid
+  position_label        PositionLabel @unique
+  spread_type           ReadingType
+  name                  String      @db.VarChar(100)
+  name_th               String      @db.VarChar(100)
+  description           String      @db.Text
+  description_th        String      @db.Text
+  focus_areas           String[]    @db.VarChar(200)
+  focus_areas_th        String[]    @db.VarChar(200)
+  interpretation_guide  String      @db.Text
+  interpretation_guide_th String    @db.Text
+  example_questions     String[]    @db.VarChar(200)
+  example_questions_th  String[]    @db.VarChar(200)
+  created_at            DateTime    @default(now()) @db.Timestamptz
+  updated_at            DateTime    @updatedAt @db.Timestamptz
+
+  @@map("position_contexts")
+  @@index([spread_type])
+}
+
+// ============================================================================
+// ANALYTICS EVENTS TABLE (Story 5.7 - Spread Usage Analytics)
+// ============================================================================
+model AnalyticsEvent {
+  id          String   @id @default(uuid()) @db.Uuid
+  event_type  AnalyticsEventType
+  spread_type ReadingType?
+  user_id     String?  @db.Uuid
+  reading_id  String?  @db.Uuid
+  
+  // Metadata
+  device_type DeviceType?
+  session_id  String?  @db.VarChar(255)
+  metadata    Json?    @db.JsonB
+  duration_ms Int?     // Time in milliseconds
+  step        String?  @db.VarChar(50) // For funnel tracking
+  
+  // Timestamps
+  created_at  DateTime @default(now()) @db.Timestamptz
+
+  // Relations
+  user        User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  reading     Reading? @relation(fields: [reading_id], references: [id], onDelete: SetNull)
+
+  @@map("analytics_events")
+  @@index([event_type, spread_type, created_at(sort: Desc)])
+  @@index([user_id, created_at(sort: Desc)])
+  @@index([spread_type, created_at(sort: Desc)])
+  @@index([session_id])
+  @@index([created_at(sort: Desc)])
+}
+
+enum AnalyticsEventType {
+  // Spread Events
+  spread_page_view
+  spread_started
+  spread_completed
+  spread_abandoned
+  
+  // Conversion Funnel
+  spread_gate_shown
+  login_prompt_clicked
+  signup_completed
+  
+  // Engagement
+  question_submitted
+  card_drawn
+  result_viewed
+  result_shared
+  
+  // Retention
+  user_returned
+  spread_repeated
+  
+  // Subscription Events (Story 6.11)
+  cancellation_attempted
+  cancellation_completed
+  retention_offer_accepted
+  feature_request_from_cancellation
+  subscription_upgrade
+  subscription_downgrade
+  trial_started
+  trial_converted
+  trial_canceled
+}
+
+enum DeviceType {
+  mobile
+  tablet
+  desktop
+}
+
+// ============================================================================
+// SUBSCRIPTIONS TABLE (Story 6.1 - Stripe Integration)
+// ============================================================================
+model Subscription {
+  id                   String             @id @default(uuid()) @db.Uuid
+  user_id              String             @db.Uuid
+  stripe_subscription_id String           @unique @db.VarChar(255)
+  stripe_customer_id   String             @db.VarChar(255)
+  stripe_price_id      String             @db.VarChar(255)
+  status               SubscriptionStatus
+  current_period_start DateTime           @db.Timestamptz
+  current_period_end   DateTime           @db.Timestamptz
+  cancel_at            DateTime?          @db.Timestamptz
+  canceled_at          DateTime?          @db.Timestamptz
+  ended_at             DateTime?          @db.Timestamptz
+  
+  // Cancellation Survey (Story 6.8)
+  cancellation_reason   String?           @db.VarChar(100)
+  cancellation_feedback String?           @db.Text
+  
+  // Metadata for pending changes (Story 6.10)
+  metadata              Json?             @default("{}")
+  
+  created_at           DateTime           @default(now()) @db.Timestamptz
+  updated_at           DateTime           @updatedAt @db.Timestamptz
+
+  user     User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  invoices Invoice[]
+
+  @@map("subscriptions")
+  @@index([user_id])
+  @@index([stripe_subscription_id])
+  @@index([stripe_customer_id])
+  @@index([status])
+}
+
+enum SubscriptionStatus {
+  active
+  past_due
+  canceled
+  incomplete
+  incomplete_expired
+  trialing
+  unpaid
+  paused
+}
+
+enum SubscriptionTier {
+  free
+  basic
+  pro
+  vip
+}
+
+// ============================================================================
+// INVOICES TABLE (Story 6.7 - Invoice Generation & Email Receipts)
+// ============================================================================
+model Invoice {
+  id                  String    @id @default(uuid()) @db.Uuid
+  user_id             String    @db.Uuid
+  subscription_id     String?   @db.Uuid
+  
+  // Stripe Reference
+  stripe_invoice_id   String    @unique @db.VarChar(255)
+  stripe_invoice_number String? @db.VarChar(100)
+  
+  // Invoice Details
+  amount              Int       // in satang (cents)
+  currency            String    @default("thb") @db.VarChar(10)
+  status              InvoiceStatus
+  description         String?   @db.Text
+  
+  // Dates
+  paid_at             DateTime? @db.Timestamptz
+  period_start        DateTime? @db.Timestamptz
+  period_end          DateTime? @db.Timestamptz
+  
+  // PDF & URLs
+  invoice_pdf_url     String?   @db.Text
+  hosted_invoice_url  String?   @db.Text
+  
+  // Timestamps
+  created_at          DateTime  @default(now()) @db.Timestamptz
+  updated_at          DateTime  @updatedAt @db.Timestamptz
+
+  // Relations
+  user                User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  subscription        Subscription? @relation(fields: [subscription_id], references: [id], onDelete: SetNull)
+
+  @@map("invoices")
+  @@index([user_id])
+  @@index([user_id, paid_at(sort: Desc)])
+  @@index([subscription_id])
+  @@index([stripe_invoice_id])
+}
+
+enum InvoiceStatus {
+  draft
+  open
+  paid
+  void
+  uncollectible
+}
