@@ -127,6 +127,7 @@ enum ReadingType {
   career_money
   yes_no
   celtic_cross
+  decision_making
 }
 
 // ============================================================================
@@ -172,6 +173,12 @@ enum PositionLabel {
   cc_external
   cc_hopes_fears
   cc_outcome
+  // Decision Making positions (5 cards)
+  dm_option_a_pros
+  dm_option_a_cons
+  dm_option_b_pros
+  dm_option_b_cons
+  dm_best_path
 }
 
 // ============================================================================

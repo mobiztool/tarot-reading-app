@@ -2,8 +2,16 @@ import { useState, useCallback } from 'react';
 import { DrawnCard } from '@/types/card';
 import { useAuth } from './useAuth';
 
-type PositionLabel = 'past' | 'present' | 'future' | 'you' | 'other' | 'relationship_energy' | 'current_situation' | 'challenge_opportunity' | 'outcome';
-type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no';
+type PositionLabel = 
+  | 'past' | 'present' | 'future' | 'you' | 'other' | 'relationship_energy' 
+  | 'current_situation' | 'challenge_opportunity' | 'outcome' | 'yes_no_answer'
+  // Celtic Cross positions
+  | 'cc_present' | 'cc_challenge' | 'cc_past' | 'cc_future' | 'cc_above'
+  | 'cc_below' | 'cc_advice' | 'cc_external' | 'cc_hopes_fears' | 'cc_outcome'
+  // Decision Making positions
+  | 'dm_option_a_pros' | 'dm_option_a_cons' | 'dm_option_b_pros' | 'dm_option_b_cons' | 'dm_best_path';
+
+type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making';
 
 interface SaveReadingCard {
   cardId: string;
@@ -79,6 +87,15 @@ export function useSaveReading(): UseSaveReadingReturn {
           positionLabels = ['you', 'other', 'relationship_energy'];
         } else if (readingType === 'career_money') {
           positionLabels = ['current_situation', 'challenge_opportunity', 'outcome'];
+        } else if (readingType === 'celtic_cross') {
+          positionLabels = [
+            'cc_present', 'cc_challenge', 'cc_past', 'cc_future', 'cc_above',
+            'cc_below', 'cc_advice', 'cc_external', 'cc_hopes_fears', 'cc_outcome',
+          ];
+        } else if (readingType === 'decision_making') {
+          positionLabels = [
+            'dm_option_a_pros', 'dm_option_a_cons', 'dm_option_b_pros', 'dm_option_b_cons', 'dm_best_path',
+          ];
         } else {
           positionLabels = [undefined];
         }

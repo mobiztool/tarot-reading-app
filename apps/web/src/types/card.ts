@@ -30,7 +30,10 @@ export type PositionLabel =
   // Celtic Cross positions (10 cards)
   | 'cc_present' | 'cc_challenge' | 'cc_past' | 'cc_future' 
   | 'cc_above' | 'cc_below' | 'cc_advice' | 'cc_external' 
-  | 'cc_hopes_fears' | 'cc_outcome';
+  | 'cc_hopes_fears' | 'cc_outcome'
+  // Decision Making positions (5 cards)
+  | 'dm_option_a_pros' | 'dm_option_a_cons' 
+  | 'dm_option_b_pros' | 'dm_option_b_cons' | 'dm_best_path';
 
 export interface DrawnCard {
   card: TarotCardData;

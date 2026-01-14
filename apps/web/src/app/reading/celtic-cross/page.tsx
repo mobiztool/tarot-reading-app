@@ -8,7 +8,7 @@ import { SUIT_NAMES } from '@/types/card';
 import { generateDetailedPrediction } from '@/lib/tarot/cardMeanings';
 import { PageLoader } from '@/components/ui/MysticalLoader';
 import { PremiumGate } from '@/components/gates';
-import { canAccessSpread, SPREAD_INFO } from '@/lib/access-control/spreads';
+import { SPREAD_INFO } from '@/lib/access-control/spread-info';
 
 // Celtic Cross specific position type
 type CelticCrossPosition = 
@@ -75,16 +75,27 @@ export default function CelticCrossReadingPage() {
 
   const allRevealed = revealedCards.every((r) => r);
 
-  // Check premium access
+  // Check premium access via API
   useEffect(() => {
     async function checkAccess() {
-      const result = await canAccessSpread(user?.id || null, 'celtic_cross');
-      setAccessCheck({
-        checked: true,
-        allowed: result.allowed,
-        currentTier: result.currentTier,
-        requiredTier: result.requiredTier,
-      });
+      try {
+        const response = await fetch('/api/access-check?spread=celtic_cross');
+        const result = await response.json();
+        setAccessCheck({
+          checked: true,
+          allowed: result.allowed,
+          currentTier: result.currentTier,
+          requiredTier: result.requiredTier,
+        });
+      } catch (error) {
+        console.error('Access check error:', error);
+        setAccessCheck({
+          checked: true,
+          allowed: false,
+          currentTier: 'free',
+          requiredTier: 'pro',
+        });
+      }
     }
     
     if (!isLoadingAuth) {

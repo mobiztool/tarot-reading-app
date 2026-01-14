@@ -160,9 +160,27 @@ export function drawCelticCrossSpread(deck: TarotCardData[]): DrawnCard[] {
 }
 
 /**
+ * Draw five cards for Decision Making spread
+ * Position 0: Option A Pros (ข้อดีของตัวเลือก A)
+ * Position 1: Option A Cons (ข้อเสียของตัวเลือก A)
+ * Position 2: Option B Pros (ข้อดีของตัวเลือก B)
+ * Position 3: Option B Cons (ข้อเสียของตัวเลือก B)
+ * Position 4: Best Path (เส้นทางที่ดีที่สุด)
+ */
+export function drawDecisionMakingSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 5, [
+    'dm_option_a_pros',
+    'dm_option_a_cons',
+    'dm_option_b_pros',
+    'dm_option_b_cons',
+    'dm_best_path',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
-export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross';
+export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision';
 
 export interface ReadingSession {
   id: string;
@@ -194,6 +212,9 @@ export function createReadingSession(
       break;
     case 'celtic-cross':
       drawnCards = drawCelticCrossSpread(deck);
+      break;
+    case 'decision':
+      drawnCards = drawDecisionMakingSpread(deck);
       break;
     case 'three-card':
     default:

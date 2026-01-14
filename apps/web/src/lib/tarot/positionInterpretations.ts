@@ -791,8 +791,221 @@ export const CELTIC_CROSS_POSITIONS: Record<string, PositionContext> = {
 };
 
 // =============================================================================
+// DECISION MAKING SPREAD POSITIONS (5 Cards)
+// =============================================================================
+
+export const DECISION_MAKING_POSITIONS: Record<string, PositionContext> = {
+  dm_option_a_pros: {
+    id: 'dm_option_a_pros',
+    name: 'Option A Pros',
+    nameTh: 'ข้อดีของตัวเลือก A',
+    description: 'The positive aspects, benefits, and advantages of choosing Option A',
+    descriptionTh: 'แง่บวก ประโยชน์ และข้อได้เปรียบของการเลือกตัวเลือก A',
+    focusAreas: [
+      'Benefits of this choice',
+      'Positive outcomes',
+      'What you gain',
+      'Strengths of this path',
+      'Opportunities it opens',
+    ],
+    focusAreasTh: [
+      'ประโยชน์ของตัวเลือกนี้',
+      'ผลลัพธ์เชิงบวก',
+      'สิ่งที่คุณได้รับ',
+      'จุดแข็งของเส้นทางนี้',
+      'โอกาสที่เปิดออก',
+    ],
+    interpretationGuide:
+      'This card shows what works in favor of Option A. ' +
+      'Even a challenging card here may reveal hidden advantages. ' +
+      'Look for growth potential and positive energy.',
+    interpretationGuideTh:
+      'ไพ่นี้แสดงสิ่งที่เอื้อประโยชน์ต่อตัวเลือก A ' +
+      'แม้ไพ่ท้าทายที่นี่อาจเผยข้อได้เปรียบที่ซ่อนอยู่ ' +
+      'มองหาศักยภาพในการเติบโตและพลังงานเชิงบวก',
+    exampleQuestions: [
+      'What good comes from choosing this?',
+      'What are the advantages?',
+      'How does this benefit me?',
+    ],
+    exampleQuestionsTh: [
+      'อะไรดีที่มาจากการเลือกนี้?',
+      'ข้อได้เปรียบคืออะไร?',
+      'สิ่งนี้เป็นประโยชน์ต่อฉันอย่างไร?',
+    ],
+  },
+
+  dm_option_a_cons: {
+    id: 'dm_option_a_cons',
+    name: 'Option A Cons',
+    nameTh: 'ข้อเสียของตัวเลือก A',
+    description: 'The challenges, risks, and drawbacks of choosing Option A',
+    descriptionTh: 'ความท้าทาย ความเสี่ยง และข้อเสียของการเลือกตัวเลือก A',
+    focusAreas: [
+      'Risks involved',
+      'Potential problems',
+      'What you might lose',
+      'Challenges to overcome',
+      'Hidden costs',
+    ],
+    focusAreasTh: [
+      'ความเสี่ยงที่เกี่ยวข้อง',
+      'ปัญหาที่อาจเกิดขึ้น',
+      'สิ่งที่คุณอาจสูญเสีย',
+      'ความท้าทายที่ต้องข้ามผ่าน',
+      'ต้นทุนที่ซ่อนอยู่',
+    ],
+    interpretationGuide:
+      'This card reveals what to watch out for with Option A. ' +
+      'A positive card here may mean minor concerns. ' +
+      'A challenging card signals significant obstacles.',
+    interpretationGuideTh:
+      'ไพ่นี้เผยสิ่งที่ต้องระวังกับตัวเลือก A ' +
+      'ไพ่เชิงบวกที่นี่อาจหมายถึงข้อกังวลเล็กน้อย ' +
+      'ไพ่ท้าทายบ่งบอกอุปสรรคสำคัญ',
+    exampleQuestions: [
+      'What are the risks?',
+      'What could go wrong?',
+      'What am I sacrificing?',
+    ],
+    exampleQuestionsTh: [
+      'ความเสี่ยงคืออะไร?',
+      'อะไรอาจผิดพลาดได้?',
+      'ฉันกำลังเสียสละอะไร?',
+    ],
+  },
+
+  dm_option_b_pros: {
+    id: 'dm_option_b_pros',
+    name: 'Option B Pros',
+    nameTh: 'ข้อดีของตัวเลือก B',
+    description: 'The positive aspects, benefits, and advantages of choosing Option B',
+    descriptionTh: 'แง่บวก ประโยชน์ และข้อได้เปรียบของการเลือกตัวเลือก B',
+    focusAreas: [
+      'Benefits of this choice',
+      'Positive outcomes',
+      'What you gain',
+      'Strengths of this path',
+      'Opportunities it opens',
+    ],
+    focusAreasTh: [
+      'ประโยชน์ของตัวเลือกนี้',
+      'ผลลัพธ์เชิงบวก',
+      'สิ่งที่คุณได้รับ',
+      'จุดแข็งของเส้นทางนี้',
+      'โอกาสที่เปิดออก',
+    ],
+    interpretationGuide:
+      'This card shows what works in favor of Option B. ' +
+      'Compare this with Option A pros to weigh advantages. ' +
+      'Look for unique benefits this path offers.',
+    interpretationGuideTh:
+      'ไพ่นี้แสดงสิ่งที่เอื้อประโยชน์ต่อตัวเลือก B ' +
+      'เปรียบเทียบกับข้อดีของตัวเลือก A เพื่อชั่งน้ำหนักข้อได้เปรียบ ' +
+      'มองหาประโยชน์เฉพาะที่เส้นทางนี้มอบให้',
+    exampleQuestions: [
+      'What good comes from choosing this?',
+      'What are the advantages?',
+      'How does this benefit me?',
+    ],
+    exampleQuestionsTh: [
+      'อะไรดีที่มาจากการเลือกนี้?',
+      'ข้อได้เปรียบคืออะไร?',
+      'สิ่งนี้เป็นประโยชน์ต่อฉันอย่างไร?',
+    ],
+  },
+
+  dm_option_b_cons: {
+    id: 'dm_option_b_cons',
+    name: 'Option B Cons',
+    nameTh: 'ข้อเสียของตัวเลือก B',
+    description: 'The challenges, risks, and drawbacks of choosing Option B',
+    descriptionTh: 'ความท้าทาย ความเสี่ยง และข้อเสียของการเลือกตัวเลือก B',
+    focusAreas: [
+      'Risks involved',
+      'Potential problems',
+      'What you might lose',
+      'Challenges to overcome',
+      'Hidden costs',
+    ],
+    focusAreasTh: [
+      'ความเสี่ยงที่เกี่ยวข้อง',
+      'ปัญหาที่อาจเกิดขึ้น',
+      'สิ่งที่คุณอาจสูญเสีย',
+      'ความท้าทายที่ต้องข้ามผ่าน',
+      'ต้นทุนที่ซ่อนอยู่',
+    ],
+    interpretationGuide:
+      'This card reveals what to watch out for with Option B. ' +
+      'Compare with Option A cons to see which path has fewer obstacles. ' +
+      'Consider if these challenges are manageable.',
+    interpretationGuideTh:
+      'ไพ่นี้เผยสิ่งที่ต้องระวังกับตัวเลือก B ' +
+      'เปรียบเทียบกับข้อเสียของตัวเลือก A เพื่อดูว่าเส้นทางใดมีอุปสรรคน้อยกว่า ' +
+      'พิจารณาว่าความท้าทายเหล่านี้จัดการได้หรือไม่',
+    exampleQuestions: [
+      'What are the risks?',
+      'What could go wrong?',
+      'What am I sacrificing?',
+    ],
+    exampleQuestionsTh: [
+      'ความเสี่ยงคืออะไร?',
+      'อะไรอาจผิดพลาดได้?',
+      'ฉันกำลังเสียสละอะไร?',
+    ],
+  },
+
+  dm_best_path: {
+    id: 'dm_best_path',
+    name: 'Best Path',
+    nameTh: 'เส้นทางที่ดีที่สุด',
+    description: 'The overall guidance and recommended direction for your decision',
+    descriptionTh: 'คำแนะนำโดยรวมและทิศทางที่แนะนำสำหรับการตัดสินใจของคุณ',
+    focusAreas: [
+      'Overall recommendation',
+      'Higher guidance',
+      'What serves you best',
+      'The wisest choice',
+      'Long-term perspective',
+    ],
+    focusAreasTh: [
+      'คำแนะนำโดยรวม',
+      'การนำทางที่สูงกว่า',
+      'สิ่งที่ดีที่สุดสำหรับคุณ',
+      'ทางเลือกที่ฉลาดที่สุด',
+      'มุมมองระยะยาว',
+    ],
+    interpretationGuide:
+      'This card synthesizes the entire reading. ' +
+      'It may point to one option, or suggest a third way. ' +
+      'Consider this as wisdom from your higher self.',
+    interpretationGuideTh:
+      'ไพ่นี้สังเคราะห์การอ่านทั้งหมด ' +
+      'อาจชี้ไปที่ตัวเลือกหนึ่ง หรือแนะนำทางที่สาม ' +
+      'พิจารณานี่เป็นปัญญาจากตัวตนที่สูงกว่าของคุณ',
+    exampleQuestions: [
+      'Which path is best for me?',
+      'What should I ultimately choose?',
+      'What does my higher self advise?',
+    ],
+    exampleQuestionsTh: [
+      'เส้นทางใดดีที่สุดสำหรับฉัน?',
+      'ในที่สุดฉันควรเลือกอะไร?',
+      'ตัวตนที่สูงกว่าของฉันแนะนำอะไร?',
+    ],
+  },
+};
+
+// =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
+
+/**
+ * Get position context for a Decision Making spread position
+ */
+export function getDecisionMakingPositionContext(position: string): PositionContext | undefined {
+  return DECISION_MAKING_POSITIONS[position];
+}
 
 /**
  * Get position context for a love spread position
@@ -825,7 +1038,7 @@ export function getCelticCrossPositionContext(position: string): PositionContext
 /**
  * Get all position contexts for a spread type
  */
-export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross'): PositionContext[] {
+export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross' | 'decision_making'): PositionContext[] {
   switch (spreadType) {
     case 'love':
       return Object.values(LOVE_SPREAD_POSITIONS);
@@ -835,6 +1048,8 @@ export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'c
       return [YES_NO_POSITION];
     case 'celtic_cross':
       return Object.values(CELTIC_CROSS_POSITIONS);
+    case 'decision_making':
+      return Object.values(DECISION_MAKING_POSITIONS);
     default:
       return [];
   }
@@ -845,7 +1060,7 @@ export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'c
  * Use this to contextualize card meanings based on position
  */
 export function getPositionInterpretationPrefix(
-  spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross',
+  spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross' | 'decision_making',
   position: string,
   isReversed: boolean
 ): string {
@@ -859,6 +1074,8 @@ export function getPositionInterpretationPrefix(
     context = YES_NO_POSITION;
   } else if (spreadType === 'celtic_cross') {
     context = CELTIC_CROSS_POSITIONS[position];
+  } else if (spreadType === 'decision_making') {
+    context = DECISION_MAKING_POSITIONS[position];
   }
 
   if (!context) return '';

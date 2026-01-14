@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { SPREAD_INFO, type SpreadInfo } from '@/lib/access-control';
+import { SPREAD_INFO, type SpreadInfo } from '@/lib/access-control/spread-info';
 import { SUBSCRIPTION_TIERS } from '@/lib/subscription/tiers';
 import { SubscriptionTier } from '@/types/subscription';
 

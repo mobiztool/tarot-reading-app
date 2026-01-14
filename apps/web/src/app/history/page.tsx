@@ -8,9 +8,19 @@ import { Header } from '@/components/layout/Header';
 import { useAuth, useAnalytics } from '@/lib/hooks';
 import { PageLoader } from '@/components/ui/MysticalLoader';
 
+type PositionLabelType = 
+  | 'past' | 'present' | 'future' | 'you' | 'other' | 'relationship_energy'
+  | 'current_situation' | 'challenge_opportunity' | 'outcome' | 'yes_no_answer'
+  | 'cc_present' | 'cc_challenge' | 'cc_past' | 'cc_future' | 'cc_above'
+  | 'cc_below' | 'cc_advice' | 'cc_external' | 'cc_hopes_fears' | 'cc_outcome'
+  | 'dm_option_a_pros' | 'dm_option_a_cons' | 'dm_option_b_pros' | 'dm_option_b_cons' | 'dm_best_path'
+  | null;
+
+type ReadingTypeValue = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making';
+
 interface ReadingCard {
   position: number;
-  positionLabel: 'past' | 'present' | 'future' | null;
+  positionLabel: PositionLabelType;
   isReversed: boolean;
   card: {
     id: string;
@@ -23,17 +33,45 @@ interface ReadingCard {
 
 interface Reading {
   id: string;
-  readingType: 'daily' | 'three_card';
+  readingType: ReadingTypeValue;
   question: string | null;
   createdAt: string;
   isFavorite: boolean;
   cards: ReadingCard[];
 }
 
-const POSITION_LABELS = {
+const POSITION_LABELS: Record<string, { th: string; emoji: string; color: string }> = {
+  // Three Card
   past: { th: 'อดีต', emoji: '⏪', color: 'bg-blue-500/20 text-blue-300' },
   present: { th: 'ปัจจุบัน', emoji: '⏺️', color: 'bg-purple-500/20 text-purple-300' },
   future: { th: 'อนาคต', emoji: '⏩', color: 'bg-amber-500/20 text-amber-300' },
+  // Love
+  you: { th: 'ตัวคุณ', emoji: '💜', color: 'bg-pink-500/20 text-pink-300' },
+  other: { th: 'อีกฝ่าย', emoji: '💙', color: 'bg-blue-500/20 text-blue-300' },
+  relationship_energy: { th: 'พลังงานความสัมพันธ์', emoji: '💕', color: 'bg-rose-500/20 text-rose-300' },
+  // Career
+  current_situation: { th: 'สถานการณ์ปัจจุบัน', emoji: '📍', color: 'bg-cyan-500/20 text-cyan-300' },
+  challenge_opportunity: { th: 'ความท้าทาย/โอกาส', emoji: '⚡', color: 'bg-yellow-500/20 text-yellow-300' },
+  outcome: { th: 'ผลลัพธ์', emoji: '🎯', color: 'bg-green-500/20 text-green-300' },
+  // Yes/No
+  yes_no_answer: { th: 'คำตอบ', emoji: '❓', color: 'bg-indigo-500/20 text-indigo-300' },
+  // Celtic Cross
+  cc_present: { th: 'ปัจจุบัน', emoji: '⏺️', color: 'bg-purple-500/20 text-purple-300' },
+  cc_challenge: { th: 'อุปสรรค', emoji: '⚔️', color: 'bg-red-500/20 text-red-300' },
+  cc_past: { th: 'อดีต', emoji: '⏪', color: 'bg-blue-500/20 text-blue-300' },
+  cc_future: { th: 'อนาคต', emoji: '⏩', color: 'bg-amber-500/20 text-amber-300' },
+  cc_above: { th: 'เป้าหมาย', emoji: '⬆️', color: 'bg-yellow-500/20 text-yellow-300' },
+  cc_below: { th: 'จิตใต้สำนึก', emoji: '⬇️', color: 'bg-teal-500/20 text-teal-300' },
+  cc_advice: { th: 'คำแนะนำ', emoji: '💡', color: 'bg-green-500/20 text-green-300' },
+  cc_external: { th: 'ภายนอก', emoji: '🌍', color: 'bg-sky-500/20 text-sky-300' },
+  cc_hopes_fears: { th: 'หวัง/กลัว', emoji: '🌓', color: 'bg-violet-500/20 text-violet-300' },
+  cc_outcome: { th: 'ผลลัพธ์', emoji: '🎯', color: 'bg-rose-500/20 text-rose-300' },
+  // Decision Making
+  dm_option_a_pros: { th: 'ข้อดี A', emoji: '✅', color: 'bg-emerald-500/20 text-emerald-300' },
+  dm_option_a_cons: { th: 'ข้อเสีย A', emoji: '⚠️', color: 'bg-orange-500/20 text-orange-300' },
+  dm_option_b_pros: { th: 'ข้อดี B', emoji: '✅', color: 'bg-emerald-500/20 text-emerald-300' },
+  dm_option_b_cons: { th: 'ข้อเสีย B', emoji: '⚠️', color: 'bg-orange-500/20 text-orange-300' },
+  dm_best_path: { th: 'ทางเลือกที่ดี', emoji: '🌟', color: 'bg-amber-500/20 text-amber-300' },
 };
 
 function formatDate(dateString: string): string {
@@ -61,17 +99,21 @@ function formatDate(dateString: string): string {
   });
 }
 
-function ReadingTypeLabel({ type }: { type: 'daily' | 'three_card' }) {
-  if (type === 'daily') {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/20 text-amber-300 rounded-full text-xs font-medium">
-        ☀️ ดูดวงประจำวัน
-      </span>
-    );
-  }
+const READING_TYPE_LABELS: Record<ReadingTypeValue, { label: string; emoji: string; color: string }> = {
+  daily: { label: 'ดูดวงประจำวัน', emoji: '☀️', color: 'bg-amber-500/20 text-amber-300' },
+  three_card: { label: 'ไพ่ 3 ใบ', emoji: '🌙', color: 'bg-purple-500/20 text-purple-300' },
+  love_relationships: { label: 'ความรัก', emoji: '💕', color: 'bg-pink-500/20 text-pink-300' },
+  career_money: { label: 'การงาน/การเงิน', emoji: '💼', color: 'bg-emerald-500/20 text-emerald-300' },
+  yes_no: { label: 'ใช่/ไม่', emoji: '❓', color: 'bg-indigo-500/20 text-indigo-300' },
+  celtic_cross: { label: 'กากบาทเซลติก', emoji: '✝️', color: 'bg-violet-500/20 text-violet-300' },
+  decision_making: { label: 'ตัดสินใจ', emoji: '⚖️', color: 'bg-cyan-500/20 text-cyan-300' },
+};
+
+function ReadingTypeLabel({ type }: { type: ReadingTypeValue }) {
+  const info = READING_TYPE_LABELS[type] || READING_TYPE_LABELS.daily;
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-medium">
-      🌙 ไพ่ 3 ใบ
+    <span className={`inline-flex items-center gap-1 px-2 py-1 ${info.color} rounded-full text-xs font-medium`}>
+      {info.emoji} {info.label}
     </span>
   );
 }
@@ -148,15 +190,21 @@ function ReadingHistoryCard({
             {/* Cards Grid */}
             <div
               className={`grid gap-4 mb-4 ${
-                reading.readingType === 'three_card'
-                  ? 'grid-cols-3'
-                  : 'grid-cols-1 max-w-[200px] mx-auto'
+                reading.cards.length === 1
+                  ? 'grid-cols-1 max-w-[200px] mx-auto'
+                  : reading.cards.length === 3
+                    ? 'grid-cols-3'
+                    : reading.cards.length === 5
+                      ? 'grid-cols-5'
+                      : reading.cards.length === 10
+                        ? 'grid-cols-5'
+                        : 'grid-cols-3'
               }`}
             >
               {reading.cards.map((rc) => (
                 <div key={rc.position} className="text-center">
                   {/* Position Label */}
-                  {rc.positionLabel && (
+                  {rc.positionLabel && POSITION_LABELS[rc.positionLabel] && (
                     <div
                       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs mb-2 ${POSITION_LABELS[rc.positionLabel].color}`}
                     >
@@ -236,7 +284,7 @@ export default function HistoryPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'daily' | 'three_card'>('all');
+  const [filter, setFilter] = useState<'all' | ReadingTypeValue>('all');
   const [dateRange, setDateRange] = useState<'7d' | '30d' | 'all'>('all');
   const [search, setSearch] = useState('');
   const [searchDebounce, setSearchDebounce] = useState('');
@@ -314,7 +362,7 @@ export default function HistoryPage() {
   }, [authLoading, fetchReadings]);
 
   // Handle filter change
-  const handleFilterChange = (newFilter: 'all' | 'daily' | 'three_card') => {
+  const handleFilterChange = (newFilter: 'all' | ReadingTypeValue) => {
     setFilter(newFilter);
     track('history_filter_used', { filter: newFilter });
   };
@@ -437,10 +485,10 @@ export default function HistoryPage() {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex justify-center gap-2 mb-6">
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
             <button
               onClick={() => handleFilterChange('all')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 filter === 'all'
                   ? 'bg-purple-600 text-white'
                   : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
@@ -448,26 +496,19 @@ export default function HistoryPage() {
             >
               ทั้งหมด
             </button>
-            <button
-              onClick={() => handleFilterChange('daily')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                filter === 'daily'
-                  ? 'bg-amber-600 text-white'
-                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-              }`}
-            >
-              ☀️ ประจำวัน
-            </button>
-            <button
-              onClick={() => handleFilterChange('three_card')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                filter === 'three_card'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-              }`}
-            >
-              🌙 3 ใบ
-            </button>
+            {(Object.entries(READING_TYPE_LABELS) as [ReadingTypeValue, typeof READING_TYPE_LABELS[ReadingTypeValue]][]).map(([key, info]) => (
+              <button
+                key={key}
+                onClick={() => handleFilterChange(key)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  filter === key
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                }`}
+              >
+                {info.emoji} {info.label}
+              </button>
+            ))}
           </div>
 
           {/* Loading State */}

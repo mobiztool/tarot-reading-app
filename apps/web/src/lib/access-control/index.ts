@@ -1,17 +1,25 @@
 /**
  * Access Control Module
  * Centralized exports for all access control functionality
+ * 
+ * NOTE: This file should ONLY be used in SERVER components/routes.
+ * For client components, import directly from './spread-info'
  */
 
-import { SPREAD_INFO, type SpreadType, type SpreadInfo } from './spreads';
-
-// Spread access control
+// Client-safe exports (no Prisma)
 export {
   type SpreadType,
   type SpreadInfo,
-  type AccessCheckResult,
   SPREAD_ACCESS_MATRIX,
   SPREAD_INFO,
+  TIER_LEVELS,
+  getMinimumTier,
+  canAccessSpreadClient,
+} from './spread-info';
+
+// Server-only exports (requires Prisma)
+export {
+  type AccessCheckResult,
   canAccessSpread,
   getUserTier,
   getUserSubscription,
@@ -23,7 +31,7 @@ export {
   isHigherTier,
 } from './spreads';
 
-// Reading limits
+// Reading limits (server-only)
 export {
   type ReadingLimitResult,
   canCreateReading,
@@ -32,6 +40,8 @@ export {
 } from './reading-limits';
 
 // Backward compatibility aliases
+import { type SpreadInfo, SPREAD_INFO, type SpreadType } from './spread-info';
+
 export type SpreadConfig = SpreadInfo;
 export type UserTier = 'guest' | 'free' | 'premium';
 

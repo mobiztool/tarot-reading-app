@@ -85,6 +85,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
+    if (body.readingType === 'celtic_cross' && body.cards.length !== 10) {
+      return NextResponse.json(
+        { success: false, error: 'Celtic Cross reading must have exactly 10 cards' },
+        { status: 400 }
+      );
+    }
+
+    if (body.readingType === 'decision_making' && body.cards.length !== 5) {
+      return NextResponse.json(
+        { success: false, error: 'Decision Making reading must have exactly 5 cards' },
+        { status: 400 }
+      );
+    }
+
     // Create reading with cards in a transaction
     const reading = await prisma.reading.create({
       data: {
