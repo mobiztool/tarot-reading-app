@@ -1,5 +1,5 @@
 # Quality Gate Decision
-# Story 7.9: Phase 3 Testing & Quality Assurance
+# Story 7.9: Phase 3 Testing & QA
 
 gate:
   story_id: "7.9"
@@ -11,7 +11,7 @@ decision:
   date: "2026-01-07"
   reviewer: "Quinn (QA Lead)"
   confidence: 0
-  notes: "Comprehensive Phase 3 QA - payment + premium"
+  notes: "Comprehensive Epic 7 testing - 4 weeks execution"
 
 acceptance_criteria:
   total: 12
@@ -19,24 +19,41 @@ acceptance_criteria:
   failed: 0
   pending: 12
 
-risk_level: HIGH
+risk_level: CRITICAL
 priority: P0
+complexity: HIGH
 
-testing_scope:
-  - "Payment system (Story 6.12)"
-  - "4 premium spreads"
-  - "Subscription lifecycle"
-  - "Feature gating"
-  - "Premium UI"
-  - "Phase 1-2 regression"
-  - "E2E premium journey"
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 2  # OPS-001 (testing incomplete), OPS-002 (bugs missed)
+    high: 1      # OPS-003 (timeline pressure)
+    medium: 2
+    low: 0
+  highest:
+    id: OPS-001
+    score: 9
+    title: 'Testing incomplete before production launch'
+    impact: 'Major bugs in production, user dissatisfaction, revenue loss, reputation damage'
+    probability: 'High - timeline pressure causes test shortcuts'
+  recommendations:
+    must_fix:
+      - 'Execute ALL test scenarios from Stories 7.1-7.8 (no shortcuts)'
+      - 'Do NOT skip tests due to timeline pressure'
+      - 'Fix all P0/P1 bugs before launch (zero tolerance)'
+      - 'Obtain formal QA sign-off document'
+      - 'Complete device/browser testing matrix'
+      - 'Content expert review all 27 positions'
+    monitor:
+      - 'Test execution progress (daily standup)'
+      - 'Bug triage and resolution rate'
+      - 'Coverage metrics (must meet targets)'
 
-approval_required:
-  - "Legal review"
-  - "QA sign-off"
-  - "PM approval"
+risk_profile: "docs/qa/assessments/epic-7-consolidated-risk-20260113.md#story-79"
+test_design: "docs/qa/test-design/7.9-phase3-testing-qa-test-design.md"
 
-test_design:
-  document: "docs/qa/epic7-test-design.md"
-  scenarios: "TS-7.9.1 through TS-7.9.6"
-
+# CRITICAL NOTE
+testing_mandate: |
+  This story CANNOT be compromised. Epic 7 success depends on thorough testing.
+  Timeline pressure is NOT a valid reason to skip tests.
+  QA has veto authority on launch if testing incomplete.

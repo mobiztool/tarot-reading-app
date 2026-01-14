@@ -1,5 +1,5 @@
 # Quality Gate Decision
-# Story 7.10: Premium Spreads Integration & Launch Preparation
+# Story 7.10: Premium Spreads Integration & Launch
 
 gate:
   story_id: "7.10"
@@ -11,7 +11,7 @@ decision:
   date: "2026-01-07"
   reviewer: "Quinn (QA Lead)"
   confidence: 0
-  notes: "Launch readiness - all components integrated"
+  notes: "Cross-epic integration and production launch"
 
 acceptance_criteria:
   total: 10
@@ -19,20 +19,44 @@ acceptance_criteria:
   failed: 0
   pending: 10
 
-risk_level: MEDIUM
-priority: P1
+risk_level: HIGH
+priority: P0
+complexity: MEDIUM
 
-launch_checklist:
-  - "All spreads in reading selection"
-  - "Navigation updated"
-  - "Documentation ready"
-  - "Email templates created"
-  - "Marketing materials ready"
-  - "Soft launch (50-100 beta)"
-  - "Feedback collected"
-  - "Go/no-go decision"
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 1  # OPS-001 (deployment fails)
+    high: 2      # TECH-001 (integration breaks), OPS-002 (rollback untested)
+    medium: 3
+    low: 1
+  highest:
+    id: OPS-001
+    score: 9
+    title: 'Production deployment fails or causes outage'
+    impact: 'App down, revenue loss, user frustration, reputation damage'
+    probability: 'High - complex deployment with many moving parts'
+  recommendations:
+    must_fix:
+      - 'Test deployment process in staging environment first'
+      - 'Smoke test suite automated and ready (15-20 min execution)'
+      - 'Rollback procedure tested and documented (execute in <5 min)'
+      - 'Team on standby for 24 hours post-launch'
+      - 'Cross-epic integration testing (Epics 1-6 + 7)'
+    monitor:
+      - 'Error rate (alert if >1% for >5 min)'
+      - 'Performance metrics (page load, API response)'
+      - 'Premium spread usage analytics (track adoption)'
+      - 'Payment success rate (ensure no regression)'
 
-test_design:
-  document: "docs/qa/epic7-test-design.md"
-  scenarios: "TS-7.10.1 through TS-7.10.3"
+risk_profile: "docs/qa/assessments/epic-7-consolidated-risk-20260113.md#story-710"
+test_design: "docs/qa/test-design/7.10-integration-launch-test-design.md"
 
+# Launch Readiness Checklist
+launch_blockers:
+  - "Story 7.9 complete with QA sign-off"
+  - "Zero P0 bugs open"
+  - "Smoke tests automated"
+  - "Rollback tested"
+  - "Monitoring configured"
+  - "Team available for 24h support"

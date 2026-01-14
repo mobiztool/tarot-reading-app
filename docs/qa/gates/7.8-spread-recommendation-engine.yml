@@ -11,7 +11,7 @@ decision:
   date: "2026-01-07"
   reviewer: "Quinn (QA Lead)"
   confidence: 0
-  notes: "Keyword matching - ML in Phase 4"
+  notes: "Personalized spread suggestions based on history/keywords"
 
 acceptance_criteria:
   total: 10
@@ -22,13 +22,28 @@ acceptance_criteria:
 risk_level: MEDIUM
 priority: P2
 
-keyword_mappings:
-  love_relationship: ["Love", "Relationship Deep Dive"]
-  career_money: ["Career"]
-  decision: ["Decision Making"]
-  self: ["Self Discovery"]
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 0
+    high: 2  # BUS-001 (irrelevant recommendations), TECH-001 (algorithm accuracy)
+    medium: 3
+    low: 1
+  highest:
+    id: BUS-001
+    score: 6
+    title: 'Recommendation algorithm inaccurate or irrelevant'
+    impact: 'Poor recommendations annoy users, low click-through'
+    probability: 'Medium - algorithm complexity, keyword matching'
+  recommendations:
+    must_fix:
+      - 'Test algorithm with diverse user histories'
+      - 'Validate keyword matching (Thai and English)'
+      - 'User feedback on recommendation quality (>70% helpful)'
+    monitor:
+      - 'Recommendation click-through rate'
+      - 'User feedback on helpfulness'
+      - 'Algorithm accuracy over time'
 
-test_design:
-  document: "docs/qa/epic7-test-design.md"
-  scenarios: "TS-7.8.1 through TS-7.8.3"
-
+risk_profile: "docs/qa/assessments/epic-7-consolidated-risk-20260113.md#story-78"
+test_design: "docs/qa/test-design/7.7-7.8-ui-recommendations-test-design.md#story-78"

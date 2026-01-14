@@ -11,7 +11,7 @@ decision:
   date: "2026-01-07"
   reviewer: "Quinn (QA Lead)"
   confidence: 0
-  notes: "Psychology-focused, introspective"
+  notes: "Introspective 5-card spread"
 
 acceptance_criteria:
   total: 10
@@ -21,18 +21,29 @@ acceptance_criteria:
 
 risk_level: MEDIUM
 priority: P1
+complexity: MEDIUM
 
-card_count: 5
-positions:
-  - "Core Self"
-  - "Shadow"
-  - "Strength"
-  - "Weakness"
-  - "Potential"
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 0
+    high: 2  # SEC-001 (access), BUS-001 (content quality)
+    medium: 2
+    low: 1
+  highest:
+    id: BUS-001
+    score: 6
+    title: 'Content must be introspective and valuable'
+    impact: 'Generic content = low value = subscription churn'
+    probability: 'Medium - requires deep, introspective writing'
+  recommendations:
+    must_fix:
+      - 'Content QA for introspective quality'
+      - 'Access control tests (Pro/VIP only)'
+      - '5-card layout testing'
+    monitor:
+      - 'User satisfaction with self-discovery content'
+      - 'Completion rate'
 
-unique_feature: "Journaling prompt included"
-
-test_design:
-  document: "docs/qa/epic7-test-design.md"
-  scenarios: "TS-7.3.1 through TS-7.3.4"
-
+risk_profile: "docs/qa/assessments/epic-7-consolidated-risk-20260113.md#story-73"
+test_design: "docs/qa/test-design/7.2-7.4-premium-spreads-test-design.md#story-73"

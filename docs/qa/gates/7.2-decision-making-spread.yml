@@ -1,5 +1,5 @@
 # Quality Gate Decision
-# Story 7.2: Decision Making Spread (5 Cards)
+# Story 7.2: Decision Making Spread (5 Cards, 2 Options)
 
 gate:
   story_id: "7.2"
@@ -11,7 +11,7 @@ decision:
   date: "2026-01-07"
   reviewer: "Quinn (QA Lead)"
   confidence: 0
-  notes: "Unique 2-option input feature"
+  notes: "Unique 2-option comparison spread"
 
 acceptance_criteria:
   total: 10
@@ -21,11 +21,29 @@ acceptance_criteria:
 
 risk_level: MEDIUM
 priority: P1
+complexity: MEDIUM
 
-card_count: 5
-unique_feature: "User inputs 2 options to compare"
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 0
+    high: 2  # TECH-001 (2-option input), SEC-001 (access control)
+    medium: 3
+    low: 1
+  highest:
+    id: TECH-001
+    score: 6
+    title: '2-option input UX complexity'
+    impact: 'Confusing UX, users don't understand how to use'
+    probability: 'Medium - unique input pattern not used elsewhere'
+  recommendations:
+    must_fix:
+      - 'Test 2-option input validation (both required)'
+      - 'Access control tests (Pro/VIP only)'
+      - 'UX testing with real users (clear instructions)'
+    monitor:
+      - 'User feedback on 2-option input usability'
+      - 'Completion rate vs other spreads'
 
-test_design:
-  document: "docs/qa/epic7-test-design.md"
-  scenarios: "TS-7.2.1 through TS-7.2.4"
-
+risk_profile: "docs/qa/assessments/epic-7-consolidated-risk-20260113.md#story-72"
+test_design: "docs/qa/test-design/7.2-7.4-premium-spreads-test-design.md#story-72"

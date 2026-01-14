@@ -11,7 +11,7 @@ decision:
   date: "2026-01-07"
   reviewer: "Quinn (QA Lead)"
   confidence: 0
-  notes: "Deeper version of Love spread (5.1)"
+  notes: "7-card relationship analysis (You vs Them)"
 
 acceptance_criteria:
   total: 10
@@ -21,24 +21,29 @@ acceptance_criteria:
 
 risk_level: MEDIUM
 priority: P1
+complexity: MEDIUM
 
-card_count: 7
-positions:
-  - "You"
-  - "Partner"
-  - "Connection"
-  - "Challenges"
-  - "Strengths"
-  - "Path Forward"
-  - "Outcome"
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 0
+    high: 3  # SEC-001, BUS-001, TECH-001
+    medium: 2
+    low: 1
+  highest:
+    id: BUS-001
+    score: 6
+    title: 'Relationship content sensitivity'
+    impact: 'Judgmental/insensitive content damages reputation'
+    probability: 'Medium - relationship advice requires careful wording'
+  recommendations:
+    must_fix:
+      - 'Relationship content reviewed for sensitivity (non-judgmental)'
+      - '7-card layout tested on all devices'
+      - 'Access control tests (Pro/VIP only)'
+    monitor:
+      - 'User feedback on relationship content'
+      - 'Content appropriateness'
 
-relationship_types:
-  - "Romantic"
-  - "Family"
-  - "Friendship"
-  - "Work"
-
-test_design:
-  document: "docs/qa/epic7-test-design.md"
-  scenarios: "TS-7.4.1 through TS-7.4.4"
-
+risk_profile: "docs/qa/assessments/epic-7-consolidated-risk-20260113.md#story-74"
+test_design: "docs/qa/test-design/7.2-7.4-premium-spreads-test-design.md#story-74"

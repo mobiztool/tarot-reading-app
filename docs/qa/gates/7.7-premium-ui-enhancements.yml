@@ -1,5 +1,5 @@
 # Quality Gate Decision
-# Story 7.7: Premium UI Enhancements & Badge System
+# Story 7.7: Premium UI Enhancements
 
 gate:
   story_id: "7.7"
@@ -11,7 +11,7 @@ decision:
   date: "2026-01-07"
   reviewer: "Quinn (QA Lead)"
   confidence: 0
-  notes: "Visual differentiation - premium feel"
+  notes: "Polish: premium card backs, animations, styling"
 
 acceptance_criteria:
   total: 10
@@ -22,13 +22,26 @@ acceptance_criteria:
 risk_level: LOW
 priority: P2
 
-visual_elements:
-  - "Premium badge"
-  - "Gold color accents"
-  - "Special animations"
-  - "Exclusive card backs (optional)"
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 0
+    high: 0
+    medium: 2  # PERF-001, BUS-001
+    low: 2
+  highest:
+    id: PERF-001
+    score: 4
+    title: 'Animation performance with premium effects'
+    impact: 'Janky animations look unprofessional'
+    probability: 'Medium - enhanced animations more intensive'
+  recommendations:
+    must_fix:
+      - 'Performance testing premium animations (60fps target)'
+      - 'Test on older devices'
+    monitor:
+      - 'Animation frame rate'
+      - 'User feedback on visual enhancements'
 
-test_design:
-  document: "docs/qa/epic7-test-design.md"
-  scenarios: "TS-7.7.1 through TS-7.7.3"
-
+risk_profile: "docs/qa/assessments/epic-7-consolidated-risk-20260113.md#story-77"
+test_design: "docs/qa/test-design/7.7-7.8-ui-recommendations-test-design.md#story-77"
