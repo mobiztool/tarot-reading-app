@@ -67,7 +67,7 @@ export default function CelticCrossReadingPage() {
   const { cards, isLoading: isLoadingCards } = useCards();
 
   // Use tarot reading with real cards
-  const { readingState, drawnCards, revealedCards, startReading, revealCard, resetReading } =
+  const { readingState, drawnCards, revealedCards, startReading, revealCard, revealAllCards, resetReading } =
     useTarotReading(cards.length > 0 ? cards : undefined);
 
   // Save reading hook
@@ -450,7 +450,15 @@ export default function CelticCrossReadingPage() {
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900 py-8 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-amber-300 mb-2">เปิดไพ่ทีละใบ</h2>
-          <p className="text-slate-400 mb-8">คลิกที่ไพ่ใบที่ {nextCardToReveal + 1} เพื่อเปิดเผย</p>
+          <p className="text-slate-400 mb-4">คลิกที่ไพ่ใบที่ {nextCardToReveal + 1} เพื่อเปิดเผย</p>
+          
+          {/* Skip Animation Button */}
+          <button
+            onClick={revealAllCards}
+            className="mb-8 px-4 py-2 bg-slate-700/50 hover:bg-slate-600/50 text-slate-400 hover:text-slate-200 text-sm rounded-lg transition-colors border border-slate-600/50"
+          >
+            ⏩ ข้ามไปผลลัพธ์
+          </button>
 
           {/* Celtic Cross Layout */}
           <div className="relative mx-auto" style={{ maxWidth: '800px' }}>
@@ -721,6 +729,76 @@ export default function CelticCrossReadingPage() {
               })()}
             </div>
           )}
+
+          {/* Combined Summary Section */}
+          <div className="bg-gradient-to-br from-amber-900/30 to-rose-900/30 border border-amber-500/30 rounded-2xl p-6 mb-8">
+            <h2 className="text-xl font-bold text-amber-300 mb-4 flex items-center gap-2">
+              <span className="text-2xl">✨</span>
+              สรุปภาพรวม Celtic Cross
+            </h2>
+            
+            {/* Summary Overview */}
+            <div className="space-y-4 text-slate-300 leading-relaxed">
+              {/* Present & Challenge */}
+              <div className="p-4 bg-slate-800/50 rounded-xl">
+                <h3 className="text-purple-300 font-medium mb-2">🎯 สถานการณ์ปัจจุบัน</h3>
+                <p>
+                  ไพ่ <span className="text-amber-300 font-medium">{drawnCards[0]?.card.nameTh}</span> 
+                  {drawnCards[0]?.isReversed && ' (กลับหัว)'} บ่งบอกถึงสถานการณ์ปัจจุบันของคุณ 
+                  ขณะที่ <span className="text-amber-300 font-medium">{drawnCards[1]?.card.nameTh}</span>
+                  {drawnCards[1]?.isReversed && ' (กลับหัว)'} แสดงอุปสรรคหรือความท้าทายที่คุณกำลังเผชิญ
+                </p>
+              </div>
+              
+              {/* Past & Future */}
+              <div className="p-4 bg-slate-800/50 rounded-xl">
+                <h3 className="text-blue-300 font-medium mb-2">⏳ อดีตและอนาคต</h3>
+                <p>
+                  รากฐานจาก <span className="text-amber-300 font-medium">{drawnCards[2]?.card.nameTh}</span>
+                  {drawnCards[2]?.isReversed && ' (กลับหัว)'} ส่งผลต่อปัจจุบัน 
+                  และกำลังมุ่งหน้าไปยังพลังงานของ <span className="text-amber-300 font-medium">{drawnCards[3]?.card.nameTh}</span>
+                  {drawnCards[3]?.isReversed && ' (กลับหัว)'} ในอนาคตอันใกล้
+                </p>
+              </div>
+              
+              {/* Conscious & Subconscious */}
+              <div className="p-4 bg-slate-800/50 rounded-xl">
+                <h3 className="text-teal-300 font-medium mb-2">🧠 จิตสำนึกและจิตใต้สำนึก</h3>
+                <p>
+                  ความคิดที่คุณรับรู้คือ <span className="text-amber-300 font-medium">{drawnCards[4]?.card.nameTh}</span>
+                  {drawnCards[4]?.isReversed && ' (กลับหัว)'} 
+                  ในขณะที่ลึกลงไป <span className="text-amber-300 font-medium">{drawnCards[5]?.card.nameTh}</span>
+                  {drawnCards[5]?.isReversed && ' (กลับหัว)'} กำลังขับเคลื่อนพฤติกรรมของคุณ
+                </p>
+              </div>
+              
+              {/* Staff Summary */}
+              <div className="p-4 bg-slate-800/50 rounded-xl">
+                <h3 className="text-green-300 font-medium mb-2">📊 แนวทางและผลลัพธ์</h3>
+                <p>
+                  คำแนะนำคือพลังของ <span className="text-amber-300 font-medium">{drawnCards[6]?.card.nameTh}</span>
+                  {drawnCards[6]?.isReversed && ' (กลับหัว)'} • 
+                  อิทธิพลภายนอก: <span className="text-amber-300 font-medium">{drawnCards[7]?.card.nameTh}</span>
+                  {drawnCards[7]?.isReversed && ' (กลับหัว)'} • 
+                  ความหวัง/กลัว: <span className="text-amber-300 font-medium">{drawnCards[8]?.card.nameTh}</span>
+                  {drawnCards[8]?.isReversed && ' (กลับหัว)'}
+                </p>
+              </div>
+              
+              {/* Final Outcome */}
+              <div className="p-4 bg-gradient-to-r from-rose-900/50 to-amber-900/50 rounded-xl border border-rose-500/30">
+                <h3 className="text-rose-300 font-medium mb-2">🎯 ผลลัพธ์สุดท้าย</h3>
+                <p className="text-lg">
+                  ทุกอย่างกำลังมุ่งหน้าไปยัง <span className="text-amber-300 font-bold">{drawnCards[9]?.card.nameTh}</span>
+                  {drawnCards[9]?.isReversed && ' (กลับหัว)'} — 
+                  {drawnCards[9]?.isReversed 
+                    ? ' อาจต้องระวังและปรับตัวเพื่อให้ได้ผลลัพธ์ที่ดีที่สุด'
+                    : ' แสดงถึงศักยภาพเชิงบวกและโอกาสที่รออยู่'
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Quick Navigation */}
           <div className="text-center mb-8">

@@ -58,7 +58,7 @@ export default function DecisionMakingReadingPage() {
   const { cards, isLoading: isLoadingCards } = useCards();
 
   // Use tarot reading with real cards
-  const { readingState, drawnCards, revealedCards, startReading, revealCard, resetReading } =
+  const { readingState, drawnCards, revealedCards, startReading, revealCard, revealAllCards, resetReading } =
     useTarotReading(cards.length > 0 ? cards : undefined);
 
   // Save reading hook
@@ -156,8 +156,14 @@ export default function DecisionMakingReadingPage() {
   useEffect(() => {
     if (allRevealed && drawnCards.length === 5 && !hasSavedRef.current) {
       hasSavedRef.current = true;
-      const questionText = `ตัวเลือก A: ${optionA} | ตัวเลือก B: ${optionB}`;
-      saveReading('decision_making' as Parameters<typeof saveReading>[0], drawnCards, questionText).then((result) => {
+      const questionText = `เปรียบเทียบ: "${optionA}" vs "${optionB}"`;
+      saveReading(
+        'decision_making' as Parameters<typeof saveReading>[0],
+        drawnCards,
+        questionText,
+        undefined,
+        { optionA, optionB } // Pass options separately
+      ).then((result) => {
         if (result) {
           setIsSaved(true);
         }
@@ -502,6 +508,14 @@ export default function DecisionMakingReadingPage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-cyan-300 mb-2">เปิดไพ่ทีละใบ</h2>
           <p className="text-slate-400 mb-4">คลิกที่ไพ่ใบที่ {nextCardToReveal + 1} เพื่อเปิดเผย</p>
+          
+          {/* Skip Animation Button */}
+          <button
+            onClick={revealAllCards}
+            className="mb-6 px-4 py-2 bg-slate-700/50 hover:bg-slate-600/50 text-slate-400 hover:text-slate-200 text-sm rounded-lg transition-colors border border-slate-600/50"
+          >
+            ⏩ ข้ามไปผลลัพธ์
+          </button>
 
           {/* Options reminder */}
           <div className="flex justify-center gap-4 mb-8">

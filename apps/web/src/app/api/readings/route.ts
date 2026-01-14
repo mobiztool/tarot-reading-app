@@ -19,6 +19,8 @@ interface SaveReadingCard {
 interface SaveReadingRequest {
   readingType: string;
   question?: string;
+  optionA?: string; // For Decision Making spread
+  optionB?: string; // For Decision Making spread
   cards: SaveReadingCard[];
   userId?: string;
   sessionId?: string;
@@ -104,6 +106,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       data: {
         reading_type: body.readingType,
         question: body.question || null,
+        option_a: body.optionA || null, // For Decision Making spread
+        option_b: body.optionB || null, // For Decision Making spread
         user_id: body.userId || null,
         session_id: body.sessionId || null,
         reading_cards: {

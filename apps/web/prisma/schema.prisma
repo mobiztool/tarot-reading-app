@@ -103,6 +103,8 @@ model Reading {
   session_id    String?     @db.VarChar(255)
   reading_type  ReadingType
   question      String?     @db.VarChar(500)
+  option_a      String?     @db.VarChar(255) // Decision Making: Option A text
+  option_b      String?     @db.VarChar(255) // Decision Making: Option B text
   created_at    DateTime    @default(now()) @db.Timestamptz
   updated_at    DateTime    @updatedAt @db.Timestamptz
   is_favorite   Boolean     @default(false)

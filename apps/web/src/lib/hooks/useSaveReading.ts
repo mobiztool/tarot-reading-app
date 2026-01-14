@@ -23,6 +23,8 @@ interface SaveReadingCard {
 interface SaveReadingRequest {
   readingType: ReadingType;
   question?: string;
+  optionA?: string; // For Decision Making spread
+  optionB?: string; // For Decision Making spread
   cards: SaveReadingCard[];
   userId?: string;
 }
@@ -45,12 +47,18 @@ interface SavedReading {
   }>;
 }
 
+interface DecisionOptions {
+  optionA?: string;
+  optionB?: string;
+}
+
 interface UseSaveReadingReturn {
   saveReading: (
     readingType: ReadingType,
     drawnCards: DrawnCard[],
     question?: string,
-    positionLabels?: PositionLabel[]
+    positionLabels?: PositionLabel[],
+    options?: DecisionOptions
   ) => Promise<SavedReading | null>;
   isSaving: boolean;
   savedReading: SavedReading | null;
@@ -71,7 +79,8 @@ export function useSaveReading(): UseSaveReadingReturn {
       readingType: ReadingType,
       drawnCards: DrawnCard[],
       question?: string,
-      customPositionLabels?: PositionLabel[]
+      customPositionLabels?: PositionLabel[],
+      options?: DecisionOptions
     ): Promise<SavedReading | null> => {
       setIsSaving(true);
       setError(null);
@@ -103,6 +112,8 @@ export function useSaveReading(): UseSaveReadingReturn {
         const requestBody: SaveReadingRequest = {
           readingType,
           question,
+          optionA: options?.optionA, // For Decision Making spread
+          optionB: options?.optionB, // For Decision Making spread
           userId: user?.id, // Include user ID if logged in
           cards: drawnCards.map((drawnCard, index) => ({
             cardId: drawnCard.card.id,
