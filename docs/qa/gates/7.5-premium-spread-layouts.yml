@@ -32,3 +32,28 @@ test_design:
   document: "docs/qa/epic7-test-design.md"
   scenarios: "TS-7.5.1 through TS-7.5.4"
 
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 1  # TECH-001
+    high: 3      # TECH-002, PERF-001, TECH-003
+    medium: 4
+    low: 2
+  highest:
+    id: TECH-001
+    score: 9
+    title: 'Layout component bugs affect all premium spreads'
+    impact: 'Single component failure blocks Stories 7.1, 7.2, 7.3, 7.4'
+    probability: 'High - complex shared component with multiple use cases'
+  recommendations:
+    must_fix:
+      - 'Complete Story 7.5 BEFORE starting Stories 7.1-7.4 (blocking dependency)'
+      - 'Integration tests with all 4 spread types (TC-7.5-120-151)'
+      - 'Unit test coverage >95% for layout component'
+      - 'Responsive testing at all breakpoints (desktop, tablet, mobile)'
+    monitor:
+      - 'Component reusability across spreads'
+      - 'Performance with different card counts (5, 7, 10)'
+      - 'Animation performance on various devices'
+
+risk_profile: "docs/qa/assessments/7.5-risk-20260113.md"

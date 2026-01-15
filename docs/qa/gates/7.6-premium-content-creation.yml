@@ -41,3 +41,28 @@ test_design:
   document: "docs/qa/epic7-test-design.md"
   scenarios: "TS-7.6.1 through TS-7.6.4"
 
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 2  # BUS-001, BUS-002
+    high: 2      # DATA-001, BUS-003
+    medium: 3
+    low: 1
+  highest:
+    id: BUS-001
+    score: 9
+    title: 'Content quality insufficient for premium price'
+    impact: 'Low perceived value, subscription churn, negative reviews'
+    probability: 'High - subjective quality, large content volume (27 positions)'
+  recommendations:
+    must_fix:
+      - 'Tarot expert creates/reviews all 27 position interpretations'
+      - 'Thai native speaker reviews language quality (not machine translated)'
+      - 'User testing validates premium value (target >4.5/5 satisfaction)'
+      - 'Content depth 100-200 words per position (2x free content)'
+    monitor:
+      - 'Content completion timeline (target 5-7 days)'
+      - 'User feedback on interpretation quality'
+      - 'Subscription churn rate (should decrease with quality content)'
+
+risk_profile: "docs/qa/assessments/7.6-risk-20260113.md"

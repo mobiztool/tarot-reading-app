@@ -45,3 +45,28 @@ dependencies:
   - "Story 7.6: Content"
   - "Epic 6: Subscription tier check"
 
+# Risk Assessment (Added 2026-01-13)
+risk_summary:
+  totals:
+    critical: 2  # SEC-001, TECH-001
+    high: 3      # PERF-001, BUS-001, TECH-002
+    medium: 5
+    low: 2
+  highest:
+    id: SEC-001
+    score: 9
+    title: 'Unauthorized premium access bypass'
+    impact: 'Revenue loss - users access paid content without subscription'
+    probability: 'High - complex access control with multiple edge cases'
+  recommendations:
+    must_fix:
+      - 'Implement server-side tier validation in middleware and API'
+      - 'Add comprehensive access control tests (TC-7.1-001 to TC-7.1-007)'
+      - 'Device/browser testing matrix (10+ combinations)'
+      - 'Performance testing with 10 cards (load time <2s, animation 60fps)'
+    monitor:
+      - 'Unauthorized access attempts (alert on >5/hour)'
+      - 'Page load times (alert if >2s p95)'
+      - 'Celtic Cross completion rate'
+
+risk_profile: "docs/qa/assessments/7.1-risk-20260113.md"
