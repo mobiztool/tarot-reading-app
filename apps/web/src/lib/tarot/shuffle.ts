@@ -196,6 +196,28 @@ export function drawSelfDiscoverySpread(deck: TarotCardData[]): DrawnCard[] {
 }
 
 /**
+ * Draw seven cards for Relationship Deep Dive spread
+ * Position 0: You (คุณ) - Your current state in the relationship
+ * Position 1: Them (อีกฝ่าย) - Their current state in the relationship
+ * Position 2: Connection (เชื่อมโยง) - The dynamic between you
+ * Position 3: Your Feelings (ความรู้สึกของคุณ) - Your true feelings
+ * Position 4: Their Feelings (ความรู้สึกของอีกฝ่าย) - Their true feelings
+ * Position 5: Challenges (ความท้าทาย) - What needs work
+ * Position 6: Future Potential (อนาคต) - Where this is heading
+ */
+export function drawRelationshipDeepDiveSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 7, [
+    'rdd_you',
+    'rdd_them',
+    'rdd_connection',
+    'rdd_your_feelings',
+    'rdd_their_feelings',
+    'rdd_challenges',
+    'rdd_future_potential',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
 export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive';
@@ -236,6 +258,9 @@ export function createReadingSession(
       break;
     case 'self-discovery':
       drawnCards = drawSelfDiscoverySpread(deck);
+      break;
+    case 'relationship-deep-dive':
+      drawnCards = drawRelationshipDeepDiveSpread(deck);
       break;
     case 'three-card':
     default:
