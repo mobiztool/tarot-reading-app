@@ -9,9 +9,13 @@ type PositionLabel =
   | 'cc_present' | 'cc_challenge' | 'cc_past' | 'cc_future' | 'cc_above'
   | 'cc_below' | 'cc_advice' | 'cc_external' | 'cc_hopes_fears' | 'cc_outcome'
   // Decision Making positions
-  | 'dm_option_a_pros' | 'dm_option_a_cons' | 'dm_option_b_pros' | 'dm_option_b_cons' | 'dm_best_path';
+  | 'dm_option_a_pros' | 'dm_option_a_cons' | 'dm_option_b_pros' | 'dm_option_b_cons' | 'dm_best_path'
+  // Self Discovery positions
+  | 'sd_core_self' | 'sd_strengths' | 'sd_challenges' | 'sd_hidden_potential' | 'sd_path_forward'
+  // Relationship Deep Dive positions
+  | 'rdd_you' | 'rdd_them' | 'rdd_connection' | 'rdd_your_feelings' | 'rdd_their_feelings' | 'rdd_challenges' | 'rdd_future_potential';
 
-type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making';
+type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive';
 
 interface SaveReadingCard {
   cardId: string;
@@ -104,6 +108,14 @@ export function useSaveReading(): UseSaveReadingReturn {
         } else if (readingType === 'decision_making') {
           positionLabels = [
             'dm_option_a_pros', 'dm_option_a_cons', 'dm_option_b_pros', 'dm_option_b_cons', 'dm_best_path',
+          ];
+        } else if (readingType === 'self_discovery') {
+          positionLabels = [
+            'sd_core_self', 'sd_strengths', 'sd_challenges', 'sd_hidden_potential', 'sd_path_forward',
+          ];
+        } else if (readingType === 'relationship_deep_dive') {
+          positionLabels = [
+            'rdd_you', 'rdd_them', 'rdd_connection', 'rdd_your_feelings', 'rdd_their_feelings', 'rdd_challenges', 'rdd_future_potential',
           ];
         } else {
           positionLabels = [undefined];

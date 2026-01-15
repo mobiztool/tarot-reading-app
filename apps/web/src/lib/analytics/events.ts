@@ -1,7 +1,7 @@
 // Custom Analytics Event Definitions
 // Type-safe event tracking for GA4 and other platforms
 
-export type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no';
+export type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive';
 
 // ============================================================================
 // Event Definitions

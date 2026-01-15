@@ -178,9 +178,27 @@ export function drawDecisionMakingSpread(deck: TarotCardData[]): DrawnCard[] {
 }
 
 /**
+ * Draw five cards for Self Discovery spread
+ * Position 0: Core Self (ตัวตนแท้จริง) - Who you are now
+ * Position 1: Strengths (จุดแข็ง) - What empowers you
+ * Position 2: Challenges (ความท้าทาย) - What holds you back
+ * Position 3: Hidden Potential (ศักยภาพซ่อนเร้น) - Undiscovered gifts
+ * Position 4: Path Forward (เส้นทางข้างหน้า) - Next steps
+ */
+export function drawSelfDiscoverySpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 5, [
+    'sd_core_self',
+    'sd_strengths',
+    'sd_challenges',
+    'sd_hidden_potential',
+    'sd_path_forward',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
-export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision';
+export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive';
 
 export interface ReadingSession {
   id: string;
@@ -215,6 +233,9 @@ export function createReadingSession(
       break;
     case 'decision':
       drawnCards = drawDecisionMakingSpread(deck);
+      break;
+    case 'self-discovery':
+      drawnCards = drawSelfDiscoverySpread(deck);
       break;
     case 'three-card':
     default:
