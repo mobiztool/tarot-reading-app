@@ -9,4 +9,5 @@ export { useAnonymousReadings } from './useAnonymousReadings';
 export { useTheme } from './useTheme';
 export { useHaptic } from './useHaptic';
 export { usePostSignupCelebration } from './usePostSignupCelebration';
+export { useSpreadAnimation, ANIMATION_PRESETS } from './useSpreadAnimation';
 export type { ReadingType, ReadingState } from './useTarotReading';
