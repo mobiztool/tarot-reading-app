@@ -33,7 +33,14 @@ export type PositionLabel =
   | 'cc_hopes_fears' | 'cc_outcome'
   // Decision Making positions (5 cards)
   | 'dm_option_a_pros' | 'dm_option_a_cons' 
-  | 'dm_option_b_pros' | 'dm_option_b_cons' | 'dm_best_path';
+  | 'dm_option_b_pros' | 'dm_option_b_cons' | 'dm_best_path'
+  // Self Discovery positions (5 cards)
+  | 'sd_core_self' | 'sd_strengths' | 'sd_challenges'
+  | 'sd_hidden_potential' | 'sd_path_forward'
+  // Relationship Deep Dive positions (7 cards)
+  | 'rdd_you' | 'rdd_them' | 'rdd_connection' 
+  | 'rdd_your_feelings' | 'rdd_their_feelings' 
+  | 'rdd_challenges' | 'rdd_future_potential';
 
 export interface DrawnCard {
   card: TarotCardData;
