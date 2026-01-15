@@ -997,8 +997,538 @@ export const DECISION_MAKING_POSITIONS: Record<string, PositionContext> = {
 };
 
 // =============================================================================
+// SELF DISCOVERY SPREAD POSITIONS (5 Cards)
+// =============================================================================
+
+export const SELF_DISCOVERY_POSITIONS: Record<string, PositionContext> = {
+  sd_core_self: {
+    id: 'sd_core_self',
+    name: 'Core Self',
+    nameTh: 'ตัวตนแท้จริง',
+    description: 'Your authentic essence - who you truly are beneath all roles and masks',
+    descriptionTh: 'แก่นแท้ของคุณ - ตัวตนที่แท้จริงใต้บทบาทและหน้ากากทั้งหมด',
+    focusAreas: [
+      'Your authentic identity',
+      'Core values and beliefs',
+      'Essential nature',
+      'What makes you unique',
+      'Your spiritual essence',
+    ],
+    focusAreasTh: [
+      'ตัวตนที่แท้จริงของคุณ',
+      'ค่านิยมและความเชื่อหลัก',
+      'ธรรมชาติที่แท้จริง',
+      'สิ่งที่ทำให้คุณพิเศษ',
+      'แก่นแท้ทางจิตวิญญาณ',
+    ],
+    interpretationGuide:
+      'This is the heart of the reading, representing your true nature stripped of external influences. ' +
+      'The card here reveals your innermost self - your authentic desires, natural inclinations, and core identity. ' +
+      'This is who you are when no one is watching, your soul\'s blueprint. ' +
+      'Understanding this position helps you align your life with your true purpose.',
+    interpretationGuideTh:
+      'นี่คือหัวใจของการอ่าน แสดงถึงธรรมชาติแท้จริงของคุณที่ปราศจากอิทธิพลภายนอก ' +
+      'ไพ่ที่นี่เผยตัวตนลึกที่สุด - ความปรารถนาที่แท้จริง แนวโน้มตามธรรมชาติ และตัวตนหลัก ' +
+      'นี่คือตัวคุณเมื่อไม่มีใครมองเห็น พิมพ์เขียวของจิตวิญญาณ ' +
+      'การเข้าใจตำแหน่งนี้ช่วยให้คุณปรับชีวิตให้สอดคล้องกับเป้าหมายที่แท้จริง',
+    exampleQuestions: [
+      'Who am I at my core?',
+      'What is my true nature?',
+      'What defines my authentic self?',
+    ],
+    exampleQuestionsTh: [
+      'ฉันเป็นใครในแก่นแท้?',
+      'ธรรมชาติแท้จริงของฉันคืออะไร?',
+      'อะไรกำหนดตัวตนที่แท้จริงของฉัน?',
+    ],
+  },
+
+  sd_strengths: {
+    id: 'sd_strengths',
+    name: 'Your Strengths',
+    nameTh: 'จุดแข็งของคุณ',
+    description: 'Your natural gifts, talents, and innate abilities that empower you',
+    descriptionTh: 'พรสวรรค์ ความสามารถตามธรรมชาติ และพลังที่ติดตัวคุณมา',
+    focusAreas: [
+      'Natural talents',
+      'Developed skills',
+      'Personality strengths',
+      'Resources you possess',
+      'What others admire in you',
+    ],
+    focusAreasTh: [
+      'พรสวรรค์ตามธรรมชาติ',
+      'ทักษะที่พัฒนาแล้ว',
+      'จุดแข็งด้านบุคลิกภาพ',
+      'ทรัพยากรที่คุณมี',
+      'สิ่งที่ผู้อื่นชื่นชมในตัวคุณ',
+    ],
+    interpretationGuide:
+      'This position illuminates the gifts you may take for granted. ' +
+      'These are your superpowers - abilities that come naturally but are often overlooked. ' +
+      'The card reveals resources you already possess to overcome challenges. ' +
+      'Lean into these strengths when facing difficulties; they are your foundation for success.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้ส่องสว่างพรสวรรค์ที่คุณอาจมองข้าม ' +
+      'เหล่านี้คือพลังพิเศษของคุณ - ความสามารถที่มาตามธรรมชาติแต่มักถูกมองข้าม ' +
+      'ไพ่เผยทรัพยากรที่คุณมีอยู่แล้วเพื่อเอาชนะความท้าทาย ' +
+      'พึ่งพาจุดแข็งเหล่านี้เมื่อเผชิญความยากลำบาก พวกมันคือรากฐานแห่งความสำเร็จของคุณ',
+    exampleQuestions: [
+      'What are my greatest strengths?',
+      'What gifts should I cultivate?',
+      'What makes me powerful?',
+    ],
+    exampleQuestionsTh: [
+      'จุดแข็งที่ยิ่งใหญ่ที่สุดของฉันคืออะไร?',
+      'พรสวรรค์อะไรที่ควรพัฒนา?',
+      'อะไรทำให้ฉันทรงพลัง?',
+    ],
+  },
+
+  sd_challenges: {
+    id: 'sd_challenges',
+    name: 'Your Challenges',
+    nameTh: 'ความท้าทายของคุณ',
+    description: 'Areas of growth, patterns to break, and obstacles within yourself',
+    descriptionTh: 'พื้นที่สำหรับการเติบโต รูปแบบที่ต้องทำลาย และอุปสรรคภายในตัวคุณ',
+    focusAreas: [
+      'Growth areas',
+      'Self-limiting beliefs',
+      'Patterns to break',
+      'Inner obstacles',
+      'Shadow aspects',
+    ],
+    focusAreasTh: [
+      'พื้นที่สำหรับการเติบโต',
+      'ความเชื่อที่จำกัดตัวเอง',
+      'รูปแบบที่ต้องทำลาย',
+      'อุปสรรคภายใน',
+      'ด้านมืดที่ซ่อนอยู่',
+    ],
+    interpretationGuide:
+      'This position reveals the internal blocks standing between you and your fullest self. ' +
+      'These are not failures but opportunities for profound transformation. ' +
+      'The card shows patterns you repeat unconsciously, beliefs that limit you, or fears that hold you back. ' +
+      'Acknowledging these challenges is the first step toward healing and growth.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้เผยสิ่งกีดขวางภายในที่ขวางกั้นระหว่างคุณกับตัวตนที่สมบูรณ์ที่สุด ' +
+      'สิ่งเหล่านี้ไม่ใช่ความล้มเหลว แต่เป็นโอกาสสำหรับการเปลี่ยนแปลงอย่างลึกซึ้ง ' +
+      'ไพ่แสดงรูปแบบที่คุณทำซ้ำโดยไม่รู้ตัว ความเชื่อที่จำกัดคุณ หรือความกลัวที่ยึดคุณไว้ ' +
+      'การยอมรับความท้าทายเหล่านี้เป็นก้าวแรกสู่การเยียวยาและการเติบโต',
+    exampleQuestions: [
+      'What patterns hold me back?',
+      'What within me needs healing?',
+      'What challenges must I face?',
+    ],
+    exampleQuestionsTh: [
+      'รูปแบบอะไรที่ยึดฉันไว้?',
+      'อะไรในตัวฉันที่ต้องการการเยียวยา?',
+      'ความท้าทายอะไรที่ฉันต้องเผชิญ?',
+    ],
+  },
+
+  sd_hidden_potential: {
+    id: 'sd_hidden_potential',
+    name: 'Hidden Potential',
+    nameTh: 'ศักยภาพที่ซ่อนอยู่',
+    description: 'Untapped abilities and dormant gifts waiting to be awakened',
+    descriptionTh: 'ความสามารถที่ยังไม่ได้ใช้และพรสวรรค์ที่หลับใหลรอการปลุก',
+    focusAreas: [
+      'Dormant talents',
+      'Undeveloped aspects',
+      'Future possibilities',
+      'What you could become',
+      'Sleeping powers',
+    ],
+    focusAreasTh: [
+      'พรสวรรค์ที่หลับใหล',
+      'ด้านที่ยังไม่พัฒนา',
+      'ความเป็นไปได้ในอนาคต',
+      'สิ่งที่คุณอาจกลายเป็น',
+      'พลังที่ซ่อนเร้น',
+    ],
+    interpretationGuide:
+      'This exciting position reveals the treasure within that you haven\'t yet discovered. ' +
+      'It shows abilities and qualities that are waiting to emerge when the time is right. ' +
+      'The card points to your unrealized potential - the person you are becoming. ' +
+      'This is your future self calling you forward to embrace more of who you can be.',
+    interpretationGuideTh:
+      'ตำแหน่งที่น่าตื่นเต้นนี้เผยสมบัติภายในที่คุณยังไม่ได้ค้นพบ ' +
+      'แสดงความสามารถและคุณสมบัติที่รอเวลาที่เหมาะสมจะปรากฏ ' +
+      'ไพ่ชี้ไปที่ศักยภาพที่ยังไม่ได้ใช้ - ตัวตนที่คุณกำลังจะกลายเป็น ' +
+      'นี่คือตัวตนในอนาคตที่เรียกคุณไปข้างหน้าเพื่อโอบรับความเป็นตัวคุณให้มากขึ้น',
+    exampleQuestions: [
+      'What potential lies dormant in me?',
+      'What abilities am I not yet using?',
+      'What could I become?',
+    ],
+    exampleQuestionsTh: [
+      'ศักยภาพอะไรที่หลับใหลอยู่ในตัวฉัน?',
+      'ความสามารถอะไรที่ฉันยังไม่ได้ใช้?',
+      'ฉันอาจกลายเป็นอะไรได้บ้าง?',
+    ],
+  },
+
+  sd_path_forward: {
+    id: 'sd_path_forward',
+    name: 'Path Forward',
+    nameTh: 'เส้นทางข้างหน้า',
+    description: 'Guidance for your personal growth journey and next steps',
+    descriptionTh: 'คำแนะนำสำหรับการเดินทางเติบโตส่วนบุคคลและก้าวต่อไป',
+    focusAreas: [
+      'Recommended actions',
+      'Growth direction',
+      'Next steps',
+      'How to integrate insights',
+      'Practical guidance',
+    ],
+    focusAreasTh: [
+      'การกระทำที่แนะนำ',
+      'ทิศทางการเติบโต',
+      'ก้าวต่อไป',
+      'วิธีบูรณาการความเข้าใจ',
+      'คำแนะนำเชิงปฏิบัติ',
+    ],
+    interpretationGuide:
+      'This final position synthesizes the entire reading into actionable guidance. ' +
+      'It shows the direction for your personal evolution and the next step on your journey. ' +
+      'The card offers wisdom on how to apply the insights from this reading to your daily life. ' +
+      'Consider this your compass pointing toward greater self-actualization and fulfillment.',
+    interpretationGuideTh:
+      'ตำแหน่งสุดท้ายนี้สังเคราะห์การอ่านทั้งหมดเป็นคำแนะนำที่ปฏิบัติได้ ' +
+      'แสดงทิศทางสำหรับวิวัฒนาการส่วนบุคคลและก้าวต่อไปในการเดินทาง ' +
+      'ไพ่ให้ปัญญาเกี่ยวกับวิธีนำความเข้าใจจากการอ่านนี้ไปใช้ในชีวิตประจำวัน ' +
+      'ถือว่านี่คือเข็มทิศที่ชี้ไปสู่การบรรลุตนเองและความสมบูรณ์ที่ยิ่งใหญ่กว่า',
+    exampleQuestions: [
+      'What is my next step in growth?',
+      'How should I move forward?',
+      'What direction should I take?',
+    ],
+    exampleQuestionsTh: [
+      'ก้าวต่อไปในการเติบโตของฉันคืออะไร?',
+      'ฉันควรเดินหน้าอย่างไร?',
+      'ฉันควรไปในทิศทางใด?',
+    ],
+  },
+};
+
+// =============================================================================
+// RELATIONSHIP DEEP DIVE SPREAD POSITIONS (7 Cards)
+// =============================================================================
+
+export const RELATIONSHIP_DEEP_DIVE_POSITIONS: Record<string, PositionContext> = {
+  rdd_you: {
+    id: 'rdd_you',
+    name: 'You in the Relationship',
+    nameTh: 'คุณในความสัมพันธ์',
+    description: 'Your energy, role, and contribution to this relationship dynamic',
+    descriptionTh: 'พลังงาน บทบาท และการมีส่วนร่วมของคุณในพลวัตความสัมพันธ์นี้',
+    focusAreas: [
+      'Your emotional state',
+      'What you bring',
+      'Your expectations',
+      'Your needs in the relationship',
+      'How you show up',
+    ],
+    focusAreasTh: [
+      'สถานะอารมณ์ของคุณ',
+      'สิ่งที่คุณนำมา',
+      'ความคาดหวังของคุณ',
+      'ความต้องการของคุณในความสัมพันธ์',
+      'คุณปรากฏตัวอย่างไร',
+    ],
+    interpretationGuide:
+      'This position reveals your authentic presence in the relationship - not who you pretend to be, but who you truly are. ' +
+      'The card shows your emotional investment, your patterns, and the energy you contribute to the dynamic. ' +
+      'It may reveal both conscious and unconscious behaviors that affect your connection. ' +
+      'Understanding this helps you see your role clearly and take responsibility for your part.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้เผยการปรากฏตัวที่แท้จริงของคุณในความสัมพันธ์ - ไม่ใช่ที่คุณแกล้งทำ แต่ตัวตนที่แท้จริง ' +
+      'ไพ่แสดงการลงทุนทางอารมณ์ รูปแบบของคุณ และพลังงานที่คุณมีส่วนร่วมกับพลวัต ' +
+      'อาจเผยทั้งพฤติกรรมที่รู้ตัวและไม่รู้ตัวที่ส่งผลต่อการเชื่อมต่อ ' +
+      'การเข้าใจสิ่งนี้ช่วยให้คุณเห็นบทบาทชัดเจนและรับผิดชอบต่อส่วนของคุณ',
+    exampleQuestions: [
+      'What energy do I bring to this relationship?',
+      'How do I really show up for my partner?',
+      'What is my role in this dynamic?',
+    ],
+    exampleQuestionsTh: [
+      'ฉันนำพลังงานอะไรมาสู่ความสัมพันธ์นี้?',
+      'ฉันปรากฏตัวต่อคู่รักอย่างไรจริงๆ?',
+      'บทบาทของฉันในพลวัตนี้คืออะไร?',
+    ],
+  },
+
+  rdd_them: {
+    id: 'rdd_them',
+    name: 'Them in the Relationship',
+    nameTh: 'เขาในความสัมพันธ์',
+    description: 'Your partner\'s energy, perspective, and what they bring to the dynamic',
+    descriptionTh: 'พลังงาน มุมมอง และสิ่งที่คู่รักนำมาสู่พลวัตนี้',
+    focusAreas: [
+      'Their emotional state',
+      'What they contribute',
+      'Their perspective on you',
+      'Their needs',
+      'How they engage',
+    ],
+    focusAreasTh: [
+      'สถานะอารมณ์ของพวกเขา',
+      'สิ่งที่พวกเขามีส่วนร่วม',
+      'มุมมองที่มีต่อคุณ',
+      'ความต้องการของพวกเขา',
+      'พวกเขามีส่วนร่วมอย่างไร',
+    ],
+    interpretationGuide:
+      'This card offers insight into your partner\'s inner world and their experience of the relationship. ' +
+      'Remember this is perception, not absolute truth - it shows their current energy and what they bring. ' +
+      'The card may reveal their intentions, fears, hopes, or challenges in connecting with you. ' +
+      'Use this understanding to develop empathy and improve communication.',
+    interpretationGuideTh:
+      'ไพ่นี้ให้ความเข้าใจเกี่ยวกับโลกภายในของคู่รักและประสบการณ์ในความสัมพันธ์ ' +
+      'จำไว้ว่านี่คือการรับรู้ ไม่ใช่ความจริงที่แน่นอน - แสดงพลังงานปัจจุบันและสิ่งที่พวกเขานำมา ' +
+      'ไพ่อาจเผยเจตนา ความกลัว ความหวัง หรือความท้าทายในการเชื่อมต่อกับคุณ ' +
+      'ใช้ความเข้าใจนี้เพื่อพัฒนาความเห็นอกเห็นใจและปรับปรุงการสื่อสาร',
+    exampleQuestions: [
+      'What is my partner really feeling?',
+      'What do they bring to our relationship?',
+      'How do they experience our connection?',
+    ],
+    exampleQuestionsTh: [
+      'คู่รักของฉันรู้สึกอะไรจริงๆ?',
+      'พวกเขานำอะไรมาสู่ความสัมพันธ์?',
+      'พวกเขาประสบการณ์การเชื่อมต่อของเราอย่างไร?',
+    ],
+  },
+
+  rdd_connection: {
+    id: 'rdd_connection',
+    name: 'The Connection',
+    nameTh: 'การเชื่อมต่อ',
+    description: 'The bond between you - the relationship entity that you create together',
+    descriptionTh: 'สายสัมพันธ์ระหว่างคุณ - ตัวตนของความสัมพันธ์ที่คุณสร้างร่วมกัน',
+    focusAreas: [
+      'Bond quality',
+      'Relationship chemistry',
+      'What you create together',
+      'The nature of your union',
+      'Karmic or spiritual connection',
+    ],
+    focusAreasTh: [
+      'คุณภาพของสายสัมพันธ์',
+      'เคมีของความสัมพันธ์',
+      'สิ่งที่คุณสร้างร่วมกัน',
+      'ธรรมชาติของการรวมกัน',
+      'การเชื่อมต่อทางกรรมหรือจิตวิญญาณ',
+    ],
+    interpretationGuide:
+      'This position reveals the third entity in any relationship - the bond itself, which is greater than either individual. ' +
+      'The card shows the essence of what you create together, the invisible thread that connects you. ' +
+      'It may reveal the purpose of this relationship, its lessons, or its destiny. ' +
+      'Understanding this helps you appreciate what you have and what you are building.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้เผยตัวตนที่สามในความสัมพันธ์ - สายสัมพันธ์เอง ซึ่งยิ่งใหญ่กว่าบุคคลใดบุคคลหนึ่ง ' +
+      'ไพ่แสดงแก่นแท้ของสิ่งที่คุณสร้างร่วมกัน เส้นด้ายที่มองไม่เห็นที่เชื่อมต่อคุณ ' +
+      'อาจเผยจุดประสงค์ของความสัมพันธ์นี้ บทเรียน หรือโชคชะตา ' +
+      'การเข้าใจสิ่งนี้ช่วยให้คุณชื่นชมสิ่งที่มีและสิ่งที่กำลังสร้าง',
+    exampleQuestions: [
+      'What is the nature of our bond?',
+      'What do we create together?',
+      'What is our relationship meant to teach us?',
+    ],
+    exampleQuestionsTh: [
+      'ธรรมชาติของสายสัมพันธ์ของเราคืออะไร?',
+      'เราสร้างอะไรร่วมกัน?',
+      'ความสัมพันธ์ของเราตั้งใจจะสอนอะไรเรา?',
+    ],
+  },
+
+  rdd_your_feelings: {
+    id: 'rdd_your_feelings',
+    name: 'Your True Feelings',
+    nameTh: 'ความรู้สึกแท้จริงของคุณ',
+    description: 'Your deep, authentic emotions about this relationship - beyond surface feelings',
+    descriptionTh: 'อารมณ์ที่ลึกและแท้จริงของคุณเกี่ยวกับความสัมพันธ์นี้ - เกินกว่าความรู้สึกผิวเผิน',
+    focusAreas: [
+      'Deep emotions',
+      'Hidden feelings',
+      'What you truly want',
+      'Unspoken desires',
+      'Authentic emotional state',
+    ],
+    focusAreasTh: [
+      'อารมณ์ที่ลึก',
+      'ความรู้สึกที่ซ่อนอยู่',
+      'สิ่งที่คุณต้องการจริงๆ',
+      'ความปรารถนาที่ไม่ได้พูด',
+      'สถานะอารมณ์ที่แท้จริง',
+    ],
+    interpretationGuide:
+      'This position dives beneath the surface to reveal feelings you may not fully acknowledge, even to yourself. ' +
+      'The card shows your genuine emotional truth - desires, fears, loves, and frustrations you may suppress. ' +
+      'Understanding your authentic feelings is essential for relationship honesty. ' +
+      'This insight helps you communicate your needs and make conscious choices.',
+    interpretationGuideTh:
+      'ตำแหน่งนี้ดำดิ่งใต้พื้นผิวเพื่อเผยความรู้สึกที่คุณอาจไม่ยอมรับอย่างเต็มที่ แม้กับตัวเอง ' +
+      'ไพ่แสดงความจริงทางอารมณ์ของคุณ - ความปรารถนา ความกลัว ความรัก และความหงุดหงิดที่คุณอาจกดไว้ ' +
+      'การเข้าใจความรู้สึกที่แท้จริงเป็นสิ่งจำเป็นสำหรับความซื่อสัตย์ในความสัมพันธ์ ' +
+      'ความเข้าใจนี้ช่วยให้คุณสื่อสารความต้องการและตัดสินใจอย่างมีสติ',
+    exampleQuestions: [
+      'What do I really feel about this relationship?',
+      'What am I not admitting to myself?',
+      'What does my heart truly want?',
+    ],
+    exampleQuestionsTh: [
+      'ฉันรู้สึกอะไรจริงๆ เกี่ยวกับความสัมพันธ์นี้?',
+      'อะไรที่ฉันไม่ยอมรับกับตัวเอง?',
+      'หัวใจของฉันต้องการอะไรจริงๆ?',
+    ],
+  },
+
+  rdd_their_feelings: {
+    id: 'rdd_their_feelings',
+    name: 'Their True Feelings',
+    nameTh: 'ความรู้สึกแท้จริงของเขา',
+    description: 'Your partner\'s genuine emotions about you and the relationship',
+    descriptionTh: 'อารมณ์ที่แท้จริงของคู่รักเกี่ยวกับคุณและความสัมพันธ์',
+    focusAreas: [
+      'Their deep feelings',
+      'Hidden emotions',
+      'Their true desires',
+      'Unexpressed sentiments',
+      'Authentic emotional investment',
+    ],
+    focusAreasTh: [
+      'ความรู้สึกลึกๆ ของพวกเขา',
+      'อารมณ์ที่ซ่อนอยู่',
+      'ความปรารถนาที่แท้จริง',
+      'ความรู้สึกที่ไม่ได้แสดงออก',
+      'การลงทุนทางอารมณ์ที่แท้จริง',
+    ],
+    interpretationGuide:
+      'This card offers a glimpse into your partner\'s authentic emotional world regarding you and the relationship. ' +
+      'It reveals feelings they may not express openly - whether love, doubt, longing, or fear. ' +
+      'Remember, this is intuitive insight, not mind-reading; use it to foster understanding, not assumptions. ' +
+      'This knowledge can help you respond to their unspoken needs with compassion.',
+    interpretationGuideTh:
+      'ไพ่นี้ให้ภาพของโลกอารมณ์ที่แท้จริงของคู่รักเกี่ยวกับคุณและความสัมพันธ์ ' +
+      'เผยความรู้สึกที่พวกเขาอาจไม่แสดงออกอย่างเปิดเผย - ไม่ว่าจะเป็นความรัก ความสงสัย ความปรารถนา หรือความกลัว ' +
+      'จำไว้ นี่คือความเข้าใจโดยสัญชาตญาณ ไม่ใช่การอ่านใจ ใช้เพื่อส่งเสริมความเข้าใจ ไม่ใช่สมมติฐาน ' +
+      'ความรู้นี้สามารถช่วยให้คุณตอบสนองต่อความต้องการที่ไม่ได้พูดด้วยความเห็นอกเห็นใจ',
+    exampleQuestions: [
+      'How does my partner truly feel about me?',
+      'What are they not saying?',
+      'What does their heart want?',
+    ],
+    exampleQuestionsTh: [
+      'คู่รักของฉันรู้สึกอะไรจริงๆ เกี่ยวกับฉัน?',
+      'อะไรที่พวกเขาไม่ได้พูด?',
+      'หัวใจของพวกเขาต้องการอะไร?',
+    ],
+  },
+
+  rdd_challenges: {
+    id: 'rdd_challenges',
+    name: 'Relationship Challenges',
+    nameTh: 'ความท้าทายในความสัมพันธ์',
+    description: 'The obstacles, tensions, and growth areas in your relationship',
+    descriptionTh: 'อุปสรรค ความตึงเครียด และพื้นที่สำหรับการเติบโตในความสัมพันธ์',
+    focusAreas: [
+      'Areas of conflict',
+      'Recurring issues',
+      'Growth opportunities',
+      'What needs attention',
+      'Patterns to transform',
+    ],
+    focusAreasTh: [
+      'พื้นที่ของความขัดแย้ง',
+      'ปัญหาที่เกิดซ้ำ',
+      'โอกาสในการเติบโต',
+      'สิ่งที่ต้องการความสนใจ',
+      'รูปแบบที่ต้องเปลี่ยน',
+    ],
+    interpretationGuide:
+      'Every relationship has challenges - this position illuminates yours with compassion, not judgment. ' +
+      'The card reveals the areas where work is needed: communication blocks, trust issues, unmet needs, or recurring conflicts. ' +
+      'View these not as problems but as invitations for deeper intimacy and growth. ' +
+      'Addressing these challenges together can strengthen your bond significantly.',
+    interpretationGuideTh:
+      'ทุกความสัมพันธ์มีความท้าทาย - ตำแหน่งนี้ส่องสว่างของคุณด้วยความเห็นอกเห็นใจ ไม่ใช่การตัดสิน ' +
+      'ไพ่เผยพื้นที่ที่ต้องการการทำงาน: อุปสรรคในการสื่อสาร ปัญหาความไว้วางใจ ความต้องการที่ไม่ได้รับการตอบสนอง หรือความขัดแย้งที่เกิดซ้ำ ' +
+      'มองสิ่งเหล่านี้ไม่ใช่ปัญหา แต่เป็นคำเชิญสู่ความใกล้ชิดและการเติบโตที่ลึกซึ้งยิ่งขึ้น ' +
+      'การจัดการความท้าทายเหล่านี้ร่วมกันสามารถเสริมสายสัมพันธ์ได้อย่างมาก',
+    exampleQuestions: [
+      'What challenges do we need to address?',
+      'Where is our relationship struggling?',
+      'What patterns need to change?',
+    ],
+    exampleQuestionsTh: [
+      'ความท้าทายอะไรที่เราต้องจัดการ?',
+      'ความสัมพันธ์ของเราดิ้นรนที่ไหน?',
+      'รูปแบบอะไรที่ต้องเปลี่ยน?',
+    ],
+  },
+
+  rdd_future_potential: {
+    id: 'rdd_future_potential',
+    name: 'Future Potential',
+    nameTh: 'ศักยภาพในอนาคต',
+    description: 'The possible future and where this relationship could go',
+    descriptionTh: 'อนาคตที่เป็นไปได้และทิศทางที่ความสัมพันธ์นี้อาจไป',
+    focusAreas: [
+      'Future trajectory',
+      'Relationship potential',
+      'What could develop',
+      'Long-term possibilities',
+      'Outcome if you continue',
+    ],
+    focusAreasTh: [
+      'ทิศทางในอนาคต',
+      'ศักยภาพความสัมพันธ์',
+      'สิ่งที่อาจพัฒนา',
+      'ความเป็นไปได้ระยะยาว',
+      'ผลลัพธ์หากดำเนินต่อไป',
+    ],
+    interpretationGuide:
+      'This culminating position reveals where your relationship is heading if current energies continue. ' +
+      'The card shows the potential you are building together - whether that is deep commitment, necessary separation, or continued growth. ' +
+      'Remember, the future is not fixed; this is the probable trajectory based on present circumstances. ' +
+      'Use this insight to consciously co-create the future you both desire.',
+    interpretationGuideTh:
+      'ตำแหน่งสุดท้ายนี้เผยว่าความสัมพันธ์กำลังมุ่งหน้าไปไหนหากพลังงานปัจจุบันดำเนินต่อไป ' +
+      'ไพ่แสดงศักยภาพที่คุณกำลังสร้างร่วมกัน - ไม่ว่าจะเป็นความมุ่งมั่นลึกซึ้ง การแยกทางที่จำเป็น หรือการเติบโตต่อเนื่อง ' +
+      'จำไว้ อนาคตไม่ได้ถูกกำหนดตายตัว นี่คือทิศทางที่น่าจะเป็นตามสถานการณ์ปัจจุบัน ' +
+      'ใช้ความเข้าใจนี้เพื่อร่วมสร้างอนาคตที่คุณทั้งคู่ปรารถนาอย่างมีสติ',
+    exampleQuestions: [
+      'Where is our relationship heading?',
+      'What is the potential of this union?',
+      'What future are we building together?',
+    ],
+    exampleQuestionsTh: [
+      'ความสัมพันธ์ของเรากำลังมุ่งหน้าไปไหน?',
+      'ศักยภาพของการรวมกันนี้คืออะไร?',
+      'อนาคตอะไรที่เรากำลังสร้างร่วมกัน?',
+    ],
+  },
+};
+
+// =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
+
+/**
+ * Get position context for a Self Discovery spread position
+ */
+export function getSelfDiscoveryPositionContext(position: string): PositionContext | undefined {
+  return SELF_DISCOVERY_POSITIONS[position];
+}
+
+/**
+ * Get position context for a Relationship Deep Dive spread position
+ */
+export function getRelationshipDeepDivePositionContext(position: string): PositionContext | undefined {
+  return RELATIONSHIP_DEEP_DIVE_POSITIONS[position];
+}
 
 /**
  * Get position context for a Decision Making spread position
@@ -1038,7 +1568,7 @@ export function getCelticCrossPositionContext(position: string): PositionContext
 /**
  * Get all position contexts for a spread type
  */
-export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross' | 'decision_making'): PositionContext[] {
+export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive'): PositionContext[] {
   switch (spreadType) {
     case 'love':
       return Object.values(LOVE_SPREAD_POSITIONS);
@@ -1050,6 +1580,10 @@ export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'c
       return Object.values(CELTIC_CROSS_POSITIONS);
     case 'decision_making':
       return Object.values(DECISION_MAKING_POSITIONS);
+    case 'self_discovery':
+      return Object.values(SELF_DISCOVERY_POSITIONS);
+    case 'relationship_deep_dive':
+      return Object.values(RELATIONSHIP_DEEP_DIVE_POSITIONS);
     default:
       return [];
   }
@@ -1060,7 +1594,7 @@ export function getSpreadPositions(spreadType: 'love' | 'career' | 'yes_no' | 'c
  * Use this to contextualize card meanings based on position
  */
 export function getPositionInterpretationPrefix(
-  spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross' | 'decision_making',
+  spreadType: 'love' | 'career' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive',
   position: string,
   isReversed: boolean
 ): string {
@@ -1076,6 +1610,10 @@ export function getPositionInterpretationPrefix(
     context = CELTIC_CROSS_POSITIONS[position];
   } else if (spreadType === 'decision_making') {
     context = DECISION_MAKING_POSITIONS[position];
+  } else if (spreadType === 'self_discovery') {
+    context = SELF_DISCOVERY_POSITIONS[position];
+  } else if (spreadType === 'relationship_deep_dive') {
+    context = RELATIONSHIP_DEEP_DIVE_POSITIONS[position];
   }
 
   if (!context) return '';

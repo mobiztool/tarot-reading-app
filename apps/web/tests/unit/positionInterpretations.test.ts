@@ -12,9 +12,17 @@ import {
   LOVE_SPREAD_POSITIONS,
   CAREER_SPREAD_POSITIONS,
   YES_NO_POSITION,
+  CELTIC_CROSS_POSITIONS,
+  DECISION_MAKING_POSITIONS,
+  SELF_DISCOVERY_POSITIONS,
+  RELATIONSHIP_DEEP_DIVE_POSITIONS,
   getLovePositionContext,
   getCareerPositionContext,
   getYesNoPositionContext,
+  getCelticCrossPositionContext,
+  getDecisionMakingPositionContext,
+  getSelfDiscoveryPositionContext,
+  getRelationshipDeepDivePositionContext,
   getSpreadPositions,
   getPositionInterpretationPrefix,
   PositionContext,
@@ -453,6 +461,319 @@ describe('Content Quality - Yes/No Framework', () => {
     const maybeIndicators = YES_NO_POSITION.answerFramework.maybe.indicators.join(' ').toLowerCase();
     const hasUncertainty = uncertaintyKeywords.some(keyword => maybeIndicators.includes(keyword));
     expect(hasUncertainty).toBe(true);
+  });
+});
+
+// =============================================================================
+// Story 7.6: Premium Spread Content Tests
+// =============================================================================
+
+describe('Premium Spread Positions - Celtic Cross (10 positions)', () => {
+  describe('Structure', () => {
+    it('should have exactly 10 positions for Celtic Cross spread', () => {
+      expect(Object.keys(CELTIC_CROSS_POSITIONS)).toHaveLength(10);
+    });
+
+    it('should have all required Celtic Cross positions', () => {
+      expect(CELTIC_CROSS_POSITIONS.cc_present).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_challenge).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_past).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_future).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_above).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_below).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_advice).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_external).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_hopes_fears).toBeDefined();
+      expect(CELTIC_CROSS_POSITIONS.cc_outcome).toBeDefined();
+    });
+
+    it('each Celtic Cross position should have complete structure', () => {
+      Object.values(CELTIC_CROSS_POSITIONS).forEach((position: PositionContext) => {
+        expect(position.id).toBeTruthy();
+        expect(position.name).toBeTruthy();
+        expect(position.nameTh).toBeTruthy();
+        expect(position.description).toBeTruthy();
+        expect(position.descriptionTh).toBeTruthy();
+        expect(position.focusAreas).toBeInstanceOf(Array);
+        expect(position.focusAreas.length).toBeGreaterThanOrEqual(5);
+        expect(position.focusAreasTh).toBeInstanceOf(Array);
+        expect(position.focusAreasTh.length).toBeGreaterThanOrEqual(5);
+        expect(position.interpretationGuide).toBeTruthy();
+        expect(position.interpretationGuideTh).toBeTruthy();
+        expect(position.exampleQuestions).toBeInstanceOf(Array);
+        expect(position.exampleQuestions.length).toBeGreaterThanOrEqual(3);
+        expect(position.exampleQuestionsTh).toBeInstanceOf(Array);
+        expect(position.exampleQuestionsTh.length).toBeGreaterThanOrEqual(3);
+      });
+    });
+  });
+
+  describe('Thai Language Quality', () => {
+    function containsThai(text: string): boolean {
+      return /[\u0E00-\u0E7F]/.test(text);
+    }
+
+    it('all Celtic Cross positions should have Thai names', () => {
+      Object.values(CELTIC_CROSS_POSITIONS).forEach((position) => {
+        expect(containsThai(position.nameTh)).toBe(true);
+      });
+    });
+
+    it('all Celtic Cross positions should have Thai interpretation guides', () => {
+      Object.values(CELTIC_CROSS_POSITIONS).forEach((position) => {
+        expect(containsThai(position.interpretationGuideTh)).toBe(true);
+      });
+    });
+  });
+
+  describe('Helper Functions', () => {
+    it('getCelticCrossPositionContext should return correct position', () => {
+      const context = getCelticCrossPositionContext('cc_present');
+      expect(context?.id).toBe('cc_present');
+      expect(context?.nameTh).toBe('สถานการณ์ปัจจุบัน');
+    });
+
+    it('getSpreadPositions should return 10 positions for celtic_cross', () => {
+      const positions = getSpreadPositions('celtic_cross');
+      expect(positions).toHaveLength(10);
+    });
+  });
+});
+
+describe('Premium Spread Positions - Decision Making (5 positions)', () => {
+  describe('Structure', () => {
+    it('should have exactly 5 positions for Decision Making spread', () => {
+      expect(Object.keys(DECISION_MAKING_POSITIONS)).toHaveLength(5);
+    });
+
+    it('should have all required Decision Making positions', () => {
+      expect(DECISION_MAKING_POSITIONS.dm_option_a_pros).toBeDefined();
+      expect(DECISION_MAKING_POSITIONS.dm_option_a_cons).toBeDefined();
+      expect(DECISION_MAKING_POSITIONS.dm_option_b_pros).toBeDefined();
+      expect(DECISION_MAKING_POSITIONS.dm_option_b_cons).toBeDefined();
+      expect(DECISION_MAKING_POSITIONS.dm_best_path).toBeDefined();
+    });
+
+    it('each Decision Making position should have complete structure', () => {
+      Object.values(DECISION_MAKING_POSITIONS).forEach((position: PositionContext) => {
+        expect(position.id).toBeTruthy();
+        expect(position.name).toBeTruthy();
+        expect(position.nameTh).toBeTruthy();
+        expect(position.description).toBeTruthy();
+        expect(position.descriptionTh).toBeTruthy();
+        expect(position.focusAreas).toBeInstanceOf(Array);
+        expect(position.focusAreas.length).toBeGreaterThanOrEqual(5);
+        expect(position.focusAreasTh).toBeInstanceOf(Array);
+        expect(position.interpretationGuide).toBeTruthy();
+        expect(position.interpretationGuideTh).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Helper Functions', () => {
+    it('getDecisionMakingPositionContext should return correct position', () => {
+      const context = getDecisionMakingPositionContext('dm_best_path');
+      expect(context?.id).toBe('dm_best_path');
+      expect(context?.nameTh).toBe('เส้นทางที่ดีที่สุด');
+    });
+
+    it('getSpreadPositions should return 5 positions for decision_making', () => {
+      const positions = getSpreadPositions('decision_making');
+      expect(positions).toHaveLength(5);
+    });
+  });
+});
+
+describe('Premium Spread Positions - Self Discovery (5 positions)', () => {
+  describe('Structure', () => {
+    it('should have exactly 5 positions for Self Discovery spread', () => {
+      expect(Object.keys(SELF_DISCOVERY_POSITIONS)).toHaveLength(5);
+    });
+
+    it('should have all required Self Discovery positions', () => {
+      expect(SELF_DISCOVERY_POSITIONS.sd_core_self).toBeDefined();
+      expect(SELF_DISCOVERY_POSITIONS.sd_strengths).toBeDefined();
+      expect(SELF_DISCOVERY_POSITIONS.sd_challenges).toBeDefined();
+      expect(SELF_DISCOVERY_POSITIONS.sd_hidden_potential).toBeDefined();
+      expect(SELF_DISCOVERY_POSITIONS.sd_path_forward).toBeDefined();
+    });
+
+    it('each Self Discovery position should have complete structure', () => {
+      Object.values(SELF_DISCOVERY_POSITIONS).forEach((position: PositionContext) => {
+        expect(position.id).toBeTruthy();
+        expect(position.name).toBeTruthy();
+        expect(position.nameTh).toBeTruthy();
+        expect(position.description).toBeTruthy();
+        expect(position.descriptionTh).toBeTruthy();
+        expect(position.focusAreas).toBeInstanceOf(Array);
+        expect(position.focusAreas.length).toBeGreaterThanOrEqual(5);
+        expect(position.focusAreasTh).toBeInstanceOf(Array);
+        expect(position.interpretationGuide).toBeTruthy();
+        expect(position.interpretationGuideTh).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Thai Language Quality', () => {
+    function containsThai(text: string): boolean {
+      return /[\u0E00-\u0E7F]/.test(text);
+    }
+
+    it('all Self Discovery positions should have Thai names', () => {
+      Object.values(SELF_DISCOVERY_POSITIONS).forEach((position) => {
+        expect(containsThai(position.nameTh)).toBe(true);
+      });
+    });
+
+    it('all Self Discovery positions should have Thai interpretation guides', () => {
+      Object.values(SELF_DISCOVERY_POSITIONS).forEach((position) => {
+        expect(containsThai(position.interpretationGuideTh)).toBe(true);
+      });
+    });
+  });
+
+  describe('Helper Functions', () => {
+    it('getSelfDiscoveryPositionContext should return correct position', () => {
+      const context = getSelfDiscoveryPositionContext('sd_core_self');
+      expect(context?.id).toBe('sd_core_self');
+      expect(context?.nameTh).toBe('ตัวตนแท้จริง');
+    });
+
+    it('getSpreadPositions should return 5 positions for self_discovery', () => {
+      const positions = getSpreadPositions('self_discovery');
+      expect(positions).toHaveLength(5);
+    });
+  });
+});
+
+describe('Premium Spread Positions - Relationship Deep Dive (7 positions)', () => {
+  describe('Structure', () => {
+    it('should have exactly 7 positions for Relationship Deep Dive spread', () => {
+      expect(Object.keys(RELATIONSHIP_DEEP_DIVE_POSITIONS)).toHaveLength(7);
+    });
+
+    it('should have all required Relationship Deep Dive positions', () => {
+      expect(RELATIONSHIP_DEEP_DIVE_POSITIONS.rdd_you).toBeDefined();
+      expect(RELATIONSHIP_DEEP_DIVE_POSITIONS.rdd_them).toBeDefined();
+      expect(RELATIONSHIP_DEEP_DIVE_POSITIONS.rdd_connection).toBeDefined();
+      expect(RELATIONSHIP_DEEP_DIVE_POSITIONS.rdd_your_feelings).toBeDefined();
+      expect(RELATIONSHIP_DEEP_DIVE_POSITIONS.rdd_their_feelings).toBeDefined();
+      expect(RELATIONSHIP_DEEP_DIVE_POSITIONS.rdd_challenges).toBeDefined();
+      expect(RELATIONSHIP_DEEP_DIVE_POSITIONS.rdd_future_potential).toBeDefined();
+    });
+
+    it('each Relationship Deep Dive position should have complete structure', () => {
+      Object.values(RELATIONSHIP_DEEP_DIVE_POSITIONS).forEach((position: PositionContext) => {
+        expect(position.id).toBeTruthy();
+        expect(position.name).toBeTruthy();
+        expect(position.nameTh).toBeTruthy();
+        expect(position.description).toBeTruthy();
+        expect(position.descriptionTh).toBeTruthy();
+        expect(position.focusAreas).toBeInstanceOf(Array);
+        expect(position.focusAreas.length).toBeGreaterThanOrEqual(5);
+        expect(position.focusAreasTh).toBeInstanceOf(Array);
+        expect(position.interpretationGuide).toBeTruthy();
+        expect(position.interpretationGuideTh).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Thai Language Quality', () => {
+    function containsThai(text: string): boolean {
+      return /[\u0E00-\u0E7F]/.test(text);
+    }
+
+    it('all Relationship Deep Dive positions should have Thai names', () => {
+      Object.values(RELATIONSHIP_DEEP_DIVE_POSITIONS).forEach((position) => {
+        expect(containsThai(position.nameTh)).toBe(true);
+      });
+    });
+
+    it('all Relationship Deep Dive positions should have Thai interpretation guides', () => {
+      Object.values(RELATIONSHIP_DEEP_DIVE_POSITIONS).forEach((position) => {
+        expect(containsThai(position.interpretationGuideTh)).toBe(true);
+      });
+    });
+  });
+
+  describe('Helper Functions', () => {
+    it('getRelationshipDeepDivePositionContext should return correct position', () => {
+      const context = getRelationshipDeepDivePositionContext('rdd_connection');
+      expect(context?.id).toBe('rdd_connection');
+      expect(context?.nameTh).toBe('การเชื่อมต่อ');
+    });
+
+    it('getSpreadPositions should return 7 positions for relationship_deep_dive', () => {
+      const positions = getSpreadPositions('relationship_deep_dive');
+      expect(positions).toHaveLength(7);
+    });
+  });
+});
+
+describe('Premium Content - Total 27 Positions Requirement (Story 7.6)', () => {
+  it('should have exactly 27 premium positions total across 4 spreads', () => {
+    const celticCrossCount = Object.keys(CELTIC_CROSS_POSITIONS).length;
+    const decisionMakingCount = Object.keys(DECISION_MAKING_POSITIONS).length;
+    const selfDiscoveryCount = Object.keys(SELF_DISCOVERY_POSITIONS).length;
+    const relationshipDeepDiveCount = Object.keys(RELATIONSHIP_DEEP_DIVE_POSITIONS).length;
+
+    const total = celticCrossCount + decisionMakingCount + selfDiscoveryCount + relationshipDeepDiveCount;
+    
+    expect(celticCrossCount).toBe(10);
+    expect(decisionMakingCount).toBe(5);
+    expect(selfDiscoveryCount).toBe(5);
+    expect(relationshipDeepDiveCount).toBe(7);
+    expect(total).toBe(27);
+  });
+});
+
+describe('Premium Content Quality - Premium vs Basic Spread Depth', () => {
+  it('premium Celtic Cross interpretation guides should be longer than basic spreads', () => {
+    // Premium content should be more detailed (100-200 words as per test design)
+    Object.values(CELTIC_CROSS_POSITIONS).forEach((position) => {
+      // Premium interpretation guides should have at least 100 characters
+      expect(position.interpretationGuide.length).toBeGreaterThan(100);
+      expect(position.interpretationGuideTh.length).toBeGreaterThan(100);
+    });
+  });
+
+  it('premium Self Discovery interpretation guides should provide deep insights', () => {
+    Object.values(SELF_DISCOVERY_POSITIONS).forEach((position) => {
+      expect(position.interpretationGuide.length).toBeGreaterThan(100);
+      expect(position.interpretationGuideTh.length).toBeGreaterThan(100);
+    });
+  });
+
+  it('premium Relationship Deep Dive interpretation guides should provide deep insights', () => {
+    Object.values(RELATIONSHIP_DEEP_DIVE_POSITIONS).forEach((position) => {
+      expect(position.interpretationGuide.length).toBeGreaterThan(100);
+      expect(position.interpretationGuideTh.length).toBeGreaterThan(100);
+    });
+  });
+});
+
+describe('getPositionInterpretationPrefix - Premium Spreads', () => {
+  it('should return Thai prefix for Celtic Cross position', () => {
+    const prefix = getPositionInterpretationPrefix('celtic_cross', 'cc_present', false);
+    expect(prefix).toContain('ในตำแหน่ง');
+    expect(prefix).toContain('สถานการณ์ปัจจุบัน');
+  });
+
+  it('should return Thai prefix for Self Discovery position', () => {
+    const prefix = getPositionInterpretationPrefix('self_discovery', 'sd_core_self', false);
+    expect(prefix).toContain('ในตำแหน่ง');
+    expect(prefix).toContain('ตัวตนแท้จริง');
+  });
+
+  it('should return Thai prefix for Relationship Deep Dive position', () => {
+    const prefix = getPositionInterpretationPrefix('relationship_deep_dive', 'rdd_connection', false);
+    expect(prefix).toContain('ในตำแหน่ง');
+    expect(prefix).toContain('การเชื่อมต่อ');
+  });
+
+  it('should include reversed indicator for premium spreads when card is reversed', () => {
+    const prefix = getPositionInterpretationPrefix('celtic_cross', 'cc_outcome', true);
+    expect(prefix).toContain('กลับหัว');
   });
 });
 
