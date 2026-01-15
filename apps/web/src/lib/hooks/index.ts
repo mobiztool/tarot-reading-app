@@ -11,4 +11,5 @@ export { useHaptic } from './useHaptic';
 export { usePostSignupCelebration } from './usePostSignupCelebration';
 export { useSpreadAnimation, ANIMATION_PRESETS } from './useSpreadAnimation';
 export { usePremiumStatus } from './usePremiumStatus';
+export { useSpreadRecommendations } from './useSpreadRecommendations';
 export type { ReadingType, ReadingState } from './useTarotReading';

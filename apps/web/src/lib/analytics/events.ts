@@ -171,6 +171,57 @@ export const analyticsEvents = {
     spread_id: spreadId,
     spread_name: spreadName,
   }),
+
+  // Story 7.8: Spread Recommendation Events
+  recommendationShown: (params: {
+    questionLength: number;
+    hasMatches: boolean;
+    primaryCategory: string;
+    recommendationCount: number;
+    spreadIds: string;
+  }) => ({
+    event: 'recommendation_shown',
+    question_length: params.questionLength,
+    has_matches: params.hasMatches,
+    primary_category: params.primaryCategory,
+    recommendation_count: params.recommendationCount,
+    spread_ids: params.spreadIds,
+  }),
+
+  recommendationClicked: (params: {
+    spreadId: string;
+    spreadName: string;
+    isAccessible: boolean;
+    matchCategory: string;
+    matchScore: number;
+  }) => ({
+    event: 'recommendation_clicked',
+    spread_id: params.spreadId,
+    spread_name: params.spreadName,
+    is_accessible: params.isAccessible,
+    match_category: params.matchCategory,
+    match_score: params.matchScore,
+  }),
+
+  recommendationAccepted: (params: {
+    spreadId: string;
+    spreadName: string;
+    questionLength: number;
+    hasQuestion: boolean;
+    accepted: boolean;
+  }) => ({
+    event: 'recommendation_accepted',
+    spread_id: params.spreadId,
+    spread_name: params.spreadName,
+    question_length: params.questionLength,
+    has_question: params.hasQuestion,
+    accepted: params.accepted,
+  }),
+
+  recommendationQuestionStarted: (source: string) => ({
+    event: 'recommendation_question_started',
+    source: source,
+  }),
 } as const;
 
 // Export event names for reference
@@ -201,4 +252,9 @@ export const EVENT_NAMES = {
   SIGNUP_TRIGGER_SPREAD: 'signup_trigger_spread',
   UNLOCKED_SPREADS_MODAL_SHOWN: 'unlocked_spreads_modal_shown',
   UNLOCKED_SPREAD_CLICKED: 'unlocked_spread_clicked',
+  // Story 7.8: Recommendation Events
+  RECOMMENDATION_SHOWN: 'recommendation_shown',
+  RECOMMENDATION_CLICKED: 'recommendation_clicked',
+  RECOMMENDATION_ACCEPTED: 'recommendation_accepted',
+  RECOMMENDATION_QUESTION_STARTED: 'recommendation_question_started',
 } as const;

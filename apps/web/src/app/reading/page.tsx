@@ -2,12 +2,14 @@
  * Reading Selection Page
  * Displays all spread types with tier-based locking
  * Story 6.3: Feature Gating by Subscription Tier (AC: 4, 8)
+ * Story 7.8: Spread Recommendation Engine
  */
 
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { SpreadCard } from '@/components/spreads';
+import { ReadingPageClient } from './ReadingPageClient';
 import { 
   SPREAD_INFO, 
   getUserTier, 
@@ -80,6 +82,9 @@ export default async function ReadingSelectionPage() {
             เลือกรูปแบบที่เหมาะกับคำถามของคุณ แล้วปล่อยให้ไพ่ยิปซีเผยคำตอบ
           </p>
         </div>
+
+        {/* Story 7.8: Spread Recommendations Section */}
+        <ReadingPageClient userTier={currentTier} />
 
         {/* User Tier & Limit Info */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
