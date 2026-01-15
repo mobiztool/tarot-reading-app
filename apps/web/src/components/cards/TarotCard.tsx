@@ -1,8 +1,13 @@
 'use client';
 
+/**
+ * TarotCard component with 3D flip animation
+ * Story 7.7: Added premium card back support
+ */
+
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { CARD_SIZES, getCardBackPath } from '@/types/card';
+import { CARD_SIZES, getCardBackPath, getPremiumCardBackPath } from '@/types/card';
 
 interface TarotCardProps {
   frontImage: string;
@@ -15,12 +20,15 @@ interface TarotCardProps {
   onFlipComplete?: () => void;
   className?: string;
   enableHaptic?: boolean;
+  /** Story 7.7: Use premium card back design */
+  isPremium?: boolean;
 }
 
 /**
  * TarotCard component with 3D flip animation
  * Displays card back or front based on isFlipped state
  * Includes haptic feedback for mobile devices
+ * Story 7.7: Added premium card back support
  */
 export function TarotCard({
   frontImage,
@@ -33,11 +41,13 @@ export function TarotCard({
   onFlipComplete,
   className = '',
   enableHaptic = true,
+  isPremium = false,
 }: TarotCardProps) {
   const [hasError, setHasError] = useState(false);
   const [isHapticSupported, setIsHapticSupported] = useState(false);
   const dimensions = CARD_SIZES[size];
-  const backImage = getCardBackPath();
+  // Story 7.7: Use premium card back for premium users
+  const backImage = isPremium ? getPremiumCardBackPath(true) : getCardBackPath();
 
   useEffect(() => {
     setIsHapticSupported('vibrate' in navigator);
@@ -101,7 +111,10 @@ export function TarotCard({
       >
         {/* Card Back */}
         <div
-          className="absolute inset-0 backface-hidden rounded-xl overflow-hidden shadow-2xl shadow-purple-900/50"
+          className={`
+            absolute inset-0 backface-hidden rounded-xl overflow-hidden shadow-2xl
+            ${isPremium ? 'shadow-amber-500/30' : 'shadow-purple-900/50'}
+          `}
           style={{ backfaceVisibility: 'hidden' }}
         >
           <Image
@@ -113,10 +126,20 @@ export function TarotCard({
             priority
             unoptimized={backImage.endsWith('.svg')}
           />
-          {/* Hover glow effect */}
-          <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-purple-500/30 to-transparent" />
+          {/* Hover glow effect - enhanced for premium */}
+          <div className={`
+            absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300
+            ${isPremium 
+              ? 'bg-gradient-to-t from-amber-500/30 to-transparent' 
+              : 'bg-gradient-to-t from-purple-500/30 to-transparent'
+            }
+          `} />
           {/* Shimmer overlay */}
           <div className="absolute inset-0 card-shimmer pointer-events-none" />
+          {/* Premium glow ring */}
+          {isPremium && (
+            <div className="absolute inset-0 rounded-xl ring-2 ring-amber-400/30 animate-pulse pointer-events-none" />
+          )}
         </div>
 
         {/* Card Front */}

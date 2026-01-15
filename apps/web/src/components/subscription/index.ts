@@ -6,3 +6,4 @@ export { SubscriptionBadge } from './SubscriptionBadge';
 export { TierBadge } from './TierBadge';
 export { UpgradeModal } from './UpgradeModal';
 export { DowngradeModal } from './DowngradeModal';
+export { PremiumBadge, PremiumCrown } from './PremiumBadge';

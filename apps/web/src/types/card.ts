@@ -83,3 +83,11 @@ export function getCardImagePath(suit: Suit, number: number): string {
 export function getCardBackPath(): string {
   return '/cards/card-back.svg';
 }
+
+/**
+ * Story 7.7: Premium Card Backs
+ * Get premium card back image path based on subscription tier
+ */
+export function getPremiumCardBackPath(isPremium: boolean = false): string {
+  return isPremium ? '/cards/card-back-premium.svg' : '/cards/card-back.svg';
+}

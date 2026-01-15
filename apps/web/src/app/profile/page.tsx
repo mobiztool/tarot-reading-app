@@ -17,6 +17,7 @@ import type { User } from '@supabase/supabase-js';
 import { ProfilePicture } from '@/components/profile';
 import { PasswordStrength } from '@/components/auth';
 import { Header } from '@/components/layout/Header';
+import { PremiumBadge } from '@/components/subscription';
 import { format } from 'date-fns';
 import { PageLoader } from '@/components/ui/MysticalLoader';
 import { th } from 'date-fns/locale';
@@ -375,9 +376,12 @@ export default function ProfilePage() {
                   </form>
                 ) : (
                   <>
-                    <h1 className="text-2xl font-bold text-white mb-1">
-                      {profile.name || 'ไม่ได้ตั้งชื่อ'}
-                    </h1>
+                    <div className="flex items-center gap-2 justify-center md:justify-start mb-1">
+                      <h1 className="text-2xl font-bold text-white">
+                        {profile.name || 'ไม่ได้ตั้งชื่อ'}
+                      </h1>
+                      <PremiumBadge size="md" />
+                    </div>
                     <p className="text-slate-400 mb-2">{profile.email}</p>
                     <p className="text-slate-500 text-sm mb-3">
                       เป็นสมาชิกตั้งแต่{' '}

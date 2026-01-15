@@ -2,6 +2,7 @@
  * Subscription Success Page
  * Shows confirmation after successful payment with celebration
  * Auto-syncs subscription from Stripe on page load
+ * Story 7.7: Enhanced with premium gold accents
  */
 
 'use client';
@@ -10,8 +11,9 @@ import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle2, Sparkles, ArrowRight, Copy, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-// CSS Confetti Animation Component
+// CSS Confetti Animation Component - Story 7.7: Enhanced with gold colors
 function Confetti() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
@@ -26,7 +28,7 @@ function Confetti() {
           animation: confetti-fall 3s ease-out forwards;
         }
       `}</style>
-      {[...Array(50)].map((_, i) => (
+      {[...Array(60)].map((_, i) => (
         <div
           key={i}
           className="confetti"
@@ -34,7 +36,8 @@ function Confetti() {
             left: `${Math.random() * 100}%`,
             width: `${Math.random() * 10 + 5}px`,
             height: `${Math.random() * 10 + 5}px`,
-            backgroundColor: ['#a855f7', '#6366f1', '#22c55e', '#eab308', '#ec4899', '#06b6d4'][Math.floor(Math.random() * 6)],
+            // Story 7.7: Added more gold colors for premium feel
+            backgroundColor: ['#FBBF24', '#F59E0B', '#a855f7', '#6366f1', '#22c55e', '#eab308', '#FCD34D', '#D97706'][Math.floor(Math.random() * 8)],
             animationDelay: `${Math.random() * 2}s`,
             animationDuration: `${Math.random() * 2 + 2}s`,
             borderRadius: Math.random() > 0.5 ? '50%' : '0',
@@ -134,10 +137,17 @@ function SuccessContent() {
           </div>
         </div>
 
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          🎉 ยินดีต้อนรับสู่ Premium!
-        </h1>
+        {/* Title - Story 7.7: Enhanced with gold gradient */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.3, type: 'spring' }}
+        >
+          <span className="text-5xl mb-4 block">👑</span>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
+            ยินดีต้อนรับสู่ Premium!
+          </h1>
+        </motion.div>
         
         <p className="text-xl text-purple-200 mb-4">
           การชำระเงินสำเร็จแล้ว คุณสามารถเข้าถึงฟีเจอร์พรีเมียมได้ทันที

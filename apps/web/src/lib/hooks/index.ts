@@ -10,4 +10,5 @@ export { useTheme } from './useTheme';
 export { useHaptic } from './useHaptic';
 export { usePostSignupCelebration } from './usePostSignupCelebration';
 export { useSpreadAnimation, ANIMATION_PRESETS } from './useSpreadAnimation';
+export { usePremiumStatus } from './usePremiumStatus';
 export type { ReadingType, ReadingState } from './useTarotReading';
