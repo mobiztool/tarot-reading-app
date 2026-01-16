@@ -13,9 +13,11 @@ type PositionLabel =
   // Self Discovery positions
   | 'sd_core_self' | 'sd_strengths' | 'sd_challenges' | 'sd_hidden_potential' | 'sd_path_forward'
   // Relationship Deep Dive positions
-  | 'rdd_you' | 'rdd_them' | 'rdd_connection' | 'rdd_your_feelings' | 'rdd_their_feelings' | 'rdd_challenges' | 'rdd_future_potential';
+  | 'rdd_you' | 'rdd_them' | 'rdd_connection' | 'rdd_your_feelings' | 'rdd_their_feelings' | 'rdd_challenges' | 'rdd_future_potential'
+  // Shadow Work positions
+  | 'sw_conscious_self' | 'sw_shadow' | 'sw_fear' | 'sw_denied_strength' | 'sw_integration' | 'sw_healing' | 'sw_wholeness';
 
-type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive';
+type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work';
 
 interface SaveReadingCard {
   cardId: string;
@@ -116,6 +118,10 @@ export function useSaveReading(): UseSaveReadingReturn {
         } else if (readingType === 'relationship_deep_dive') {
           positionLabels = [
             'rdd_you', 'rdd_them', 'rdd_connection', 'rdd_your_feelings', 'rdd_their_feelings', 'rdd_challenges', 'rdd_future_potential',
+          ];
+        } else if (readingType === 'shadow_work') {
+          positionLabels = [
+            'sw_conscious_self', 'sw_shadow', 'sw_fear', 'sw_denied_strength', 'sw_integration', 'sw_healing', 'sw_wholeness',
           ];
         } else {
           positionLabels = [undefined];

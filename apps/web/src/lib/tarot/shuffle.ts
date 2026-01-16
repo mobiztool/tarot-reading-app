@@ -218,9 +218,31 @@ export function drawRelationshipDeepDiveSpread(deck: TarotCardData[]): DrawnCard
 }
 
 /**
+ * Draw seven cards for Shadow Work spread (VIP-only)
+ * Position 0: Conscious Self (ตัวตนที่รู้สำนึก) - The persona/mask you show the world
+ * Position 1: Shadow (เงาในตัวตน) - What you deny or hide
+ * Position 2: Fear (ความกลัวที่ซ่อนอยู่) - Deep hidden fears
+ * Position 3: Denied Strength (พลังที่ถูกปฏิเสธ) - Golden shadow - good qualities you reject
+ * Position 4: Integration (การรวมเป็นหนึ่ง) - How to integrate the shadow
+ * Position 5: Healing (เส้นทางการเยียวยา) - Path to healing wounds
+ * Position 6: Wholeness (ความครบถ้วน) - The complete self (individuation)
+ */
+export function drawShadowWorkSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 7, [
+    'sw_conscious_self',
+    'sw_shadow',
+    'sw_fear',
+    'sw_denied_strength',
+    'sw_integration',
+    'sw_healing',
+    'sw_wholeness',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
-export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive';
+export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive' | 'shadow-work';
 
 export interface ReadingSession {
   id: string;
@@ -261,6 +283,9 @@ export function createReadingSession(
       break;
     case 'relationship-deep-dive':
       drawnCards = drawRelationshipDeepDiveSpread(deck);
+      break;
+    case 'shadow-work':
+      drawnCards = drawShadowWorkSpread(deck);
       break;
     case 'three-card':
     default:

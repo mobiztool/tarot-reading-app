@@ -40,7 +40,11 @@ export type PositionLabel =
   // Relationship Deep Dive positions (7 cards)
   | 'rdd_you' | 'rdd_them' | 'rdd_connection' 
   | 'rdd_your_feelings' | 'rdd_their_feelings' 
-  | 'rdd_challenges' | 'rdd_future_potential';
+  | 'rdd_challenges' | 'rdd_future_potential'
+  // Shadow Work positions (7 cards) - VIP only
+  | 'sw_conscious_self' | 'sw_shadow' | 'sw_fear'
+  | 'sw_denied_strength' | 'sw_integration' 
+  | 'sw_healing' | 'sw_wholeness';
 
 export interface DrawnCard {
   card: TarotCardData;
