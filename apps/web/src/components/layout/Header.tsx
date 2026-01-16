@@ -65,6 +65,13 @@ export function Header() {
               ดูดวง
             </Link>
             <Link
+              href="/reading#pro"
+              className="text-slate-300 hover:text-purple-light transition-colors font-medium flex items-center gap-1"
+            >
+              <span className="text-yellow-400">⭐</span>
+              <span>Premium</span>
+            </Link>
+            <Link
               href="/cards"
               className="text-slate-300 hover:text-purple-light transition-colors font-medium"
             >
@@ -209,6 +216,14 @@ export function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               ดูดวง
+            </Link>
+            <Link
+              href="/reading#pro"
+              className="block px-4 py-3 text-slate-300 hover:text-purple-light hover:bg-slate-800 rounded-lg transition-colors min-h-[44px] flex items-center gap-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="text-yellow-400">⭐</span>
+              <span>Premium Spreads</span>
             </Link>
             <Link
               href="/cards"

@@ -23,6 +23,13 @@ export const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
   isProduction: process.env.NODE_ENV === 'production',
   isDevelopment: process.env.NODE_ENV === 'development',
+
+  // Feature Flags - Premium Spreads Beta
+  premiumSpreadsBeta: {
+    enabled: process.env.NEXT_PUBLIC_PREMIUM_BETA_ENABLED === 'true',
+    maxBetaUsers: parseInt(process.env.NEXT_PUBLIC_PREMIUM_BETA_MAX_USERS || '100', 10),
+    feedbackEnabled: process.env.NEXT_PUBLIC_FEEDBACK_ENABLED !== 'false',
+  },
 } as const;
 
 // Type guard for required env vars

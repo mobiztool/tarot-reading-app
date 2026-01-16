@@ -125,7 +125,7 @@ export default async function ReadingSelectionPage() {
           const isLocked = tierOrder[currentTier] < tierOrder[group.tier];
           
           return (
-            <div key={group.tier} className="mb-12">
+            <div key={group.tier} id={group.tier} className="mb-12 scroll-mt-20">
               {/* Group Header */}
               <div className="flex items-center gap-3 mb-6">
                 <h2 className={`text-xl font-semibold ${

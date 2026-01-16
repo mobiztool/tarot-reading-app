@@ -17,3 +17,5 @@ export { PremiumWrapper, PremiumCardFrame } from './PremiumWrapper';
 export { PremiumLoader, PremiumPageLoader } from './PremiumLoader';
 
 export { PremiumWelcome } from './PremiumWelcome';
+
+export { PremiumFeedback } from './PremiumFeedback';

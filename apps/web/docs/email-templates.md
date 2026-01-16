@@ -293,6 +293,158 @@ This document describes how to configure email templates in the Supabase Dashboa
 
 ---
 
+## 6. Premium Welcome (ยินดีต้อนรับสมาชิก Premium)
+
+**Subject:** 👑 ยินดีต้อนรับสู่ Premium! - ดูดวงไพ่ทาโรต์
+
+**Body:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 30px;">
+      <span style="font-size: 48px;">👑</span>
+      <h1 style="color: #fcd34d; margin: 10px 0;">ยินดีต้อนรับสู่ Premium!</h1>
+    </div>
+    
+    <!-- Content Box -->
+    <div style="background: linear-gradient(135deg, #1e293b 0%, #4c1d95 100%); border-radius: 16px; padding: 30px; border: 1px solid #fcd34d;">
+      <h2 style="color: #fcd34d; margin-top: 0;">✨ ขอบคุณที่อัปเกรด!</h2>
+      <p style="color: #e2e8f0; line-height: 1.6;">
+        คุณได้ปลดล็อกความลับแห่งจักรวาลแล้ว! ตอนนี้คุณสามารถเข้าถึง <strong style="color: #fcd34d;">Premium Spreads</strong> ทั้งหมด
+      </p>
+      
+      <!-- Premium Features -->
+      <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <h3 style="color: #c084fc; margin-top: 0;">รูปแบบการดูดวงที่คุณเข้าถึงได้:</h3>
+        <ul style="color: #e2e8f0; line-height: 1.8; padding-left: 20px;">
+          <li>✨ <strong>Celtic Cross</strong> - การวิเคราะห์ชีวิตอย่างลึกซึ้ง (10 ไพ่)</li>
+          <li>⚖️ <strong>Decision Making</strong> - ช่วยตัดสินใจเรื่องสำคัญ (5 ไพ่)</li>
+          <li>🔍 <strong>Self Discovery</strong> - ค้นพบตัวตนที่แท้จริง (5 ไพ่)</li>
+          <li>💞 <strong>Relationship Deep Dive</strong> - วิเคราะห์ความสัมพันธ์ (7 ไพ่)</li>
+        </ul>
+      </div>
+      
+      <!-- CTA Button -->
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ .SiteURL }}/reading#pro" 
+           style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%); color: #1e293b; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px;">
+          🎴 เริ่มดูดวง Premium
+        </a>
+      </div>
+      
+      <p style="color: #94a3b8; font-size: 14px; text-align: center;">
+        มีคำถาม? ติดต่อทีมสนับสนุนได้ที่ support@tarot-app.com
+      </p>
+    </div>
+    
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155;">
+      <p style="color: #475569; font-size: 11px;">
+        © 2026 ดูดวงไพ่ทาโรต์ - เปิดประตูสู่ความลับแห่งจักรวาล
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+```
+
+---
+
+## 7. Premium Spread Guide (คู่มือการดูดวง Premium)
+
+**Subject:** 📚 คู่มือ Premium Spreads - ดูดวงไพ่ทาโรต์
+
+**Body:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 30px;">
+      <span style="font-size: 48px;">📚</span>
+      <h1 style="color: #c084fc; margin: 10px 0;">คู่มือ Premium Spreads</h1>
+    </div>
+    
+    <!-- Content Box -->
+    <div style="background: linear-gradient(135deg, #1e293b 0%, #312e81 100%); border-radius: 16px; padding: 30px; border: 1px solid #6366f1;">
+      <p style="color: #e2e8f0; line-height: 1.6;">
+        เรียนรู้วิธีใช้ Premium Spreads ให้ได้ประโยชน์สูงสุด!
+      </p>
+      
+      <!-- Celtic Cross -->
+      <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <h3 style="color: #fcd34d; margin-top: 0;">✨ Celtic Cross (10 ไพ่)</h3>
+        <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+          <strong>เหมาะสำหรับ:</strong> คำถามที่ต้องการความเข้าใจรอบด้าน<br>
+          <strong>เวลา:</strong> ~10 นาที<br>
+          <strong>เคล็ดลับ:</strong> ตั้งคำถามที่ชัดเจน และให้เวลาพิจารณาความเชื่อมโยงของทุกตำแหน่ง
+        </p>
+      </div>
+      
+      <!-- Decision Making -->
+      <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <h3 style="color: #fcd34d; margin-top: 0;">⚖️ Decision Making (5 ไพ่)</h3>
+        <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+          <strong>เหมาะสำหรับ:</strong> เปรียบเทียบสองทางเลือก<br>
+          <strong>เวลา:</strong> ~5 นาที<br>
+          <strong>เคล็ดลับ:</strong> เขียนทางเลือกทั้งสองให้ชัดเจนก่อนเริ่ม
+        </p>
+      </div>
+      
+      <!-- Self Discovery -->
+      <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <h3 style="color: #fcd34d; margin-top: 0;">🔍 Self Discovery (5 ไพ่)</h3>
+        <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+          <strong>เหมาะสำหรับ:</strong> ค้นหาตัวตนและศักยภาพ<br>
+          <strong>เวลา:</strong> ~5 นาที<br>
+          <strong>เคล็ดลับ:</strong> ทำในช่วงเวลาที่สงบ มีสมาธิ
+        </p>
+      </div>
+      
+      <!-- Relationship Deep Dive -->
+      <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 20px 0;">
+        <h3 style="color: #fcd34d; margin-top: 0;">💞 Relationship Deep Dive (7 ไพ่)</h3>
+        <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+          <strong>เหมาะสำหรับ:</strong> วิเคราะห์ความสัมพันธ์ทุกรูปแบบ<br>
+          <strong>เวลา:</strong> ~7 นาที<br>
+          <strong>เคล็ดลับ:</strong> นึกถึงคนที่เกี่ยวข้องขณะเลือกไพ่
+        </p>
+      </div>
+      
+      <!-- CTA Button -->
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ .SiteURL }}/help" 
+           style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px;">
+          ❓ ดูคำถามที่พบบ่อย
+        </a>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155;">
+      <p style="color: #64748b; font-size: 12px;">
+        ต้องการความช่วยเหลือ? ติดต่อ support@tarot-app.com
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+```
+
+---
+
 ## Configuration Notes
 
 ### Site URL
