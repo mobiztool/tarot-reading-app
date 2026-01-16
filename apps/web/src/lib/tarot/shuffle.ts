@@ -240,9 +240,31 @@ export function drawShadowWorkSpread(deck: TarotCardData[]): DrawnCard[] {
 }
 
 /**
+ * Draw seven cards for Chakra Alignment spread (Pro-only)
+ * Position 0: Root/Muladhara (รากฐาน) - Grounding, security, survival
+ * Position 1: Sacral/Svadhisthana (สัคราล) - Creativity, emotions, sexuality
+ * Position 2: Solar Plexus/Manipura (ท้องน้อย) - Personal power, confidence
+ * Position 3: Heart/Anahata (หัวใจ) - Love, compassion, healing
+ * Position 4: Throat/Vishuddha (คอ) - Communication, expression, truth
+ * Position 5: Third Eye/Ajna (ตาที่สาม) - Intuition, wisdom, insight
+ * Position 6: Crown/Sahasrara (มงกุฎ) - Spirituality, enlightenment, connection
+ */
+export function drawChakraAlignmentSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 7, [
+    'ca_root',
+    'ca_sacral',
+    'ca_solar_plexus',
+    'ca_heart',
+    'ca_throat',
+    'ca_third_eye',
+    'ca_crown',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
-export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive' | 'shadow-work';
+export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive' | 'shadow-work' | 'chakra';
 
 export interface ReadingSession {
   id: string;
@@ -286,6 +308,9 @@ export function createReadingSession(
       break;
     case 'shadow-work':
       drawnCards = drawShadowWorkSpread(deck);
+      break;
+    case 'chakra':
+      drawnCards = drawChakraAlignmentSpread(deck);
       break;
     case 'three-card':
     default:

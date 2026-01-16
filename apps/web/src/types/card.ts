@@ -44,7 +44,10 @@ export type PositionLabel =
   // Shadow Work positions (7 cards) - VIP only
   | 'sw_conscious_self' | 'sw_shadow' | 'sw_fear'
   | 'sw_denied_strength' | 'sw_integration' 
-  | 'sw_healing' | 'sw_wholeness';
+  | 'sw_healing' | 'sw_wholeness'
+  // Chakra Alignment positions (7 cards) - Pro/VIP
+  | 'ca_root' | 'ca_sacral' | 'ca_solar_plexus'
+  | 'ca_heart' | 'ca_throat' | 'ca_third_eye' | 'ca_crown';
 
 export interface DrawnCard {
   card: TarotCardData;

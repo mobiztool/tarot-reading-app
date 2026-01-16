@@ -101,6 +101,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
+    if (body.readingType === 'chakra_alignment' && body.cards.length !== 7) {
+      return NextResponse.json(
+        { success: false, error: 'Chakra Alignment reading must have exactly 7 cards' },
+        { status: 400 }
+      );
+    }
+
     // Create reading with cards in a transaction
     const reading = await prisma.reading.create({
       data: {

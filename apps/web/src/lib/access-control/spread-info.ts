@@ -209,7 +209,7 @@ export const SPREAD_INFO: Record<SpreadType, SpreadInfo> = {
     cardCount: 7,
     estimatedTime: '~7 นาที',
     minimumTier: 'pro',
-    isAvailable: false,
+    isAvailable: true,
     route: '/reading/chakra',
   },
 

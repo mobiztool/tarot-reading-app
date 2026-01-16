@@ -133,6 +133,7 @@ enum ReadingType {
   self_discovery
   relationship_deep_dive
   shadow_work
+  chakra_alignment
 }
 
 // ============================================================================
@@ -206,6 +207,14 @@ enum PositionLabel {
   sw_integration
   sw_healing
   sw_wholeness
+  // Chakra Alignment positions (7 cards)
+  ca_root
+  ca_sacral
+  ca_solar_plexus
+  ca_heart
+  ca_throat
+  ca_third_eye
+  ca_crown
 }
 
 // ============================================================================

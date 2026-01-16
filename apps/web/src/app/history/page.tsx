@@ -18,9 +18,13 @@ type PositionLabelType =
   | 'sd_core_self' | 'sd_strengths' | 'sd_challenges' | 'sd_hidden_potential' | 'sd_path_forward'
   // Relationship Deep Dive positions
   | 'rdd_you' | 'rdd_them' | 'rdd_connection' | 'rdd_your_feelings' | 'rdd_their_feelings' | 'rdd_challenges' | 'rdd_future_potential'
+  // Shadow Work positions
+  | 'sw_conscious_self' | 'sw_shadow' | 'sw_fear' | 'sw_denied_strength' | 'sw_integration' | 'sw_healing' | 'sw_wholeness'
+  // Chakra Alignment positions
+  | 'ca_root' | 'ca_sacral' | 'ca_solar_plexus' | 'ca_heart' | 'ca_throat' | 'ca_third_eye' | 'ca_crown'
   | null;
 
-type ReadingTypeValue = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive';
+type ReadingTypeValue = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work' | 'chakra_alignment';
 
 interface ReadingCard {
   position: number;
@@ -90,6 +94,22 @@ const POSITION_LABELS: Record<string, { th: string; emoji: string; color: string
   rdd_their_feelings: { th: 'ความรู้สึกของอีกฝ่าย', emoji: '💗', color: 'bg-rose-500/20 text-rose-300' },
   rdd_challenges: { th: 'ความท้าทาย', emoji: '⚡', color: 'bg-amber-500/20 text-amber-300' },
   rdd_future_potential: { th: 'ศักยภาพในอนาคต', emoji: '🌟', color: 'bg-cyan-500/20 text-cyan-300' },
+  // Shadow Work
+  sw_conscious_self: { th: 'ตัวตนที่รู้ตัว', emoji: '☀️', color: 'bg-amber-500/20 text-amber-300' },
+  sw_shadow: { th: 'เงาตัวตน', emoji: '🌑', color: 'bg-slate-500/20 text-slate-300' },
+  sw_fear: { th: 'ความกลัว', emoji: '😰', color: 'bg-red-500/20 text-red-300' },
+  sw_denied_strength: { th: 'พลังที่ถูกปฏิเสธ', emoji: '💪', color: 'bg-purple-500/20 text-purple-300' },
+  sw_integration: { th: 'การบูรณาการ', emoji: '🔗', color: 'bg-cyan-500/20 text-cyan-300' },
+  sw_healing: { th: 'การเยียวยา', emoji: '💚', color: 'bg-green-500/20 text-green-300' },
+  sw_wholeness: { th: 'ความเป็นหนึ่ง', emoji: '✨', color: 'bg-yellow-500/20 text-yellow-300' },
+  // Chakra Alignment
+  ca_root: { th: 'จักระรากฐาน', emoji: '❤️', color: 'bg-red-500/20 text-red-300' },
+  ca_sacral: { th: 'จักระสัคราล', emoji: '🧡', color: 'bg-orange-500/20 text-orange-300' },
+  ca_solar_plexus: { th: 'จักระท้องน้อย', emoji: '💛', color: 'bg-yellow-500/20 text-yellow-300' },
+  ca_heart: { th: 'จักระหัวใจ', emoji: '💚', color: 'bg-green-500/20 text-green-300' },
+  ca_throat: { th: 'จักระคอ', emoji: '💙', color: 'bg-blue-500/20 text-blue-300' },
+  ca_third_eye: { th: 'จักระตาที่สาม', emoji: '💜', color: 'bg-indigo-500/20 text-indigo-300' },
+  ca_crown: { th: 'จักระมงกุฏ', emoji: '👑', color: 'bg-purple-500/20 text-purple-300' },
 };
 
 function formatDate(dateString: string): string {
@@ -127,6 +147,8 @@ const READING_TYPE_LABELS: Record<ReadingTypeValue, { label: string; emoji: stri
   decision_making: { label: 'ตัดสินใจ', emoji: '⚖️', color: 'bg-cyan-500/20 text-cyan-300' },
   self_discovery: { label: 'ค้นพบตัวเอง', emoji: '🔍', color: 'bg-indigo-500/20 text-indigo-300' },
   relationship_deep_dive: { label: 'วิเคราะห์ความสัมพันธ์', emoji: '💞', color: 'bg-rose-500/20 text-rose-300' },
+  shadow_work: { label: 'เงาตัวตน', emoji: '🌑', color: 'bg-slate-500/20 text-slate-300' },
+  chakra_alignment: { label: 'จักระสมดุล', emoji: '🧘', color: 'bg-gradient-to-r from-red-500/20 to-purple-500/20 text-purple-300' },
 };
 
 function ReadingTypeLabel({ type }: { type: ReadingTypeValue }) {

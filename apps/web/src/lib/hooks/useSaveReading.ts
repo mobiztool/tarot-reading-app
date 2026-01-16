@@ -15,9 +15,11 @@ type PositionLabel =
   // Relationship Deep Dive positions
   | 'rdd_you' | 'rdd_them' | 'rdd_connection' | 'rdd_your_feelings' | 'rdd_their_feelings' | 'rdd_challenges' | 'rdd_future_potential'
   // Shadow Work positions
-  | 'sw_conscious_self' | 'sw_shadow' | 'sw_fear' | 'sw_denied_strength' | 'sw_integration' | 'sw_healing' | 'sw_wholeness';
+  | 'sw_conscious_self' | 'sw_shadow' | 'sw_fear' | 'sw_denied_strength' | 'sw_integration' | 'sw_healing' | 'sw_wholeness'
+  // Chakra Alignment positions
+  | 'ca_root' | 'ca_sacral' | 'ca_solar_plexus' | 'ca_heart' | 'ca_throat' | 'ca_third_eye' | 'ca_crown';
 
-type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work';
+type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work' | 'chakra_alignment';
 
 interface SaveReadingCard {
   cardId: string;
@@ -122,6 +124,10 @@ export function useSaveReading(): UseSaveReadingReturn {
         } else if (readingType === 'shadow_work') {
           positionLabels = [
             'sw_conscious_self', 'sw_shadow', 'sw_fear', 'sw_denied_strength', 'sw_integration', 'sw_healing', 'sw_wholeness',
+          ];
+        } else if (readingType === 'chakra_alignment') {
+          positionLabels = [
+            'ca_root', 'ca_sacral', 'ca_solar_plexus', 'ca_heart', 'ca_throat', 'ca_third_eye', 'ca_crown',
           ];
         } else {
           positionLabels = [undefined];
