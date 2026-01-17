@@ -154,10 +154,8 @@ function drawHeader(
   doc.setFillColor(...COLORS.primary);
   doc.rect(0, 0, pageWidth, 45, 'F');
   
-  // Title
-  if (useThaiFont) {
-    doc.setFont('Sarabun', 'normal');
-  }
+  // Title - set font
+  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
   doc.setFontSize(FONT_CONFIG.title.size);
   doc.setTextColor(...COLORS.white);
   
@@ -229,9 +227,7 @@ async function drawCard(
     doc.setFillColor(...COLORS.primary);
     doc.roundedRect(xPos, yPos, cardWidth, 12, 2, 2, 'F');
     
-    if (useThaiFont) {
-      doc.setFont('Sarabun', 'normal');
-    }
+    doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
     doc.setFontSize(FONT_CONFIG.small.size);
     doc.setTextColor(...COLORS.white);
     doc.text(posLabelTh || '', xPos + cardWidth / 2, yPos + 8, { align: 'center' });
@@ -258,9 +254,7 @@ async function drawCard(
   }
   
   // Card name
-  if (useThaiFont) {
-    doc.setFont('Sarabun', 'normal');
-  }
+  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
   doc.setFontSize(FONT_CONFIG.heading.size - 2);
   doc.setTextColor(...COLORS.primary);
   doc.text(card.card.nameTh, xPos + cardWidth / 2, yPos + 5, { align: 'center' });
@@ -292,9 +286,7 @@ function drawInterpretations(
   doc.setFillColor(...COLORS.primary);
   doc.rect(margin, yPos, contentWidth, 10, 'F');
   
-  if (useThaiFont) {
-    doc.setFont('Sarabun', 'normal');
-  }
+  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
   doc.setFontSize(FONT_CONFIG.heading.size - 2);
   doc.setTextColor(...COLORS.white);
   doc.text('คำทำนาย', margin + 5, yPos + 7);
@@ -370,12 +362,9 @@ function drawFooter(
   doc.setFillColor(...COLORS.background);
   doc.rect(0, footerY - 5, pageWidth, 20, 'F');
   
+  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
   doc.setFontSize(FONT_CONFIG.small.size);
   doc.setTextColor(...COLORS.textLight);
-  
-  if (useThaiFont) {
-    doc.setFont('Sarabun', 'normal');
-  }
   
   doc.text('Mystic Tarot - ไพ่ทาโร่ต์ออนไลน์', pageWidth / 2, footerY, { align: 'center' });
   doc.text('mystictarot.app', pageWidth / 2, footerY + 5, { align: 'center' });
@@ -401,8 +390,16 @@ export async function generateReadingPDF(
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 15;
     
+    // Set default font first (Helvetica is built-in)
+    doc.setFont('helvetica', 'normal');
+    
     // Try to load Thai font
     const useThaiFont = await loadThaiFont(doc);
+    
+    // If Thai font loaded, use it as default
+    if (useThaiFont) {
+      doc.setFont('Sarabun', 'normal');
+    }
     
     // Draw header
     let yPos = drawHeader(doc, reading, pageWidth, margin, useThaiFont);
@@ -469,9 +466,7 @@ export async function generateReadingPDF(
       doc.setFillColor(...COLORS.background);
       doc.roundedRect(margin, yPos, contentWidth, 30, 3, 3, 'F');
       
-      if (useThaiFont) {
-        doc.setFont('Sarabun', 'normal');
-      }
+      doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
       doc.setFontSize(FONT_CONFIG.body.size);
       doc.setTextColor(...COLORS.text);
       doc.text('บันทึกส่วนตัว:', margin + 5, yPos + 8);
