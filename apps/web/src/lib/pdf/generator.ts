@@ -98,16 +98,27 @@ async function imageToBase64(url: string): Promise<string | null> {
 
 /**
  * Load and register Thai font (Sarabun)
- * Uses Google Fonts CDN with fallback
+ * Loads from local public folder first, then fallback to Google Fonts CDN
  */
 async function loadThaiFont(doc: jsPDF): Promise<boolean> {
   try {
-    // Try to load Sarabun font from Google Fonts
-    const fontUrl = 'https://fonts.gstatic.com/s/sarabun/v15/DtVjJx26TKEr37c9YHZJmnYI5gnOpg.ttf';
+    // Try to load Sarabun font from local public folder first
+    const localFontUrl = '/fonts/Sarabun-Regular.ttf';
+    const absoluteUrl = typeof window !== 'undefined' 
+      ? `${window.location.origin}${localFontUrl}`
+      : localFontUrl;
     
-    const response = await fetch(fontUrl);
+    let response = await fetch(absoluteUrl);
+    
+    // If local font fails, try Google Fonts CDN as fallback
     if (!response.ok) {
-      throw new Error('Font fetch failed');
+      console.warn('Local font not found, trying Google Fonts CDN...');
+      const cdnFontUrl = 'https://fonts.gstatic.com/s/sarabun/v15/DtVjJx26TKEr37c9YHZJmnYI5gnOpg.ttf';
+      response = await fetch(cdnFontUrl);
+    }
+    
+    if (!response.ok) {
+      throw new Error('Font fetch failed from all sources');
     }
     
     const fontBuffer = await response.arrayBuffer();
