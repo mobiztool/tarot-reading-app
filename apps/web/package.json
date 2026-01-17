@@ -41,6 +41,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.70.0",
+    "recharts": "^3.6.0",
     "stripe": "^20.1.2",
     "zod": "^4.3.5"
   },

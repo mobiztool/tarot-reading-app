@@ -260,6 +260,40 @@ export const analyticsEvents = {
     reading_type: params.readingType,
     error: params.error,
   }),
+
+  // Story 9.4: Pattern Analysis Events
+  patternAnalysisViewed: (params: {
+    readingCount: number;
+    sufficientData: boolean;
+    topCardCount: number;
+    topThemeCount: number;
+  }) => ({
+    event: 'pattern_analysis_viewed',
+    reading_count: params.readingCount,
+    sufficient_data: params.sufficientData,
+    top_card_count: params.topCardCount,
+    top_theme_count: params.topThemeCount,
+  }),
+
+  patternInsightViewed: (params: {
+    insightType: string;
+    insightTitle: string;
+  }) => ({
+    event: 'pattern_insight_viewed',
+    insight_type: params.insightType,
+    insight_title: params.insightTitle,
+  }),
+
+  readingComparisonViewed: (params: {
+    reading1Id: string;
+    reading2Id: string;
+    commonCardsCount: number;
+  }) => ({
+    event: 'reading_comparison_viewed',
+    reading_1_id: params.reading1Id,
+    reading_2_id: params.reading2Id,
+    common_cards_count: params.commonCardsCount,
+  }),
 } as const;
 
 // Export event names for reference
@@ -299,4 +333,8 @@ export const EVENT_NAMES = {
   PDF_EXPORT_STARTED: 'pdf_export_started',
   PDF_EXPORT_COMPLETED: 'pdf_export_completed',
   PDF_EXPORT_FAILED: 'pdf_export_failed',
+  // Story 9.4: Pattern Analysis Events
+  PATTERN_ANALYSIS_VIEWED: 'pattern_analysis_viewed',
+  PATTERN_INSIGHT_VIEWED: 'pattern_insight_viewed',
+  READING_COMPARISON_VIEWED: 'reading_comparison_viewed',
 } as const;
