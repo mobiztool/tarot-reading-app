@@ -54,6 +54,4 @@ risk_summary:
     monitor:
       - 'Component reusability across spreads'
       - 'Performance with different card counts (5, 7, 10)'
-      - 'Animation performance on various devices'
-
-risk_profile: "docs/qa/assessments/7.5-risk-20260113.md"
+      - 'Animation performance on various devices'risk_profile: "docs/qa/assessments/7.5-risk-20260113.md"

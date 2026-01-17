@@ -67,6 +67,4 @@ risk_summary:
     monitor:
       - 'Unauthorized access attempts (alert on >5/hour)'
       - 'Page load times (alert if >2s p95)'
-      - 'Celtic Cross completion rate'
-
-risk_profile: "docs/qa/assessments/7.1-risk-20260113.md"
+      - 'Celtic Cross completion rate'risk_profile: "docs/qa/assessments/7.1-risk-20260113.md"

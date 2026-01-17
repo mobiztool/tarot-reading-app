@@ -63,6 +63,4 @@ risk_summary:
     monitor:
       - 'Content completion timeline (target 5-7 days)'
       - 'User feedback on interpretation quality'
-      - 'Subscription churn rate (should decrease with quality content)'
-
-risk_profile: "docs/qa/assessments/7.6-risk-20260113.md"
+      - 'Subscription churn rate (should decrease with quality content)'risk_profile: "docs/qa/assessments/7.6-risk-20260113.md"
