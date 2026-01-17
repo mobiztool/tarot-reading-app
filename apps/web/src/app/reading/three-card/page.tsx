@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { TarotCard, CardFan } from '@/components/cards';
-import { useTarotReading, useCards, useSaveReading } from '@/lib/hooks';
+import { useTarotReading, useCards, useSaveReading, useAIInterpretation } from '@/lib/hooks';
 import { SUIT_NAMES } from '@/types/card';
 import { generateDetailedPrediction } from '@/lib/tarot/cardMeanings';
 import { PageLoader } from '@/components/ui/MysticalLoader';
+import { AIInterpretationToggle, AIInterpretation } from '@/components/ai';
+import { POSITION_LABELS_TH } from '@/lib/ai/prompts';
 
 const POSITION_LABELS = {
   past: { th: 'อดีต', en: 'Past', emoji: '⏪', color: 'from-blue-500 to-indigo-600' },
@@ -38,7 +40,31 @@ export default function ThreeCardReadingPage() {
   // Save reading hook
   const { saveReading, isSaving } = useSaveReading();
 
+  // AI Interpretation hook (Story 9.2)
+  const { state: aiState, requestInterpretation: requestAI, reset: resetAI } = useAIInterpretation();
+
   const allRevealed = revealedCards.every((r) => r);
+
+  // Request AI interpretation
+  const handleRequestAI = useCallback(() => {
+    if (drawnCards.length === 0) return;
+    
+    const aiCards = drawnCards.map((dc, index) => ({
+      name: dc.card.name,
+      nameTh: dc.card.nameTh,
+      position: index,
+      positionLabel: POSITIONS[index],
+      positionLabelTh: POSITION_LABELS_TH[POSITIONS[index]] || POSITION_LABELS[POSITIONS[index]].th,
+      isReversed: dc.isReversed,
+      meaningUpright: dc.card.meaningUpright,
+      meaningReversed: dc.card.meaningReversed,
+      keywords: dc.isReversed 
+        ? dc.card.keywordsReversed || dc.card.keywordsTh 
+        : dc.card.keywordsUpright || dc.card.keywordsTh,
+    }));
+
+    requestAI('three_card', aiCards, question || undefined);
+  }, [drawnCards, question, requestAI]);
 
   // Start selection mode (show card fan)
   const handleStartSelection = () => {
@@ -80,6 +106,7 @@ export default function ThreeCardReadingPage() {
 
   const handleReset = () => {
     resetReading();
+    resetAI();
     setIsSelecting(false);
     setSelectionStep(0);
     setSelectedFanIndices([]);
@@ -527,6 +554,30 @@ export default function ThreeCardReadingPage() {
           {/* Quick Navigation */}
           <div className="text-center mb-8">
             <p className="text-slate-500 text-sm mb-3">คลิกไพ่ด้านบนเพื่อดูรายละเอียด</p>
+          </div>
+
+          {/* AI Interpretation Section (Story 9.2) */}
+          <div className="mb-8">
+            {/* AI Toggle Button */}
+            {!aiState.interpretation && (
+              <AIInterpretationToggle
+                onRequest={handleRequestAI}
+                isLoading={aiState.isLoading}
+                isEnabled={!!aiState.interpretation}
+                remaining={aiState.remaining}
+                error={aiState.error}
+                className="max-w-md mx-auto mb-6"
+              />
+            )}
+
+            {/* AI Interpretation Display */}
+            {aiState.interpretation && (
+              <AIInterpretation
+                interpretation={aiState.interpretation}
+                cached={aiState.cached}
+                className="mb-8"
+              />
+            )}
           </div>
 
           {/* Save Status */}

@@ -19,6 +19,22 @@ export const config = {
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
   stripeApiVersion: process.env.STRIPE_API_VERSION || '2023-10-16',
 
+  // AI Configuration (Story 9.2)
+  ai: {
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
+    model: process.env.AI_MODEL || 'claude-3-5-sonnet-20241022',
+    maxTokens: parseInt(process.env.AI_MAX_TOKENS || '800', 10),
+    temperature: parseFloat(process.env.AI_TEMPERATURE || '0.7'),
+    // Rate limits
+    maxRequestsPerDay: parseInt(process.env.AI_MAX_REQUESTS_PER_DAY || '10', 10),
+    timeoutMs: parseInt(process.env.AI_TIMEOUT_MS || '10000', 10),
+    // Cost tracking
+    dailyCostAlertThreshold: parseFloat(process.env.AI_DAILY_COST_ALERT || '100'),
+    // Cache settings
+    cacheEnabled: process.env.AI_CACHE_ENABLED !== 'false',
+    cacheExpiryHours: parseInt(process.env.AI_CACHE_EXPIRY_HOURS || '24', 10),
+  },
+
   // Environment
   nodeEnv: process.env.NODE_ENV || 'development',
   isProduction: process.env.NODE_ENV === 'production',

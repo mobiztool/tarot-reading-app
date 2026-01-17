@@ -12,4 +12,5 @@ export { usePostSignupCelebration } from './usePostSignupCelebration';
 export { useSpreadAnimation, ANIMATION_PRESETS } from './useSpreadAnimation';
 export { usePremiumStatus } from './usePremiumStatus';
 export { useSpreadRecommendations } from './useSpreadRecommendations';
+export { useAIInterpretation } from './useAIInterpretation';
 export type { ReadingType, ReadingState } from './useTarotReading';
