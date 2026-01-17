@@ -23,7 +23,7 @@ import { SubscriptionTier } from '@/types/subscription';
 export const metadata: Metadata = {
   title: 'เลือกรูปแบบการดูดวง - ดูดวงไพ่ยิปซี',
   description:
-    'เลือกรูปแบบการดูดวงไพ่ยิปซี: มีให้เลือกถึง 18 รูปแบบ ตั้งแต่ไพ่ประจำวันถึง Celtic Cross',
+    'เลือกรูปแบบการดูดวงไพ่ยิปซี: มีให้เลือกถึง 24 รูปแบบ ตั้งแต่ไพ่ประจำวันถึง Celtic Cross',
 };
 
 // Group spreads by tier
@@ -46,7 +46,7 @@ const SPREAD_GROUPS: { tier: SubscriptionTier; title: string; spreads: SpreadTyp
   {
     tier: 'vip',
     title: 'VIP',
-    spreads: ['shadow_work', 'friendship', 'career_path', 'financial_abundance', 'past_life', 'dream_interpretation', 'moon_phases', 'elemental_balance', 'soul_purpose', 'karma_lessons', 'manifestation'],
+    spreads: ['shadow_work', 'friendship', 'career_path', 'financial_abundance', 'past_life', 'dream_interpretation', 'moon_phases', 'elemental_balance', 'soul_purpose', 'karma_lessons', 'manifestation', 'monthly_forecast', 'year_ahead', 'zodiac_wheel'],
   },
 ];
 
