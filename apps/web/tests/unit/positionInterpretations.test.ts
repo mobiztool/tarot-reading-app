@@ -612,9 +612,7 @@ describe('Premium Spread Positions - Self Discovery (5 positions)', () => {
         expect(position.interpretationGuideTh).toBeTruthy();
       });
     });
-  });
-
-  describe('Thai Language Quality', () => {
+  });  describe('Thai Language Quality', () => {
     function containsThai(text: string): boolean {
       return /[\u0E00-\u0E7F]/.test(text);
     }
@@ -776,4 +774,3 @@ describe('getPositionInterpretationPrefix - Premium Spreads', () => {
     expect(prefix).toContain('กลับหัว');
   });
 });
-
