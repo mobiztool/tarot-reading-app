@@ -262,9 +262,63 @@ export function drawChakraAlignmentSpread(deck: TarotCardData[]): DrawnCard[] {
 }
 
 /**
+ * Draw four cards for Friendship Reading spread (VIP-only) - Story 8.3
+ * Position 0: Foundation (รากฐาน) - The foundation of the friendship
+ * Position 1: Challenges (ความท้าทาย) - Current challenges in the friendship
+ * Position 2: Strength (จุดแข็ง) - What strengthens this bond
+ * Position 3: Future (อนาคต) - Where the friendship is heading
+ */
+export function drawFriendshipSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 4, [
+    'fr_foundation',
+    'fr_challenges',
+    'fr_strength',
+    'fr_future',
+  ]);
+}
+
+/**
+ * Draw six cards for Career Path spread (VIP-only) - Story 8.3
+ * Position 0: Current (ปัจจุบัน) - Where you are now in your career
+ * Position 1: Skills (ทักษะ) - Your key strengths and talents
+ * Position 2: Obstacles (อุปสรรค) - What blocks your progress
+ * Position 3: Opportunities (โอกาส) - Opportunities to seize
+ * Position 4: Guidance (คำแนะนำ) - Guidance for your path
+ * Position 5: Outcome (ผลลัพธ์) - Where your career path leads
+ */
+export function drawCareerPathSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 6, [
+    'cp_current',
+    'cp_skills',
+    'cp_obstacles',
+    'cp_opportunities',
+    'cp_guidance',
+    'cp_outcome',
+  ]);
+}
+
+/**
+ * Draw five cards for Financial Abundance spread (VIP-only) - Story 8.3
+ * Position 0: Current (ปัจจุบัน) - Your current financial state
+ * Position 1: Blocks (อุปสรรค) - What blocks your abundance
+ * Position 2: Opportunities (โอกาส) - Financial opportunities available
+ * Position 3: Action (การกระทำ) - Action to attract wealth
+ * Position 4: Abundance (ความมั่งคั่ง) - Path to financial abundance
+ */
+export function drawFinancialAbundanceSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 5, [
+    'fa_current',
+    'fa_blocks',
+    'fa_opportunities',
+    'fa_action',
+    'fa_abundance',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
-export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive' | 'shadow-work' | 'chakra';
+export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive' | 'shadow-work' | 'chakra' | 'friendship' | 'career-path' | 'financial';
 
 export interface ReadingSession {
   id: string;
@@ -311,6 +365,15 @@ export function createReadingSession(
       break;
     case 'chakra':
       drawnCards = drawChakraAlignmentSpread(deck);
+      break;
+    case 'friendship':
+      drawnCards = drawFriendshipSpread(deck);
+      break;
+    case 'career-path':
+      drawnCards = drawCareerPathSpread(deck);
+      break;
+    case 'financial':
+      drawnCards = drawFinancialAbundanceSpread(deck);
       break;
     case 'three-card':
     default:

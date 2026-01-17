@@ -6,7 +6,7 @@
 
 import { SubscriptionTier } from '@/types/subscription';
 
-// All spread types in the system (18 total)
+// All spread types in the system (21 total)
 export type SpreadType =
   // Free tier - 2 spreads
   | 'daily'
@@ -21,8 +21,11 @@ export type SpreadType =
   | 'self_discovery'
   | 'relationship_deep_dive'
   | 'chakra_alignment'
-  // VIP tier - adds 8 more (total 18)
+  // VIP tier - adds 11 more (total 21) - includes Story 8.3 batch 2
   | 'shadow_work'
+  | 'friendship'
+  | 'career_path'
+  | 'financial_abundance'
   | 'past_life'
   | 'dream_interpretation'
   | 'moon_phases'
@@ -49,8 +52,11 @@ export const SPREAD_ACCESS_MATRIX: Record<SpreadType, SubscriptionTier[]> = {
   relationship_deep_dive: ['pro', 'vip'],
   chakra_alignment: ['pro', 'vip'],
 
-  // VIP tier - adds 8 more (total 18)
+  // VIP tier - adds 11 more (total 21) - includes Story 8.3 batch 2
   shadow_work: ['vip'],
+  friendship: ['vip'],
+  career_path: ['vip'],
+  financial_abundance: ['vip'],
   past_life: ['vip'],
   dream_interpretation: ['vip'],
   moon_phases: ['vip'],
@@ -226,6 +232,46 @@ export const SPREAD_INFO: Record<SpreadType, SpreadInfo> = {
     minimumTier: 'vip',
     isAvailable: true,
     route: '/reading/shadow-work',
+  },
+  // Story 8.3: Batch 2 Premium Spreads
+  friendship: {
+    id: 'friendship',
+    name: 'Friendship Reading',
+    nameTh: 'ดูดวงมิตรภาพ',
+    description: 'Understand your friendships and social connections',
+    descriptionTh: 'เข้าใจมิตรภาพและความสัมพันธ์ทางสังคม',
+    icon: '🤝',
+    cardCount: 4,
+    estimatedTime: '~4 นาที',
+    minimumTier: 'vip',
+    isAvailable: true,
+    route: '/reading/friendship',
+  },
+  career_path: {
+    id: 'career_path',
+    name: 'Career Path',
+    nameTh: 'เส้นทางอาชีพ',
+    description: 'Navigate your career journey with deep insights',
+    descriptionTh: 'ค้นพบเส้นทางอาชีพด้วยข้อมูลเชิงลึก',
+    icon: '🎯',
+    cardCount: 6,
+    estimatedTime: '~6 นาที',
+    minimumTier: 'vip',
+    isAvailable: true,
+    route: '/reading/career-path',
+  },
+  financial_abundance: {
+    id: 'financial_abundance',
+    name: 'Financial Abundance',
+    nameTh: 'ความมั่งคั่งทางการเงิน',
+    description: 'Unlock your path to financial prosperity',
+    descriptionTh: 'ปลดล็อคเส้นทางสู่ความมั่งคั่ง',
+    icon: '💰',
+    cardCount: 5,
+    estimatedTime: '~5 นาที',
+    minimumTier: 'vip',
+    isAvailable: true,
+    route: '/reading/financial',
   },
   past_life: {
     id: 'past_life',

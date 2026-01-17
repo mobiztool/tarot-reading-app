@@ -161,8 +161,8 @@ describe('Access Control - Client Side', () => {
   });
 
   describe('SPREAD_ACCESS_MATRIX', () => {
-    it('should have 18 total spreads defined', () => {
-      expect(Object.keys(SPREAD_ACCESS_MATRIX).length).toBe(18);
+    it('should have 21 total spreads defined', () => {
+      expect(Object.keys(SPREAD_ACCESS_MATRIX).length).toBe(21);
     });
 
     it('should have correct free tier spreads (2)', () => {
@@ -188,11 +188,11 @@ describe('Access Control - Client Side', () => {
       expect(proSpreads.length).toBe(10);
     });
 
-    it('should have correct VIP tier spreads (18 - all)', () => {
+    it('should have correct VIP tier spreads (21 - all)', () => {
       const vipSpreads = Object.entries(SPREAD_ACCESS_MATRIX)
         .filter(([, tiers]) => tiers.includes('vip'))
         .map(([spread]) => spread);
-      expect(vipSpreads.length).toBe(18);
+      expect(vipSpreads.length).toBe(21);
     });
   });
 
@@ -213,8 +213,8 @@ describe('Access Control - Client Side', () => {
       });
     });
 
-    it('should have 18 total spreads defined', () => {
-      expect(Object.keys(SPREAD_INFO).length).toBe(18);
+    it('should have 21 total spreads defined', () => {
+      expect(Object.keys(SPREAD_INFO).length).toBe(21);
     });
 
     it('should have correct routes for free spreads', () => {

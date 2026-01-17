@@ -46,7 +46,7 @@ const SPREAD_GROUPS: { tier: SubscriptionTier; title: string; spreads: SpreadTyp
   {
     tier: 'vip',
     title: 'VIP',
-    spreads: ['shadow_work', 'past_life', 'dream_interpretation', 'moon_phases', 'elemental_balance', 'soul_purpose', 'karma_lessons', 'manifestation'],
+    spreads: ['shadow_work', 'friendship', 'career_path', 'financial_abundance', 'past_life', 'dream_interpretation', 'moon_phases', 'elemental_balance', 'soul_purpose', 'karma_lessons', 'manifestation'],
   },
 ];
 

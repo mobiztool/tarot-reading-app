@@ -47,7 +47,15 @@ export type PositionLabel =
   | 'sw_healing' | 'sw_wholeness'
   // Chakra Alignment positions (7 cards) - Pro/VIP
   | 'ca_root' | 'ca_sacral' | 'ca_solar_plexus'
-  | 'ca_heart' | 'ca_throat' | 'ca_third_eye' | 'ca_crown';
+  | 'ca_heart' | 'ca_throat' | 'ca_third_eye' | 'ca_crown'
+  // Friendship Reading positions (4 cards) - VIP - Story 8.3
+  | 'fr_foundation' | 'fr_challenges' | 'fr_strength' | 'fr_future'
+  // Career Path positions (6 cards) - VIP - Story 8.3
+  | 'cp_current' | 'cp_skills' | 'cp_obstacles'
+  | 'cp_opportunities' | 'cp_guidance' | 'cp_outcome'
+  // Financial Abundance positions (5 cards) - VIP - Story 8.3
+  | 'fa_current' | 'fa_blocks' | 'fa_opportunities'
+  | 'fa_action' | 'fa_abundance';
 
 export interface DrawnCard {
   card: TarotCardData;

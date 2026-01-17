@@ -17,9 +17,15 @@ type PositionLabel =
   // Shadow Work positions
   | 'sw_conscious_self' | 'sw_shadow' | 'sw_fear' | 'sw_denied_strength' | 'sw_integration' | 'sw_healing' | 'sw_wholeness'
   // Chakra Alignment positions
-  | 'ca_root' | 'ca_sacral' | 'ca_solar_plexus' | 'ca_heart' | 'ca_throat' | 'ca_third_eye' | 'ca_crown';
+  | 'ca_root' | 'ca_sacral' | 'ca_solar_plexus' | 'ca_heart' | 'ca_throat' | 'ca_third_eye' | 'ca_crown'
+  // Friendship Reading positions (Story 8.3)
+  | 'fr_foundation' | 'fr_challenges' | 'fr_strength' | 'fr_future'
+  // Career Path positions (Story 8.3)
+  | 'cp_current' | 'cp_skills' | 'cp_obstacles' | 'cp_opportunities' | 'cp_guidance' | 'cp_outcome'
+  // Financial Abundance positions (Story 8.3)
+  | 'fa_current' | 'fa_blocks' | 'fa_opportunities' | 'fa_action' | 'fa_abundance';
 
-type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work' | 'chakra_alignment';
+type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work' | 'chakra_alignment' | 'friendship' | 'career_path' | 'financial_abundance';
 
 interface SaveReadingCard {
   cardId: string;
@@ -128,6 +134,18 @@ export function useSaveReading(): UseSaveReadingReturn {
         } else if (readingType === 'chakra_alignment') {
           positionLabels = [
             'ca_root', 'ca_sacral', 'ca_solar_plexus', 'ca_heart', 'ca_throat', 'ca_third_eye', 'ca_crown',
+          ];
+        } else if (readingType === 'friendship') {
+          positionLabels = [
+            'fr_foundation', 'fr_challenges', 'fr_strength', 'fr_future',
+          ];
+        } else if (readingType === 'career_path') {
+          positionLabels = [
+            'cp_current', 'cp_skills', 'cp_obstacles', 'cp_opportunities', 'cp_guidance', 'cp_outcome',
+          ];
+        } else if (readingType === 'financial_abundance') {
+          positionLabels = [
+            'fa_current', 'fa_blocks', 'fa_opportunities', 'fa_action', 'fa_abundance',
           ];
         } else {
           positionLabels = [undefined];
