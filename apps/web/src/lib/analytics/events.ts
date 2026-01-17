@@ -222,6 +222,44 @@ export const analyticsEvents = {
     event: 'recommendation_question_started',
     source: source,
   }),
+
+  // Story 9.3: PDF Export Events
+  pdfExportStarted: (params: {
+    readingId: string;
+    readingType: string;
+    cardCount: number;
+  }) => ({
+    event: 'pdf_export_started',
+    reading_id: params.readingId,
+    reading_type: params.readingType,
+    card_count: params.cardCount,
+  }),
+
+  pdfExportCompleted: (params: {
+    readingId: string;
+    readingType: string;
+    cardCount: number;
+    durationMs: number;
+    fileSizeKb: number;
+  }) => ({
+    event: 'pdf_export_completed',
+    reading_id: params.readingId,
+    reading_type: params.readingType,
+    card_count: params.cardCount,
+    duration_ms: params.durationMs,
+    file_size_kb: params.fileSizeKb,
+  }),
+
+  pdfExportFailed: (params: {
+    readingId: string;
+    readingType: string;
+    error: string;
+  }) => ({
+    event: 'pdf_export_failed',
+    reading_id: params.readingId,
+    reading_type: params.readingType,
+    error: params.error,
+  }),
 } as const;
 
 // Export event names for reference
@@ -257,4 +295,8 @@ export const EVENT_NAMES = {
   RECOMMENDATION_CLICKED: 'recommendation_clicked',
   RECOMMENDATION_ACCEPTED: 'recommendation_accepted',
   RECOMMENDATION_QUESTION_STARTED: 'recommendation_question_started',
+  // Story 9.3: PDF Export Events
+  PDF_EXPORT_STARTED: 'pdf_export_started',
+  PDF_EXPORT_COMPLETED: 'pdf_export_completed',
+  PDF_EXPORT_FAILED: 'pdf_export_failed',
 } as const;

@@ -7,6 +7,7 @@ import { TarotCard } from '@/components/cards';
 import { Header } from '@/components/layout/Header';
 import { ShareButtons } from '@/components/share';
 import { ReadingNotes, FavoriteButton, EditableQuestion } from '@/components/reading';
+import { PDFExportButton } from '@/components/export';
 import { useAuth, useAnalytics } from '@/lib/hooks';
 import { format } from 'date-fns';
 import { th } from 'date-fns/locale';
@@ -287,6 +288,14 @@ export default function ReadingDetailPage() {
             <FavoriteButton
               readingId={reading.id}
               initialFavorite={reading.isFavorite}
+              size="lg"
+            />
+            
+            {/* PDF Export Button - Story 9.3 */}
+            <PDFExportButton
+              readingId={reading.id}
+              readingType={reading.readingType}
+              cardCount={reading.cards.length}
               size="lg"
             />
           </div>
