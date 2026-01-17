@@ -312,7 +312,7 @@ function drawInterpretations(
       const keywords = card.isReversed ? card.card.keywordsReversed : card.card.keywordsUpright;
       if (keywords && keywords.length > 0) {
         doc.setFontSize(FONT_CONFIG.small.size);
-        doc.setTextColor(...COLORS.accent[0], COLORS.accent[1], COLORS.accent[2]);
+        doc.setTextColor(COLORS.accent[0], COLORS.accent[1], COLORS.accent[2]);
         doc.text(`คำสำคัญ: ${keywords.join(', ')}`, margin + 5, yPos + 4);
         yPos += 10;
       }
