@@ -55,7 +55,19 @@ export type PositionLabel =
   | 'cp_opportunities' | 'cp_guidance' | 'cp_outcome'
   // Financial Abundance positions (5 cards) - VIP - Story 8.3
   | 'fa_current' | 'fa_blocks' | 'fa_opportunities'
-  | 'fa_action' | 'fa_abundance';
+  | 'fa_action' | 'fa_abundance'
+  // Story 9.1: Monthly Forecast positions (4 cards) - VIP
+  | 'mf_overall_theme' | 'mf_challenges' | 'mf_opportunities' | 'mf_advice'
+  // Story 9.1: Year Ahead positions (13 cards) - VIP
+  | 'ya_year_overview' | 'ya_january' | 'ya_february' | 'ya_march'
+  | 'ya_april' | 'ya_may' | 'ya_june' | 'ya_july'
+  | 'ya_august' | 'ya_september' | 'ya_october' | 'ya_november' | 'ya_december'
+  // Story 9.1: Elemental Balance positions (4 cards) - VIP
+  | 'eb_fire' | 'eb_water' | 'eb_air' | 'eb_earth'
+  // Story 9.1: Zodiac Wheel positions (12 cards) - VIP
+  | 'zw_house_1' | 'zw_house_2' | 'zw_house_3' | 'zw_house_4'
+  | 'zw_house_5' | 'zw_house_6' | 'zw_house_7' | 'zw_house_8'
+  | 'zw_house_9' | 'zw_house_10' | 'zw_house_11' | 'zw_house_12';
 
 export interface DrawnCard {
   card: TarotCardData;
@@ -67,13 +79,14 @@ export interface CardDisplayProps {
   card: TarotCardData;
   isReversed?: boolean;
   isFlipped?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   onClick?: () => void;
   className?: string;
 }
 
 // Card size configurations
 export const CARD_SIZES = {
+  xs: { width: 60, height: 105 },
   sm: { width: 80, height: 140 },
   md: { width: 120, height: 210 },
   lg: { width: 180, height: 315 },

@@ -138,6 +138,11 @@ enum ReadingType {
   friendship
   career_path
   financial_abundance
+  // Story 9.1: Final Premium Spreads Batch 3
+  monthly_forecast
+  year_ahead
+  elemental_balance
+  zodiac_wheel
 }
 
 // ============================================================================
@@ -237,6 +242,43 @@ enum PositionLabel {
   fa_opportunities
   fa_action
   fa_abundance
+  // Story 9.1: Monthly Forecast positions (4 cards)
+  mf_overall_theme
+  mf_challenges
+  mf_opportunities
+  mf_advice
+  // Story 9.1: Year Ahead positions (13 cards)
+  ya_year_overview
+  ya_january
+  ya_february
+  ya_march
+  ya_april
+  ya_may
+  ya_june
+  ya_july
+  ya_august
+  ya_september
+  ya_october
+  ya_november
+  ya_december
+  // Story 9.1: Elemental Balance positions (4 cards)
+  eb_fire
+  eb_water
+  eb_air
+  eb_earth
+  // Story 9.1: Zodiac Wheel positions (12 cards)
+  zw_house_1
+  zw_house_2
+  zw_house_3
+  zw_house_4
+  zw_house_5
+  zw_house_6
+  zw_house_7
+  zw_house_8
+  zw_house_9
+  zw_house_10
+  zw_house_11
+  zw_house_12
 }
 
 // ============================================================================

@@ -23,9 +23,19 @@ type PositionLabel =
   // Career Path positions (Story 8.3)
   | 'cp_current' | 'cp_skills' | 'cp_obstacles' | 'cp_opportunities' | 'cp_guidance' | 'cp_outcome'
   // Financial Abundance positions (Story 8.3)
-  | 'fa_current' | 'fa_blocks' | 'fa_opportunities' | 'fa_action' | 'fa_abundance';
+  | 'fa_current' | 'fa_blocks' | 'fa_opportunities' | 'fa_action' | 'fa_abundance'
+  // Story 9.1: Monthly Forecast positions (4 cards)
+  | 'mf_overall_theme' | 'mf_challenges' | 'mf_opportunities' | 'mf_advice'
+  // Story 9.1: Year Ahead positions (13 cards)
+  | 'ya_year_overview' | 'ya_january' | 'ya_february' | 'ya_march' | 'ya_april' | 'ya_may' | 'ya_june'
+  | 'ya_july' | 'ya_august' | 'ya_september' | 'ya_october' | 'ya_november' | 'ya_december'
+  // Story 9.1: Elemental Balance positions (4 cards)
+  | 'eb_fire' | 'eb_water' | 'eb_air' | 'eb_earth'
+  // Story 9.1: Zodiac Wheel positions (12 cards)
+  | 'zw_house_1' | 'zw_house_2' | 'zw_house_3' | 'zw_house_4' | 'zw_house_5' | 'zw_house_6'
+  | 'zw_house_7' | 'zw_house_8' | 'zw_house_9' | 'zw_house_10' | 'zw_house_11' | 'zw_house_12';
 
-type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work' | 'chakra_alignment' | 'friendship' | 'career_path' | 'financial_abundance';
+type ReadingType = 'daily' | 'three_card' | 'love_relationships' | 'career_money' | 'yes_no' | 'celtic_cross' | 'decision_making' | 'self_discovery' | 'relationship_deep_dive' | 'shadow_work' | 'chakra_alignment' | 'friendship' | 'career_path' | 'financial_abundance' | 'monthly_forecast' | 'year_ahead' | 'elemental_balance' | 'zodiac_wheel';
 
 interface SaveReadingCard {
   cardId: string;
@@ -146,6 +156,24 @@ export function useSaveReading(): UseSaveReadingReturn {
         } else if (readingType === 'financial_abundance') {
           positionLabels = [
             'fa_current', 'fa_blocks', 'fa_opportunities', 'fa_action', 'fa_abundance',
+          ];
+        } else if (readingType === 'monthly_forecast') {
+          positionLabels = [
+            'mf_overall_theme', 'mf_challenges', 'mf_opportunities', 'mf_advice',
+          ];
+        } else if (readingType === 'year_ahead') {
+          positionLabels = [
+            'ya_year_overview', 'ya_january', 'ya_february', 'ya_march', 'ya_april', 'ya_may', 'ya_june',
+            'ya_july', 'ya_august', 'ya_september', 'ya_october', 'ya_november', 'ya_december',
+          ];
+        } else if (readingType === 'elemental_balance') {
+          positionLabels = [
+            'eb_fire', 'eb_water', 'eb_air', 'eb_earth',
+          ];
+        } else if (readingType === 'zodiac_wheel') {
+          positionLabels = [
+            'zw_house_1', 'zw_house_2', 'zw_house_3', 'zw_house_4', 'zw_house_5', 'zw_house_6',
+            'zw_house_7', 'zw_house_8', 'zw_house_9', 'zw_house_10', 'zw_house_11', 'zw_house_12',
           ];
         } else {
           positionLabels = [undefined];

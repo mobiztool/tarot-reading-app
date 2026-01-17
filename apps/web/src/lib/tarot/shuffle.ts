@@ -316,9 +316,85 @@ export function drawFinancialAbundanceSpread(deck: TarotCardData[]): DrawnCard[]
 }
 
 /**
+ * Draw four cards for Monthly Forecast spread (VIP-only) - Story 9.1
+ * Position 0: Overall Theme (ธีมประจำเดือน) - Main energy for the month
+ * Position 1: Challenges (ความท้าทาย) - What to watch out for
+ * Position 2: Opportunities (โอกาส) - Opportunities coming your way
+ * Position 3: Advice (คำแนะนำ) - Guidance for the month
+ */
+export function drawMonthlyForecastSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 4, [
+    'mf_overall_theme',
+    'mf_challenges',
+    'mf_opportunities',
+    'mf_advice',
+  ]);
+}
+
+/**
+ * Draw thirteen cards for Year Ahead spread (VIP-only) - Story 9.1
+ * Position 0: Year Overview (ภาพรวมทั้งปี) - Main theme for the year
+ * Positions 1-12: January through December
+ */
+export function drawYearAheadSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 13, [
+    'ya_year_overview',
+    'ya_january',
+    'ya_february',
+    'ya_march',
+    'ya_april',
+    'ya_may',
+    'ya_june',
+    'ya_july',
+    'ya_august',
+    'ya_september',
+    'ya_october',
+    'ya_november',
+    'ya_december',
+  ]);
+}
+
+/**
+ * Draw four cards for Elemental Balance spread (VIP-only) - Story 9.1
+ * Position 0: Fire (ธาตุไฟ) - Passion, energy, action
+ * Position 1: Water (ธาตุน้ำ) - Emotions, intuition, relationships
+ * Position 2: Air (ธาตุลม) - Thoughts, communication, intellect
+ * Position 3: Earth (ธาตุดิน) - Stability, finances, health
+ */
+export function drawElementalBalanceSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 4, [
+    'eb_fire',
+    'eb_water',
+    'eb_air',
+    'eb_earth',
+  ]);
+}
+
+/**
+ * Draw twelve cards for Zodiac Wheel spread (VIP-only) - Story 9.1
+ * Positions 0-11: The 12 astrological houses (Aries through Pisces)
+ */
+export function drawZodiacWheelSpread(deck: TarotCardData[]): DrawnCard[] {
+  return drawCards(deck, 12, [
+    'zw_house_1',
+    'zw_house_2',
+    'zw_house_3',
+    'zw_house_4',
+    'zw_house_5',
+    'zw_house_6',
+    'zw_house_7',
+    'zw_house_8',
+    'zw_house_9',
+    'zw_house_10',
+    'zw_house_11',
+    'zw_house_12',
+  ]);
+}
+
+/**
  * Reading session type for tracking
  */
-export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive' | 'shadow-work' | 'chakra' | 'friendship' | 'career-path' | 'financial';
+export type ReadingSessionType = 'daily' | 'three-card' | 'love' | 'career' | 'celtic-cross' | 'decision' | 'self-discovery' | 'relationship-deep-dive' | 'shadow-work' | 'chakra' | 'friendship' | 'career-path' | 'financial' | 'monthly' | 'year-ahead' | 'elemental' | 'zodiac';
 
 export interface ReadingSession {
   id: string;
@@ -374,6 +450,18 @@ export function createReadingSession(
       break;
     case 'financial':
       drawnCards = drawFinancialAbundanceSpread(deck);
+      break;
+    case 'monthly':
+      drawnCards = drawMonthlyForecastSpread(deck);
+      break;
+    case 'year-ahead':
+      drawnCards = drawYearAheadSpread(deck);
+      break;
+    case 'elemental':
+      drawnCards = drawElementalBalanceSpread(deck);
+      break;
+    case 'zodiac':
+      drawnCards = drawZodiacWheelSpread(deck);
       break;
     case 'three-card':
     default:

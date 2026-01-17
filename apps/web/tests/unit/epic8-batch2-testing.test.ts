@@ -472,9 +472,9 @@ describe('Story 8.4: Integration Testing', () => {
   });
 
   describe('TC-8.4-021: Reading history shows all spread types', () => {
-    it('should have 21 total spread types defined', () => {
+    it('should have 24 total spread types defined', () => {
       const totalSpreads = Object.keys(SPREAD_ACCESS_MATRIX).length;
-      expect(totalSpreads).toBe(21);
+      expect(totalSpreads).toBe(24); // Updated: Story 9.1 added 3 new spreads
     });
 
     it('should have SPREAD_INFO for all spread types', () => {

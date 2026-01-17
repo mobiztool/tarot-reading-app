@@ -6,7 +6,7 @@
 
 import { SubscriptionTier } from '@/types/subscription';
 
-// All spread types in the system (21 total)
+// All spread types in the system (25 total)
 export type SpreadType =
   // Free tier - 2 spreads
   | 'daily'
@@ -21,7 +21,7 @@ export type SpreadType =
   | 'self_discovery'
   | 'relationship_deep_dive'
   | 'chakra_alignment'
-  // VIP tier - adds 11 more (total 21) - includes Story 8.3 batch 2
+  // VIP tier - adds 15 more (total 25) - includes Story 8.3 batch 2 + Story 9.1 batch 3
   | 'shadow_work'
   | 'friendship'
   | 'career_path'
@@ -32,7 +32,11 @@ export type SpreadType =
   | 'elemental_balance'
   | 'soul_purpose'
   | 'karma_lessons'
-  | 'manifestation';
+  | 'manifestation'
+  // Story 9.1: Final Premium Spreads Batch 3
+  | 'monthly_forecast'
+  | 'year_ahead'
+  | 'zodiac_wheel';
 
 // Spread access matrix - which tiers can access which spreads
 export const SPREAD_ACCESS_MATRIX: Record<SpreadType, SubscriptionTier[]> = {
@@ -52,7 +56,7 @@ export const SPREAD_ACCESS_MATRIX: Record<SpreadType, SubscriptionTier[]> = {
   relationship_deep_dive: ['pro', 'vip'],
   chakra_alignment: ['pro', 'vip'],
 
-  // VIP tier - adds 11 more (total 21) - includes Story 8.3 batch 2
+  // VIP tier - adds 15 more (total 25) - includes Story 8.3 batch 2 + Story 9.1 batch 3
   shadow_work: ['vip'],
   friendship: ['vip'],
   career_path: ['vip'],
@@ -64,6 +68,10 @@ export const SPREAD_ACCESS_MATRIX: Record<SpreadType, SubscriptionTier[]> = {
   soul_purpose: ['vip'],
   karma_lessons: ['vip'],
   manifestation: ['vip'],
+  // Story 9.1: Final Premium Spreads Batch 3
+  monthly_forecast: ['vip'],
+  year_ahead: ['vip'],
+  zodiac_wheel: ['vip'],
 };
 
 // Spread information type
@@ -322,7 +330,7 @@ export const SPREAD_INFO: Record<SpreadType, SpreadInfo> = {
     cardCount: 4,
     estimatedTime: '~5 นาที',
     minimumTier: 'vip',
-    isAvailable: false,
+    isAvailable: true,
     route: '/reading/elemental',
   },
   soul_purpose: {
@@ -363,6 +371,46 @@ export const SPREAD_INFO: Record<SpreadType, SpreadInfo> = {
     minimumTier: 'vip',
     isAvailable: false,
     route: '/reading/manifestation',
+  },
+  // Story 9.1: Final Premium Spreads Batch 3
+  monthly_forecast: {
+    id: 'monthly_forecast',
+    name: 'Monthly Forecast',
+    nameTh: 'พยากรณ์ประจำเดือน',
+    description: 'Monthly energy and guidance',
+    descriptionTh: 'พลังงานและคำแนะนำประจำเดือน',
+    icon: '📅',
+    cardCount: 4,
+    estimatedTime: '~4 นาที',
+    minimumTier: 'vip',
+    isAvailable: true,
+    route: '/reading/monthly',
+  },
+  year_ahead: {
+    id: 'year_ahead',
+    name: 'Year Ahead',
+    nameTh: 'พยากรณ์ทั้งปี',
+    description: 'Comprehensive yearly forecast with 13 cards',
+    descriptionTh: 'พยากรณ์ครอบคลุมทั้งปีด้วย 13 ไพ่',
+    icon: '📆',
+    cardCount: 13,
+    estimatedTime: '~15 นาที',
+    minimumTier: 'vip',
+    isAvailable: true,
+    route: '/reading/year-ahead',
+  },
+  zodiac_wheel: {
+    id: 'zodiac_wheel',
+    name: 'Zodiac Wheel',
+    nameTh: 'วงล้อจักรราศี',
+    description: 'Astrology + Tarot: 12 houses reading',
+    descriptionTh: 'ผสมผสานโหราศาสตร์และทาโรต์ 12 เรือน',
+    icon: '♈',
+    cardCount: 12,
+    estimatedTime: '~12 นาที',
+    minimumTier: 'vip',
+    isAvailable: true,
+    route: '/reading/zodiac',
   },
 };
 

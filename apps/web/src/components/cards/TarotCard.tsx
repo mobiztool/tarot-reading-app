@@ -12,7 +12,7 @@ import { CARD_SIZES, getCardBackPath, getPremiumCardBackPath } from '@/types/car
 interface TarotCardProps {
   frontImage: string;
   cardName: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   isReversed?: boolean;
   isFlipped?: boolean;
   showFlipAnimation?: boolean;
