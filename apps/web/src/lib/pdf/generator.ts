@@ -98,42 +98,78 @@ async function imageToBase64(url: string): Promise<string | null> {
 
 /**
  * Load and register Thai font (Sarabun)
- * Loads from local public folder first, then fallback to Google Fonts CDN
+ * Uses multiple CDN sources for reliability
  */
 async function loadThaiFont(doc: jsPDF): Promise<boolean> {
+  // List of CDN sources to try (in order of preference)
+  const fontSources = [
+    // Local font first (if deployed correctly)
+    '/fonts/Sarabun-Regular.ttf',
+    // jsDelivr CDN (more reliable for jsPDF)
+    'https://cdn.jsdelivr.net/npm/@aspect-fonts/sarabun@1.0.0/fonts/Sarabun-Regular.ttf',
+    // Google Fonts CDN
+    'https://fonts.gstatic.com/s/sarabun/v15/DtVjJx26TKEr37c9YHZJmnYI5gnOpg.ttf',
+  ];
+  
+  for (const fontUrl of fontSources) {
+    try {
+      const absoluteUrl = fontUrl.startsWith('/')
+        ? (typeof window !== 'undefined' ? `${window.location.origin}${fontUrl}` : fontUrl)
+        : fontUrl;
+      
+      console.log('Trying to load font from:', absoluteUrl);
+      
+      const response = await fetch(absoluteUrl, { 
+        mode: 'cors',
+        credentials: 'omit'
+      });
+      
+      if (!response.ok) {
+        console.warn(`Font fetch failed from ${absoluteUrl}: ${response.status}`);
+        continue;
+      }
+      
+      const fontBuffer = await response.arrayBuffer();
+      
+      // Validate font file size (should be at least 50KB for a real font)
+      if (fontBuffer.byteLength < 50000) {
+        console.warn(`Font file too small from ${absoluteUrl}, likely not a valid font`);
+        continue;
+      }
+      
+      const fontBase64 = btoa(
+        new Uint8Array(fontBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      
+      // Add font to jsPDF
+      doc.addFileToVFS('Sarabun-Regular.ttf', fontBase64);
+      doc.addFont('Sarabun-Regular.ttf', 'Sarabun', 'normal');
+      
+      console.log('Thai font loaded successfully from:', absoluteUrl);
+      return true;
+    } catch (error) {
+      console.warn(`Failed to load font from ${fontUrl}:`, error);
+      continue;
+    }
+  }
+  
+  console.warn('Failed to load Thai font from all sources, using fallback');
+  return false;
+}
+
+/**
+ * Safely set font with fallback
+ */
+function safeSetFont(doc: jsPDF, useThaiFont: boolean, style: string = 'normal'): void {
   try {
-    // Try to load Sarabun font from local public folder first
-    const localFontUrl = '/fonts/Sarabun-Regular.ttf';
-    const absoluteUrl = typeof window !== 'undefined' 
-      ? `${window.location.origin}${localFontUrl}`
-      : localFontUrl;
-    
-    let response = await fetch(absoluteUrl);
-    
-    // If local font fails, try Google Fonts CDN as fallback
-    if (!response.ok) {
-      console.warn('Local font not found, trying Google Fonts CDN...');
-      const cdnFontUrl = 'https://fonts.gstatic.com/s/sarabun/v15/DtVjJx26TKEr37c9YHZJmnYI5gnOpg.ttf';
-      response = await fetch(cdnFontUrl);
+    if (useThaiFont) {
+      doc.setFont('Sarabun', style);
+    } else {
+      doc.setFont('helvetica', style);
     }
-    
-    if (!response.ok) {
-      throw new Error('Font fetch failed from all sources');
-    }
-    
-    const fontBuffer = await response.arrayBuffer();
-    const fontBase64 = btoa(
-      new Uint8Array(fontBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
-    
-    // Add font to jsPDF
-    doc.addFileToVFS('Sarabun-Regular.ttf', fontBase64);
-    doc.addFont('Sarabun-Regular.ttf', 'Sarabun', 'normal');
-    
-    return true;
-  } catch (error) {
-    console.warn('Failed to load Thai font, using fallback:', error);
-    return false;
+  } catch {
+    // Fallback to helvetica if any error
+    doc.setFont('helvetica', style);
   }
 }
 
@@ -154,8 +190,8 @@ function drawHeader(
   doc.setFillColor(...COLORS.primary);
   doc.rect(0, 0, pageWidth, 45, 'F');
   
-  // Title - set font
-  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
+  // Title - set font safely
+  safeSetFont(doc, useThaiFont);
   doc.setFontSize(FONT_CONFIG.title.size);
   doc.setTextColor(...COLORS.white);
   
@@ -227,7 +263,7 @@ async function drawCard(
     doc.setFillColor(...COLORS.primary);
     doc.roundedRect(xPos, yPos, cardWidth, 12, 2, 2, 'F');
     
-    doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
+    safeSetFont(doc, useThaiFont);
     doc.setFontSize(FONT_CONFIG.small.size);
     doc.setTextColor(...COLORS.white);
     doc.text(posLabelTh || '', xPos + cardWidth / 2, yPos + 8, { align: 'center' });
@@ -254,7 +290,7 @@ async function drawCard(
   }
   
   // Card name
-  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
+  safeSetFont(doc, useThaiFont);
   doc.setFontSize(FONT_CONFIG.heading.size - 2);
   doc.setTextColor(...COLORS.primary);
   doc.text(card.card.nameTh, xPos + cardWidth / 2, yPos + 5, { align: 'center' });
@@ -286,7 +322,7 @@ function drawInterpretations(
   doc.setFillColor(...COLORS.primary);
   doc.rect(margin, yPos, contentWidth, 10, 'F');
   
-  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
+  safeSetFont(doc, useThaiFont);
   doc.setFontSize(FONT_CONFIG.heading.size - 2);
   doc.setTextColor(...COLORS.white);
   doc.text('คำทำนาย', margin + 5, yPos + 7);
@@ -362,7 +398,7 @@ function drawFooter(
   doc.setFillColor(...COLORS.background);
   doc.rect(0, footerY - 5, pageWidth, 20, 'F');
   
-  doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
+  safeSetFont(doc, useThaiFont);
   doc.setFontSize(FONT_CONFIG.small.size);
   doc.setTextColor(...COLORS.textLight);
   
@@ -397,9 +433,7 @@ export async function generateReadingPDF(
     const useThaiFont = await loadThaiFont(doc);
     
     // If Thai font loaded, use it as default
-    if (useThaiFont) {
-      doc.setFont('Sarabun', 'normal');
-    }
+    safeSetFont(doc, useThaiFont);
     
     // Draw header
     let yPos = drawHeader(doc, reading, pageWidth, margin, useThaiFont);
@@ -466,7 +500,7 @@ export async function generateReadingPDF(
       doc.setFillColor(...COLORS.background);
       doc.roundedRect(margin, yPos, contentWidth, 30, 3, 3, 'F');
       
-      doc.setFont(useThaiFont ? 'Sarabun' : 'helvetica', 'normal');
+      safeSetFont(doc, useThaiFont);
       doc.setFontSize(FONT_CONFIG.body.size);
       doc.setTextColor(...COLORS.text);
       doc.text('บันทึกส่วนตัว:', margin + 5, yPos + 8);
