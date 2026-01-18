@@ -341,7 +341,7 @@ export default function ComparePage(): React.JSX.Element {
                         </p>
                         {reading.question && (
                           <p className="text-sm text-gray-500 truncate max-w-md mt-1">
-                            "{reading.question}"
+                            &quot;{reading.question}&quot;
                           </p>
                         )}
                       </div>

@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
@@ -405,12 +406,14 @@ export default function PatternsPage(): React.JSX.Element {
                   {analysis.frequentCards.slice(0, 5).map((card, index) => (
                     <div key={card.cardId} className="text-center">
                       <div className="relative aspect-[2/3] mb-2">
-                        <img
+                        <Image
                           src={card.imageUrl}
                           alt={card.cardName}
-                          className="w-full h-full object-cover rounded-lg"
+                          fill
+                          className="object-cover rounded-lg"
+                          unoptimized
                         />
-                        <span className="absolute -top-2 -right-2 w-6 h-6 bg-purple-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                        <span className="absolute -top-2 -right-2 w-6 h-6 bg-purple-600 text-white text-xs font-bold rounded-full flex items-center justify-center z-10">
                           {index + 1}
                         </span>
                       </div>

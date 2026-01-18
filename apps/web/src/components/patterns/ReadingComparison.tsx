@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { format } from 'date-fns';
 import { th } from 'date-fns/locale';
 import { Loader2, AlertCircle, ArrowRight, Check, X } from 'lucide-react';
@@ -111,7 +112,7 @@ export function ReadingComparison({
               {format(new Date(reading1.createdAt), 'd MMM yyyy HH:mm', { locale: th })}
             </p>
             {reading1.question && (
-              <p className="text-sm text-gray-300 mt-2 italic">"{reading1.question}"</p>
+              <p className="text-sm text-gray-300 mt-2 italic">&quot;{reading1.question}&quot;</p>
             )}
           </div>
           
@@ -125,15 +126,17 @@ export function ReadingComparison({
                     : ''
                 }`}
               >
-                <img
-                  src={card.card.imageUrl}
-                  alt={card.card.name}
-                  className={`w-full aspect-[2/3] object-cover rounded-lg ${
-                    card.isReversed ? 'rotate-180' : ''
-                  }`}
-                />
+                <div className={`relative aspect-[2/3] ${card.isReversed ? 'rotate-180' : ''}`}>
+                  <Image
+                    src={card.card.imageUrl}
+                    alt={card.card.name}
+                    fill
+                    className="object-cover rounded-lg"
+                    unoptimized
+                  />
+                </div>
                 {commonCards.includes(card.card.id) && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center z-10">
                     <Check className="w-3 h-3 text-white" />
                   </span>
                 )}
@@ -154,7 +157,7 @@ export function ReadingComparison({
               {format(new Date(reading2.createdAt), 'd MMM yyyy HH:mm', { locale: th })}
             </p>
             {reading2.question && (
-              <p className="text-sm text-gray-300 mt-2 italic">"{reading2.question}"</p>
+              <p className="text-sm text-gray-300 mt-2 italic">&quot;{reading2.question}&quot;</p>
             )}
           </div>
           
@@ -168,15 +171,17 @@ export function ReadingComparison({
                     : ''
                 }`}
               >
-                <img
-                  src={card.card.imageUrl}
-                  alt={card.card.name}
-                  className={`w-full aspect-[2/3] object-cover rounded-lg ${
-                    card.isReversed ? 'rotate-180' : ''
-                  }`}
-                />
+                <div className={`relative aspect-[2/3] ${card.isReversed ? 'rotate-180' : ''}`}>
+                  <Image
+                    src={card.card.imageUrl}
+                    alt={card.card.name}
+                    fill
+                    className="object-cover rounded-lg"
+                    unoptimized
+                  />
+                </div>
                 {commonCards.includes(card.card.id) && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center z-10">
                     <Check className="w-3 h-3 text-white" />
                   </span>
                 )}
