@@ -97,55 +97,52 @@ async function imageToBase64(url: string): Promise<string | null> {
 }
 
 /**
- * Load and register Thai font (Sarabun)
- * Uses multiple CDN sources for reliability
+ * Load and register Thai font (Noto Sans Thai)
+ * Noto Sans Thai has proper Unicode cmap tables required by jsPDF
  */
 async function loadThaiFont(doc: jsPDF): Promise<boolean> {
-  // List of CDN sources to try (in order of preference)
+  // Use Noto Sans Thai which has proper Unicode support for jsPDF
+  // Multiple CDN sources for reliability
   const fontSources = [
-    // Local font first (if deployed correctly)
-    '/fonts/Sarabun-Regular.ttf',
-    // jsDelivr CDN (more reliable for jsPDF)
-    'https://cdn.jsdelivr.net/npm/@aspect-fonts/sarabun@1.0.0/fonts/Sarabun-Regular.ttf',
-    // Google Fonts CDN
-    'https://fonts.gstatic.com/s/sarabun/v15/DtVjJx26TKEr37c9YHZJmnYI5gnOpg.ttf',
+    // Google Fonts - Noto Sans Thai (known to work with jsPDF)
+    'https://fonts.gstatic.com/s/notosansthai/v25/iJWnBXeUZi_OHPqn4wq6hQ2_hbJ1xyN9wd43SofNWcd1MKVQt_So_9CdU5RspzF-QRvzzXg.ttf',
+    // jsDelivr CDN backup
+    'https://cdn.jsdelivr.net/npm/@aspect-fonts/notosansthai@1.0.0/fonts/NotoSansThai-Regular.ttf',
   ];
   
   for (const fontUrl of fontSources) {
     try {
-      const absoluteUrl = fontUrl.startsWith('/')
-        ? (typeof window !== 'undefined' ? `${window.location.origin}${fontUrl}` : fontUrl)
-        : fontUrl;
+      console.log('Trying to load Thai font from:', fontUrl);
       
-      console.log('Trying to load font from:', absoluteUrl);
-      
-      const response = await fetch(absoluteUrl, { 
+      const response = await fetch(fontUrl, { 
         mode: 'cors',
         credentials: 'omit'
       });
       
       if (!response.ok) {
-        console.warn(`Font fetch failed from ${absoluteUrl}: ${response.status}`);
+        console.warn(`Font fetch failed from ${fontUrl}: ${response.status}`);
         continue;
       }
       
       const fontBuffer = await response.arrayBuffer();
       
-      // Validate font file size (should be at least 50KB for a real font)
-      if (fontBuffer.byteLength < 50000) {
-        console.warn(`Font file too small from ${absoluteUrl}, likely not a valid font`);
+      // Validate font file size (should be at least 10KB for a real font)
+      if (fontBuffer.byteLength < 10000) {
+        console.warn(`Font file too small from ${fontUrl}, likely not a valid font`);
         continue;
       }
+      
+      console.log(`Font loaded, size: ${fontBuffer.byteLength} bytes`);
       
       const fontBase64 = btoa(
         new Uint8Array(fontBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
       );
       
-      // Add font to jsPDF
-      doc.addFileToVFS('Sarabun-Regular.ttf', fontBase64);
-      doc.addFont('Sarabun-Regular.ttf', 'Sarabun', 'normal');
+      // Add font to jsPDF with correct name
+      doc.addFileToVFS('NotoSansThai-Regular.ttf', fontBase64);
+      doc.addFont('NotoSansThai-Regular.ttf', 'NotoSansThai', 'normal');
       
-      console.log('Thai font loaded successfully from:', absoluteUrl);
+      console.log('Thai font (Noto Sans Thai) loaded successfully');
       return true;
     } catch (error) {
       console.warn(`Failed to load font from ${fontUrl}:`, error);
@@ -153,7 +150,7 @@ async function loadThaiFont(doc: jsPDF): Promise<boolean> {
     }
   }
   
-  console.warn('Failed to load Thai font from all sources, using fallback');
+  console.warn('Failed to load Thai font from all sources, using Helvetica fallback');
   return false;
 }
 
@@ -163,7 +160,7 @@ async function loadThaiFont(doc: jsPDF): Promise<boolean> {
 function safeSetFont(doc: jsPDF, useThaiFont: boolean, style: string = 'normal'): void {
   try {
     if (useThaiFont) {
-      doc.setFont('Sarabun', style);
+      doc.setFont('NotoSansThai', style);
     } else {
       doc.setFont('helvetica', style);
     }
