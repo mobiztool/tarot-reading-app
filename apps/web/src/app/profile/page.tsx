@@ -513,6 +513,13 @@ export default function ProfilePage() {
 
             <div className="space-y-2">
               <Link
+                href="/profile/insights"
+                className="w-full text-left px-4 py-3 bg-gradient-to-r from-purple-600/20 to-pink-600/20 hover:from-purple-600/30 hover:to-pink-600/30 border border-purple-500/30 rounded-lg transition-colors flex items-center justify-between"
+              >
+                <span className="text-slate-300">📊 แดชบอร์ดสถิติ</span>
+                <span className="text-purple-400">Pro/VIP →</span>
+              </Link>
+              <Link
                 href="/history"
                 className="w-full text-left px-4 py-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg transition-colors flex items-center justify-between"
               >
